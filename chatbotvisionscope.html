@@ -71,9 +71,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);line-
 .card ul li::before{content:'→';position:absolute;left:0;opacity:.5;font-size:11px;top:1px}
 
 /* VISION STMT */
-.vstmt{background:linear-gradient(135deg,rgba(79,142,247,.06),rgba(130,100,255,.03));border:1px solid var(--ba);border-radius:var(--r);padding:28px;margin-bottom:18px}
-.vstmt p{font-family:'Fraunces',serif;font-size:20px;font-weight:300;color:var(--t1);line-height:1.6;font-style:italic}
-.vstmt p strong{color:var(--ac);font-style:normal;font-weight:700}
+.vstmt{background:linear-gradient(135deg,rgba(79,142,247,.06),rgba(130,100,255,.03));border:1px solid var(--ba);border-radius:var(--r);padding:32px 36px;margin-bottom:18px}
+.vstmt p{font-family:'DM Sans',sans-serif;font-size:19px;font-weight:500;color:var(--t1);line-height:1.65;font-style:normal;letter-spacing:-.01em}
+.vstmt p strong{color:var(--ac);font-weight:700}
 
 /* PRINCIPLE CARDS */
 .pc{background:var(--card);border:1px solid var(--b);border-radius:var(--rs2);padding:16px 18px;display:flex;gap:11px;align-items:flex-start;transition:border-color .2s}
@@ -199,7 +199,7 @@ strong{color:var(--t1)}
       <h3>🔥 Симптоми</h3>
       <ul>
         <li>Сотні розрізнених задач без спільного контексту</li>
-        <li>Неможливо побачити прогрес по угоді як ціле</li>
+        <li>Неможливо побачити прогрес по картці / замовленню / покупцю як ціле</li>
         <li>Файли розпорошені між задачами і коментарями</li>
         <li>Менеджери дізнаються про затримки постфактум</li>
       </ul>
@@ -207,8 +207,8 @@ strong{color:var(--t1)}
     <div class="card yml">
       <h3>⚡ Бізнес-наслідки</h3>
       <ul>
-        <li>~10–15 хв на пошук одного файлу по угоді</li>
-        <li>Пропущені задачі → зриви дедлайнів по угодах</li>
+        <li>~10–15 хв на пошук одного файлу по картці/замовленню</li>
+        <li>Пропущені задачі → зриви дедлайнів по картках/замовленнях</li>
         <li>Надмірне ручне планування з боку керівника</li>
         <li>Нова людина не може швидко увійти в контекст</li>
       </ul>
@@ -216,23 +216,23 @@ strong{color:var(--t1)}
     <div class="card pl">
       <h3>🎯 Хто страждає найбільше</h3>
       <ul>
-        <li>Юридичні фірми — угода = 50+ задач і документів</li>
+        <li>Юридичні фірми — картка/замовлення = 50+ задач і документів</li>
         <li>Виробничі підприємства — паралельні процеси</li>
         <li>Агентства — окремі треки для кожного клієнта</li>
-        <li>Будь-яка команда 5+ людей зі спільними угодами</li>
+        <li>Будь-яка команда 5+ людей зі спільними картками/замовленнями</li>
       </ul>
     </div>
     <div class="card gl">
       <h3>🔍 Кореневі причини</h3>
       <ul>
         <li>Відсутня групуюча сутність між CRM-об'єктом і задачею</li>
-        <li>Немає спільного статусного workflow для групи задач</li>
+        <li>Немає спільного процесу з відстеженням статусів для групи задач</li>
         <li>Немає єдиного файлового простору для процесу</li>
         <li>Немає шаблонування — кожен процес вручну</li>
       </ul>
     </div>
   </div>
-  <div class="ib i"><span class="ib-ic">ℹ️</span><div>Проблема не в задачах як таких — задачі працюють. Проблема у відсутності <strong>структури вище рівня задачі</strong>, що об'єднує роботу навколо спільної мети або угоди.</div></div>
+  <div class="ib i"><span class="ib-ic">ℹ️</span><div>Проблема не в задачах як таких — задачі працюють. Проблема у відсутності <strong>структури вище рівня задачі</strong>, що об'єднує роботу навколо спільної мети або картки/замовлення/покупця.</div></div>
 </section>
 
 <!-- ═══ 02 VISION ═══ -->
@@ -245,7 +245,7 @@ strong{color:var(--t1)}
     <p>Дати командам <strong>єдиний простір</strong> для управління роботою навколо конкретної мети — зберігаючи простоту для тих, кому проєктне управління не потрібне.</p>
   </div>
   <div class="g2">
-    <div class="pc"><div class="pci">📐</div><div><h4>Прогресивне ускладнення</h4><p>Базова система задач залишається незмінною. Проєкти — опціональний шар, що вмикається однією налаштункою.</p></div></div>
+    <div class="pc"><div class="pci">📐</div><div><h4>Просто для тих, кому не треба більше</h4><p>Базова система задач залишається незмінною. Проєкти — окремий модуль, який вмикається одним перемикачем у налаштуваннях.</p></div></div>
     <div class="pc"><div class="pci">🗂️</div><div><h4>Контекст завжди поряд</h4><p>Файли, задачі, прогрес і команда — в одному місці, без перемикання між вкладками.</p></div></div>
     <div class="pc"><div class="pci">⚙️</div><div><h4>Гнучкість процесу</h4><p>Кожна команда налаштовує власні статуси та шаблони. Система адаптується до процесу, а не навпаки.</p></div></div>
     <div class="pc"><div class="pci">🔒</div><div><h4>Безпека даних</h4><p>Подвійна система прав: хто бачить проєкт і хто бачить конкретні задачі всередині.</p></div></div>
@@ -294,35 +294,43 @@ strong{color:var(--t1)}
 <section id="s04" class="sec">
   <div class="sh">
     <div class="sn">04</div>
-    <div class="st"><h2>Скоуп</h2><p class="ss">Що входить і що не входить у версію 1.0</p></div>
+    <div class="st"><h2>Скоуп</h2><p class="ss">Що і коли робимо</p></div>
   </div>
-  <div class="g2">
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px">
     <div class="sb i">
       <h3>✅ In Scope — v1.0</h3>
       <ul class="sbl">
-        <li>Сутність «Проєкт» з повним CRUD</li>
+        <li>Сутність «Проєкт» — створення, перегляд, редагування, видалення</li>
+        <li>Список проєктів з картками (прогрес, команда, задачі, файли)</li>
         <li>Ієрархія: Проєкт → Задача → Підзадача → Чек-лист</li>
-        <li>Два типи задач: Standalone та Проєктна</li>
+        <li>Два типи задач: Звичайна та Проєктна</li>
         <li>Кастомні статуси задач у проєкті</li>
-        <li>Зв'язок проєкту з CRM-сутністю (Угода)</li>
+        <li>Зв'язок проєкту з CRM-сутністю (картка / замовлення / покупець)</li>
         <li>Файловий дровер з пошуком і шерингом</li>
-        <li>Шаблони проєктів із відносними дедлайнами</li>
         <li>Подвійна система прав доступу</li>
         <li>Розділ «Моя Робота» (канбан за датами)</li>
-        <li>Lifecycle: архівування та відновлення</li>
         <li>Прогрес-бар на рівні проєкту</li>
-        <li>Активація через налаштування (toggle)</li>
+        <li>Розділ «Моя Робота» — новий UI (канбан за датами, перемикач список/канбан)</li>
+        <li>Видалення проєкту</li>
+        <li>Вмикається перемикачем у налаштуваннях</li>
+      </ul>
+    </div>
+    <div style="background:var(--card);border:1px solid rgba(167,139,250,.2);border-radius:var(--r);padding:20px">
+      <h3 style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:13px;color:var(--pu)">🔜 Scope — v2.0</h3>
+      <ul class="sbl" style="list-style:none;display:flex;flex-direction:column;gap:6px">
+        <li style="font-size:13px;color:var(--t2);padding-left:19px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--pu);font-weight:700;font-size:11px">→</span>Архівування та відновлення проєктів</li>
+        <li style="font-size:13px;color:var(--t2);padding-left:19px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--pu);font-weight:700;font-size:11px">→</span>Шаблони проєктів із відносними дедлайнами</li>
+        <li style="font-size:13px;color:var(--t2);padding-left:19px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--pu);font-weight:700;font-size:11px">→</span>Призначення команди при авторозгортанні шаблону</li>
+        <li style="font-size:13px;color:var(--t2);padding-left:19px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--pu);font-weight:700;font-size:11px">→</span>Мобільний інтерфейс</li>
       </ul>
     </div>
     <div class="sb o">
-      <h3>🚫 Out of Scope — v1.0</h3>
+      <h3>🚫 Out of Scope</h3>
       <ul class="sbl">
         <li>Діаграма Ганта / часова шкала</li>
         <li>Залежності між задачами</li>
         <li>Бюджетування та облік ресурсів</li>
-        <li>Призначення команди при авторозгортанні шаблону</li>
         <li>Звіти та аналітичні дашборди по проєктах</li>
-        <li>Мобільний нативний інтерфейс</li>
         <li>Інтеграції з Jira / Asana / Trello</li>
         <li>Нотифікації у Telegram / Slack</li>
         <li>Time tracking у задачах</li>
@@ -355,7 +363,8 @@ strong{color:var(--t1)}
       <!-- CRM UGODA -->
       <rect x="10" y="148" width="152" height="82" rx="9" fill="#0c0f1a" stroke="#4f8ef7" stroke-width="1.5" stroke-dasharray="6,3" opacity=".8"/>
       <text x="86" y="182" text-anchor="middle" fill="#7888aa" font-size="10" font-weight="700" letter-spacing=".06em">CRM УГОДА</text>
-      <text x="86" y="200" text-anchor="middle" fill="#dde6ff" font-size="13" font-weight="700">Угода</text>
+      <text x="86" y="197" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="700">Картка /</text>
+      <text x="86" y="211" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="700">Замовлення</text>
       <text x="86" y="216" text-anchor="middle" fill="#2e3a55" font-size="11">id · title · stage</text>
 
       <!-- PROJECT -->
@@ -430,8 +439,8 @@ strong{color:var(--t1)}
       <text x="192" y="275" fill="#2e3a55" font-size="10" text-anchor="middle">crm link</text>
     </svg>
   </div>
-  <p class="dcap">Рис. 1 — Entity Relationship Diagram. Пунктир = зовнішня CRM-сутність. Кардинальність показана на стрілках.</p>
-  <div class="ib i" style="margin-top:12px"><span class="ib-ic">ℹ️</span><div><strong>Підзадача</strong> — це задача з parent_task_id, а не окрема сутність. <strong>Чек-лист</strong> — вбудований інструмент, не ієрархічний вузол. Обидва не впливають на прогрес-бар проєкту.</div></div>
+  <p class="dcap">Рис. 1 — Схема даних (ERD). Пунктир = зовнішня CRM-сутність. Числа біля стрілок показують кількість зв'язків між сутностями.</p>
+  <div class="ib i" style="margin-top:12px"><span class="ib-ic">ℹ️</span><div><strong>Підзадача</strong> — це та сама сутність задачі. Різниця тільки в одному: замість зв'язку з CRM-карткою у неї вказана батьківська задача. <strong>Чек-лист</strong> — вбудований інструмент всередині задачі, не окремий рівень структури. Обидва не впливають на прогрес-бар проєкту.</div></div>
 </section>
 
 <!-- PART 2: sections 06-10 -->
@@ -440,7 +449,7 @@ strong{color:var(--t1)}
 <section id="s06" class="sec">
   <div class="sh">
     <div class="sn">06</div>
-    <div class="st"><h2>Активація модуля</h2><p class="ss">Як toggle впливає на систему та існуючих користувачів</p></div>
+    <div class="st"><h2>Активація модуля</h2><p class="ss">Як вмикання/вимикання перемикача впливає на систему та користувачів</p></div>
   </div>
   <div class="db">
     <svg viewBox="0 0 780 290" width="730" xmlns="http://www.w3.org/2000/svg" style="font-family:'DM Sans',sans-serif">
@@ -453,7 +462,7 @@ strong{color:var(--t1)}
       <!-- Settings box -->
       <rect x="120" y="118" width="128" height="52" rx="8" fill="#111520" stroke="#2e3a55" stroke-width="1.5"/>
       <text x="184" y="140" text-anchor="middle" fill="#dde6ff" font-size="12" font-weight="600">Налаштування</text>
-      <text x="184" y="156" text-anchor="middle" fill="#7888aa" font-size="11">Задачі → Toggle</text>
+      <text x="184" y="156" text-anchor="middle" fill="#7888aa" font-size="11">Задачі → Перемикач</text>
       <!-- → Diamond -->
       <line x1="248" y1="144" x2="294" y2="144" stroke="#4f8ef7" stroke-width="1.5" opacity=".45" marker-end="url(#ab)"/>
       <!-- DIAMOND -->
@@ -474,7 +483,7 @@ strong{color:var(--t1)}
       <rect x="416" y="8" width="354" height="26" rx="5" fill="#0c0f1a" stroke="rgba(52,211,153,.18)" stroke-width="1"/>
       <text x="593" y="25" text-anchor="middle" fill="#7888aa" font-size="10.5">✓  Розділ «Проєкти» доступний користувачам з правом</text>
       <rect x="416" y="38" width="354" height="26" rx="5" fill="#0c0f1a" stroke="rgba(52,211,153,.18)" stroke-width="1"/>
-      <text x="593" y="55" text-anchor="middle" fill="#7888aa" font-size="10.5">✓  Існуючі задачі автоматично конвертуються → Standalone</text>
+      <text x="593" y="55" text-anchor="middle" fill="#7888aa" font-size="10.5">✓  Існуючі задачі не змінюються — працюють як і раніше</text>
       <rect x="416" y="68" width="354" height="26" rx="5" fill="#0c0f1a" stroke="rgba(52,211,153,.18)" stroke-width="1"/>
       <text x="593" y="85" text-anchor="middle" fill="#7888aa" font-size="10.5">✓  Розділ «Моя Робота» — без змін</text>
       <!-- NO → down -->
@@ -493,8 +502,8 @@ strong{color:var(--t1)}
       <text x="593" y="279" text-anchor="middle" fill="#7888aa" font-size="10.5">✗  Дані збережено, але недоступні з UI</text>
     </svg>
   </div>
-  <p class="dcap">Рис. 2 — Flowchart активації. Безпечна двостороння операція — дані не видаляються при вимиканні.</p>
-  <div class="ib w" style="margin-top:12px"><span class="ib-ic">⚠️</span><div><strong>Важливо:</strong> вмикання не змінює логіку існуючих задач — вони стають Standalone. Вимикання не видаляє проєкти, лише приховує їх з інтерфейсу.</div></div>
+  <p class="dcap">Рис. 2 — Схема активації. Безпечна двостороння операція — дані не видаляються при вимиканні.</p>
+  <div class="ib i" style="margin-top:12px"><span class="ib-ic">ℹ️</span><div><strong>Жодної міграції даних.</strong> Вмикання модуля не торкається існуючих задач — вони продовжують жити у «Моя Робота» в тому самому вигляді. Єдина технічна зміна: в базі додається поле project_id (порожнє за замовчуванням). Вимикання так само нічого не видаляє.</div></div>
 </section>
 
 <!-- ═══ 07 SCENARIOS ═══ -->
@@ -508,15 +517,15 @@ strong{color:var(--t1)}
   <div style="background:var(--card);border:1px solid var(--b);border-radius:var(--r);overflow:hidden;margin-bottom:16px">
     <div style="padding:13px 20px;background:rgba(79,142,247,.04);border-bottom:1px solid var(--b);display:flex;align-items:center;gap:10px">
       <div style="width:25px;height:25px;border-radius:7px;background:var(--as);border:1px solid var(--ba);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ac)">S1</div>
-      <h3 style="font-size:14.5px;font-weight:700;color:var(--t1);flex:1">Запуск проєкту з шаблону по угоді</h3>
+      <h3 style="font-size:14.5px;font-weight:700;color:var(--t1);flex:1">Запуск проєкту з шаблону по картці/замовленню</h3>
       <span style="font-size:11px;font-weight:600;color:var(--am);background:var(--ams);border:1px solid rgba(245,166,35,.18);border-radius:5px;padding:2px 9px">🏆 Керівник</span>
     </div>
     <div style="padding:18px 20px">
       <div style="display:flex;flex-direction:column;gap:0">
-        <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:24px;height:24px;border-radius:50%;border:2px solid var(--ac);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:var(--ac)">1</div><div style="width:2px;flex:1;min-height:18px;background:rgba(79,142,247,.15);margin:2px 0"></div></div><div style="padding-bottom:16px;flex:1"><h4 style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px">Угода переходить на стадію «В роботі»</h4><p style="font-size:12.5px;color:var(--t2);margin:0;line-height:1.5">Менеджер відкриває картку угоди. Тригер автоматизації спрацьовує або натискає «Створити проєкт» вручну.</p></div></div>
-        <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:24px;height:24px;border-radius:50%;border:2px solid var(--ac);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:var(--ac)">2</div><div style="width:2px;flex:1;min-height:18px;background:rgba(79,142,247,.15);margin:2px 0"></div></div><div style="padding-bottom:16px;flex:1"><h4 style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px">Вибір шаблону</h4><p style="font-size:12.5px;color:var(--t2);margin:0 0 6px;line-height:1.5">З'являється список шаблонів. Вибирає «Юридичний супровід угоди».</p><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--gn);background:var(--gs);border-radius:4px;padding:2px 8px">⚡ Система розгортає 12 задач, 3 статуси, відносні дедлайни</span></div></div>
+        <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:24px;height:24px;border-radius:50%;border:2px solid var(--ac);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:var(--ac)">1</div><div style="width:2px;flex:1;min-height:18px;background:rgba(79,142,247,.15);margin:2px 0"></div></div><div style="padding-bottom:16px;flex:1"><h4 style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px">Картка/замовлення переходить на стадію «В роботі»</h4><p style="font-size:12.5px;color:var(--t2);margin:0;line-height:1.5">Менеджер відкриває картку/замовлення. Тригер автоматизації спрацьовує або натискає «Створити проєкт» вручну.</p></div></div>
+        <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:24px;height:24px;border-radius:50%;border:2px solid var(--ac);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:var(--ac)">2</div><div style="width:2px;flex:1;min-height:18px;background:rgba(79,142,247,.15);margin:2px 0"></div></div><div style="padding-bottom:16px;flex:1"><h4 style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px">Вибір шаблону</h4><p style="font-size:12.5px;color:var(--t2);margin:0 0 6px;line-height:1.5">З'являється список шаблонів. Вибирає «Юридичний супровід клієнта».</p><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--gn);background:var(--gs);border-radius:4px;padding:2px 8px">⚡ Система розгортає 12 задач, 3 статуси, відносні дедлайни</span></div></div>
         <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:24px;height:24px;border-radius:50%;border:2px solid var(--ac);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:var(--ac)">3</div><div style="width:2px;flex:1;min-height:18px;background:rgba(79,142,247,.15);margin:2px 0"></div></div><div style="padding-bottom:16px;flex:1"><h4 style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px">Налаштування команди</h4><p style="font-size:12.5px;color:var(--t2);margin:0;line-height:1.5">Додає юриста та асистента. Призначає відповідальних по конкретних задачах.</p></div></div>
-        <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:24px;height:24px;border-radius:50%;border:2px solid var(--gn);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:var(--gn)">4</div></div><div style="flex:1"><h4 style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px">Проєкт активовано</h4><p style="font-size:12.5px;color:var(--t2);margin:0 0 6px;line-height:1.5">Учасники бачать задачі в «Моя Робота». Файли угоди доступні у файловому дровері.</p><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--gn);background:var(--gs);border-radius:4px;padding:2px 8px">✓ Прогрес-бар 0/12, дедлайни розраховані з урахуванням вихідних</span></div></div>
+        <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:24px;height:24px;border-radius:50%;border:2px solid var(--gn);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:var(--gn)">4</div></div><div style="flex:1"><h4 style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px">Проєкт активовано</h4><p style="font-size:12.5px;color:var(--t2);margin:0 0 6px;line-height:1.5">Учасники бачать задачі в «Моя Робота». Файли картки/замовлення доступні у файловому дровері.</p><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--gn);background:var(--gs);border-radius:4px;padding:2px 8px">✓ Прогрес-бар 0/12, дедлайни розраховані з урахуванням вихідних</span></div></div>
       </div>
     </div>
   </div>
@@ -531,7 +540,7 @@ strong{color:var(--t1)}
     <div style="padding:18px 20px">
       <div style="display:flex;flex-direction:column;gap:0">
         <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:24px;height:24px;border-radius:50%;border:2px solid var(--ac);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:var(--ac)">1</div><div style="width:2px;flex:1;min-height:18px;background:rgba(79,142,247,.15);margin:2px 0"></div></div><div style="padding-bottom:16px;flex:1"><h4 style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px">Відкриває «Моя Робота»</h4><p style="font-size:12.5px;color:var(--t2);margin:0;line-height:1.5">Розділ завжди доступний незалежно від модуля проєктів. Канбан-дошка за датами.</p></div></div>
-        <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:24px;height:24px;border-radius:50%;border:2px solid var(--ac);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:var(--ac)">2</div><div style="width:2px;flex:1;min-height:18px;background:rgba(79,142,247,.15);margin:2px 0"></div></div><div style="padding-bottom:16px;flex:1"><h4 style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px">Сканує «Протерміновані» і «Сьогодні»</h4><p style="font-size:12.5px;color:var(--t2);margin:0;line-height:1.5">На картках проєктних задач — бейдж з назвою проєкту. Standalone задачі без бейджа.</p></div></div>
+        <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:24px;height:24px;border-radius:50%;border:2px solid var(--ac);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:var(--ac)">2</div><div style="width:2px;flex:1;min-height:18px;background:rgba(79,142,247,.15);margin:2px 0"></div></div><div style="padding-bottom:16px;flex:1"><h4 style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px">Сканує «Протерміновані» і «Сьогодні»</h4><p style="font-size:12.5px;color:var(--t2);margin:0;line-height:1.5">На картках проєктних задач — бейдж з назвою проєкту. Звичайні задачі відображаються без бейджа.</p></div></div>
         <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:24px;height:24px;border-radius:50%;border:2px solid var(--gn);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:var(--gn)">3</div></div><div style="flex:1"><h4 style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px">Відкриває задачу, змінює статус</h4><p style="font-size:12.5px;color:var(--t2);margin:0 0 6px;line-height:1.5">Переміщує картку на канбані. Прогрес-бар проєкту оновлюється автоматично.</p><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--gn);background:var(--gs);border-radius:4px;padding:2px 8px">⚡ Прогрес: 4/12 → 5/12 задач виконано</span></div></div>
       </div>
     </div>
@@ -563,13 +572,30 @@ strong{color:var(--t1)}
   <div style="display:flex;flex-direction:column;gap:12px">
     <div style="background:var(--card);border:1px solid var(--b);border-radius:var(--r);overflow:hidden">
       <div style="padding:13px 20px;background:rgba(79,142,247,.03);border-bottom:1px solid var(--b);display:flex;align-items:center;gap:9px">
-        <span style="font-size:16px">📁</span><h3 style="font-size:14.5px;font-weight:700;color:var(--t1);flex:1">Проєкт</h3><span class="bdg b">Core</span>
+        <span style="font-size:16px">📋</span><h3 style="font-size:14.5px;font-weight:700;color:var(--t1);flex:1">Список проєктів</h3><span class="bdg b">UI · v1.0</span>
+      </div>
+      <div style="padding:16px 20px">
+        <p style="font-size:13px;color:var(--t2);margin:0 0 14px;line-height:1.6">Головний екран розділу «Проєкти» — точка входу для керівника або адміна. Показує всі активні проєкти одним поглядом, без необхідності відкривати кожен окремо.</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+          <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--ac);font-size:8px;top:5px">◆</span><strong>Картка проєкту в списку показує:</strong> назву, керівника, команду (аватари учасників), дедлайн, прогрес-бар, кількість задач (всього / відкритих / закритих), кількість файлів у проєкті, зв'язану CRM-картку якщо є</li>
+          <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--ac);font-size:8px;top:5px">◆</span><strong>Доступність:</strong> Адмін бачить всі проєкти. Керівник та учасники — тільки ті, де вони є членами команди</li>
+          <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--ac);font-size:8px;top:5px">◆</span><strong>Фільтри та пошук:</strong> по назві, керівнику, учаснику, статусу проєкту, дедлайну</li>
+          <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--ac);font-size:8px;top:5px">◆</span><strong>Якщо проєктів немає:</strong> порожній стан з кнопкою «Створити перший проєкт»</li>
+        </ul>
+        <div style="margin-top:14px;background:rgba(79,142,247,.05);border:1px solid rgba(79,142,247,.12);border-radius:var(--rs2);padding:11px 14px">
+          <p style="font-size:12px;color:var(--t2);margin:0;line-height:1.55">💡 <strong style="color:var(--t1)">Ціль екрана:</strong> керівник заходить зранку і за 10 секунд розуміє — де є прострочення, які проєкти близькі до дедлайну, де задачі не рухаються. Без жодного кліку вглиб.</p>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--b);border-radius:var(--r);overflow:hidden">
+      <div style="padding:13px 20px;background:rgba(79,142,247,.03);border-bottom:1px solid var(--b);display:flex;align-items:center;gap:9px">
+        <span style="font-size:16px">📁</span><h3 style="font-size:14.5px;font-weight:700;color:var(--t1);flex:1">Картка проєкту</h3><span class="bdg b">Core</span>
       </div>
       <div style="padding:16px 20px"><ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
         <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--ac);font-size:8px;top:5px">◆</span><strong>Обов'язкові поля:</strong> Назва, Керівник</li>
-        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--ac);font-size:8px;top:5px">◆</span><strong>Опціональні:</strong> Опис, Файли, Термін виконання, Команда, Додаткові статуси</li>
-        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--ac);font-size:8px;top:5px">◆</span><strong>Зв'язок з CRM:</strong> якщо проєкт створюється з картки Угоди — автоматично успадковує зв'язок. При видаленні CRM-сутності зв'язок зникає, проєкт залишається</li>
-        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--ac);font-size:8px;top:5px">◆</span><strong>Картка проєкту — один екран:</strong> Хедер (overview + аналітика) + Канбан задач + Файловий дровер</li>
+        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--ac);font-size:8px;top:5px">◆</span><strong>Необов'язкові поля:</strong> Опис, Файли, Термін виконання, Команда, Додаткові статуси</li>
+        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--ac);font-size:8px;top:5px">◆</span><strong>Зв'язок з CRM:</strong> якщо проєкт створюється з картки (угода, замовлення, покупець) — автоматично успадковує зв'язок. При видаленні CRM-сутності зв'язок зникає, проєкт залишається</li>
+        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--ac);font-size:8px;top:5px">◆</span><strong>Картка проєкту — один екран:</strong> Шапка (загальна інформація + аналітика) + Канбан задач + Файловий дровер</li>
         <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--ac);font-size:8px;top:5px">◆</span><strong>Прогрес-бар:</strong> закриті задачі / загальна кількість. Підзадачі не враховуються</li>
       </ul></div>
     </div>
@@ -578,10 +604,10 @@ strong{color:var(--t1)}
         <span style="font-size:16px">✅</span><h3 style="font-size:14.5px;font-weight:700;color:var(--t1);flex:1">Задачі та ієрархія</h3><span class="bdg g">Core</span>
       </div>
       <div style="padding:16px 20px"><ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
-        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--gn);font-size:8px;top:5px">◆</span><strong>Standalone задача:</strong> існує поза проєктами. Стани «Відкрито» / «Закрито». Всі існуючі задачі після оновлення стають цим типом автоматично</li>
-        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--gn);font-size:8px;top:5px">◆</span><strong>Проєктна задача:</strong> прив'язана до проєкту, рухається по кастомних статусах. Зв'язок із проєктом незмінний після створення</li>
-        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--gn);font-size:8px;top:5px">◆</span><strong>Підзадача:</strong> задача де parent — інша задача. Має власний чек-лист</li>
-        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--gn);font-size:8px;top:5px">◆</span><strong>Чек-лист:</strong> вбудований інструмент всередині задачі або підзадачі, не окрема ієрархічна сутність</li>
+        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--gn);font-size:8px;top:5px">◆</span><strong>Звичайна задача (поточний тип):</strong> це всі задачі, які вже існують у системі. Нічого не змінюється — вони залишаються зі своїми станами «Відкрито» / «Закрито» і відображаються у «Моя Робота» як зазвичай. До проєктів не прив'язані.</li>
+        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--gn);font-size:8px;top:5px">◆</span><strong>Проєктна задача:</strong> новий тип, що створюється всередині проєкту. Рухається по кастомних статусах. Після створення задачу не можна перемістити в інший проєкт.</li>
+        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--gn);font-size:8px;top:5px">◆</span><strong>Підзадача:</strong> та сама сутність задачі, тільки замість зв'язку з CRM-карткою — вказана батьківська задача. Має власний чек-лист.</li>
+        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--gn);font-size:8px;top:5px">◆</span><strong>Чек-лист:</strong> вбудований інструмент всередині задачі або підзадачі, не окрема ієрархічна сутність.</li>
       </ul></div>
     </div>
     <div style="background:var(--card);border:1px solid var(--b);border-radius:var(--r);overflow:hidden">
@@ -592,21 +618,26 @@ strong{color:var(--t1)}
         <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--am);font-size:8px;top:5px">◆</span><strong>Вміст:</strong> статуси, задачі, підзадачі, чек-листи, описи, теги. Без персональних даних</li>
         <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--am);font-size:8px;top:5px">◆</span><strong>Дедлайни:</strong> відносні (Дата старту + N робочих днів) з урахуванням вихідних</li>
         <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--am);font-size:8px;top:5px">◆</span><strong>Ручне розгортання:</strong> «Створити з шаблону» у розділі Проєктів</li>
-        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--am);font-size:8px;top:5px">◆</span><strong>Авторозгортання:</strong> шаблон прив'язується до CRM-тригера (напр. «Угода → стадія X»)</li>
-        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--am);font-size:8px;top:5px">◆</span><strong>Зберегти як шаблон:</strong> з налаштувань активного проєкту. Структура копіюється, персональні дані очищаються</li>
+        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--am);font-size:8px;top:5px">◆</span><strong>Авторозгортання:</strong> шаблон автоматично розгортається коли картка/замовлення переходить на певну стадію (напр. «Стадія X»)</li>
+        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--am);font-size:8px;top:5px">◆</span><strong>Зберегти як шаблон:</strong> із меню активного проєкту. Структура копіюється, всі особисті дані прибираються</li>
       </ul></div>
     </div>
     <div style="background:var(--card);border:1px solid var(--b);border-radius:var(--r);overflow:hidden">
       <div style="padding:13px 20px;background:rgba(167,139,250,.03);border-bottom:1px solid var(--b);display:flex;align-items:center;gap:9px">
-        <span style="font-size:16px">🗂️</span><h3 style="font-size:14.5px;font-weight:700;color:var(--t1);flex:1">Розділ «Моя Робота»</h3><span class="bdg p">UI</span>
+        <span style="font-size:16px">🗂️</span><h3 style="font-size:14.5px;font-weight:700;color:var(--t1);flex:1">Розділ «Моя Робота»</h3><span class="bdg p">UI · v1.0</span>
       </div>
-      <div style="padding:16px 20px"><ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
-        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--pu);font-size:8px;top:5px">◆</span><strong>Доступний завжди:</strong> незалежно від увімкнення модуля проєктів</li>
-        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--pu);font-size:8px;top:5px">◆</span><strong>Канбан за датами:</strong> Протерміновані · Сьогодні · Завтра · Цей тиждень · Наступний тиждень · Майбутні · Виконано</li>
-        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--pu);font-size:8px;top:5px">◆</span><strong>Змішаний контент:</strong> Standalone і Проєктні задачі на одній дошці. На проєктній — бейдж із назвою проєкту</li>
-        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--pu);font-size:8px;top:5px">◆</span><strong>Перемикачі:</strong> «Канбан / Список» + (для адмінів) «Мої задачі / Всі задачі» з фільтрами по співробітниках</li>
-        <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--pu);font-size:8px;top:5px">◆</span><strong>Глобальний пошук:</strong> по всіх задачах, включно з проєктними</li>
-      </ul></div>
+      <div style="padding:16px 20px">
+        <div style="background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.15);border-radius:var(--rs2);padding:11px 14px;margin-bottom:14px">
+          <p style="font-size:13px;color:var(--t2);margin:0;line-height:1.55">Це <strong style="color:var(--t1)">поточний розділ «Задачі»</strong>, який отримує новий вигляд і назву. Він завжди доступний усім користувачам — незалежно від того, увімкнені проєкти чи ні. Проєкти на нього не впливають жодним чином.</p>
+        </div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+          <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--pu);font-size:8px;top:5px">◆</span><strong>Новий вигляд — канбан за датами:</strong> Протерміновані · Сьогодні · Завтра · Цей тиждень · Наступний тиждень · Майбутні · Виконано</li>
+          <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--pu);font-size:8px;top:5px">◆</span><strong>Перемикач «Канбан / Список»:</strong> обидва режими доступні для всіх задач</li>
+          <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--pu);font-size:8px;top:5px">◆</span><strong>Якщо проєкти увімкнені:</strong> у списку також з'являються проєктні задачі з бейджем назви проєкту. Все в одному місці.</li>
+          <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--pu);font-size:8px;top:5px">◆</span><strong>Для адмінів:</strong> перемикач «Мої задачі / Всі задачі» з фільтрами по співробітниках</li>
+          <li style="font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--pu);font-size:8px;top:5px">◆</span><strong>Глобальний пошук:</strong> по всіх задачах, включно з проєктними</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -615,11 +646,11 @@ strong{color:var(--t1)}
 <section id="s09" class="sec">
   <div class="sh">
     <div class="sn">09</div>
-    <div class="st"><h2>Система статусів</h2><p class="ss">State Machine для двох типів задач</p></div>
+    <div class="st"><h2>Система статусів</h2><p class="ss">Можливі стани і переходи для двох типів задач</p></div>
   </div>
   <div class="g2" style="margin-bottom:13px">
     <div>
-      <p class="lbl">Standalone задача</p>
+      <p class="lbl">Звичайна задача (поточний тип)</p>
       <div class="db" style="padding:20px">
         <svg viewBox="0 0 300 84" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family:'DM Sans',sans-serif">
           <rect x="8" y="18" width="112" height="48" rx="8" fill="#111520" stroke="#4f8ef7" stroke-width="1.5"/>
@@ -636,27 +667,42 @@ strong{color:var(--t1)}
     <div>
       <p class="lbl">Проєктна задача</p>
       <div class="db" style="padding:20px">
-        <svg viewBox="0 0 420 130" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family:'DM Sans',sans-serif">
-          <rect x="6" y="46" width="72" height="36" rx="7" fill="#111520" stroke="#4b556b" stroke-width="1.5"/>
-          <text x="42" y="68" text-anchor="middle" fill="#7888aa" font-size="11.5" font-weight="600">Новий</text>
-          <line x1="78" y1="64" x2="110" y2="64" stroke="#4f8ef7" stroke-width="1.5" opacity=".55" marker-end="url(#ab)"/>
-          <rect x="112" y="46" width="96" height="36" rx="7" fill="#111520" stroke="#4f8ef7" stroke-width="1.5" stroke-dasharray="5,3"/>
-          <text x="160" y="60" text-anchor="middle" fill="#4f8ef7" font-size="10.5">Кастомний</text>
-          <text x="160" y="75" text-anchor="middle" fill="#4f8ef7" font-size="10.5">статус 1..N</text>
-          <line x1="208" y1="64" x2="238" y2="64" stroke="#4f8ef7" stroke-width="1.5" opacity=".55" marker-end="url(#ab)"/>
-          <text x="222" y="58" text-anchor="middle" fill="#2e3a55" font-size="9">···</text>
-          <circle cx="250" cy="64" r="4" fill="#4f8ef7" opacity=".5"/>
-          <line x1="250" y1="60" x2="300" y2="24" stroke="#34d399" stroke-width="1.5" opacity=".6" marker-end="url(#agn)"/>
-          <line x1="250" y1="68" x2="300" y2="102" stroke="#f87171" stroke-width="1.5" opacity=".6" marker-end="url(#ard)"/>
-          <rect x="302" y="6" width="108" height="34" rx="7" fill="#111520" stroke="#34d399" stroke-width="2"/>
-          <rect x="302" y="6" width="108" height="34" rx="7" fill="rgba(52,211,153,.07)"/>
-          <text x="356" y="28" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">✓ Успішно</text>
-          <text x="414" y="18" fill="#2e3a55" font-size="13">🔒</text>
-          <rect x="302" y="86" width="108" height="34" rx="7" fill="#111520" stroke="#f87171" stroke-width="2"/>
-          <rect x="302" y="86" width="108" height="34" rx="7" fill="rgba(248,113,113,.07)"/>
-          <text x="356" y="108" text-anchor="middle" fill="#f87171" font-size="12" font-weight="700">✗ Відхилено</text>
-          <text x="414" y="98" fill="#2e3a55" font-size="13">🔒</text>
-          <text x="6" y="126" fill="#2e3a55" font-size="10">🔒 Системний (незмінний)</text>
+        <svg viewBox="0 0 430 138" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family:'DM Sans',sans-serif">
+          <!-- Новий -->
+          <rect x="6" y="50" width="72" height="36" rx="7" fill="#111520" stroke="#4b556b" stroke-width="1.5"/>
+          <text x="42" y="72" text-anchor="middle" fill="#7888aa" font-size="11.5" font-weight="600">Новий</text>
+          <!-- → custom -->
+          <line x1="78" y1="68" x2="110" y2="68" stroke="#4f8ef7" stroke-width="1.5" opacity=".55" marker-end="url(#ab)"/>
+          <!-- Custom -->
+          <rect x="112" y="50" width="96" height="36" rx="7" fill="#111520" stroke="#4f8ef7" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="160" y="64" text-anchor="middle" fill="#4f8ef7" font-size="10.5">Кастомний</text>
+          <text x="160" y="79" text-anchor="middle" fill="#4f8ef7" font-size="10.5">статус 1..N</text>
+          <!-- → split -->
+          <line x1="208" y1="68" x2="234" y2="68" stroke="#4f8ef7" stroke-width="1.5" opacity=".55" marker-end="url(#ab)"/>
+          <circle cx="246" cy="68" r="4" fill="#4f8ef7" opacity=".5"/>
+          <!-- → Успішно -->
+          <line x1="246" y1="64" x2="292" y2="28" stroke="#34d399" stroke-width="1.5" opacity=".6" marker-end="url(#agn)"/>
+          <!-- → Відхилено -->
+          <line x1="246" y1="72" x2="292" y2="108" stroke="#f87171" stroke-width="1.5" opacity=".6" marker-end="url(#ard)"/>
+          <!-- Успішно box -->
+          <rect x="294" y="8" width="128" height="36" rx="7" fill="#111520" stroke="#34d399" stroke-width="2"/>
+          <rect x="294" y="8" width="128" height="36" rx="7" fill="rgba(52,211,153,.07)"/>
+          <text x="358" y="30" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">✓ Успішно</text>
+          <!-- lock badge Успішно -->
+          <rect x="392" y="10" width="26" height="14" rx="3" fill="rgba(52,211,153,.15)"/>
+          <text x="405" y="21" text-anchor="middle" fill="#34d399" font-size="9" font-weight="700">lock</text>
+          <!-- Відхилено box -->
+          <rect x="294" y="92" width="128" height="36" rx="7" fill="#111520" stroke="#f87171" stroke-width="2"/>
+          <rect x="294" y="92" width="128" height="36" rx="7" fill="rgba(248,113,113,.07)"/>
+          <text x="358" y="114" text-anchor="middle" fill="#f87171" font-size="12" font-weight="700">✗ Відхилено</text>
+          <!-- lock badge Відхилено -->
+          <rect x="392" y="94" width="26" height="14" rx="3" fill="rgba(248,113,113,.15)"/>
+          <text x="405" y="105" text-anchor="middle" fill="#f87171" font-size="9" font-weight="700">lock</text>
+          <!-- Legend -->
+          <rect x="6" y="118" width="10" height="10" rx="2" fill="none" stroke="#4f8ef7" stroke-dasharray="4,2" stroke-width="1.5"/>
+          <text x="22" y="127" fill="#2e3a55" font-size="10">Кастомний (налаштовується)</text>
+          <rect x="216" y="118" width="10" height="10" rx="3" fill="rgba(52,211,153,.15)"/>
+          <text x="232" y="127" fill="#2e3a55" font-size="10">lock = Системний (незмінний)</text>
         </svg>
       </div>
     </div>
@@ -709,71 +755,72 @@ strong{color:var(--t1)}
 <section id="s11" class="sec">
   <div class="sh">
     <div class="sn">11</div>
-    <div class="st"><h2>Lifecycle проєкту</h2><p class="ss">State Machine: від створення до видалення</p></div>
+    <div class="st"><h2>Lifecycle проєкту</h2><p class="ss">Всі можливі стани проєкту і хто може між ними переходити</p></div>
   </div>
   <div class="db">
-    <svg viewBox="0 0 740 280" width="692" xmlns="http://www.w3.org/2000/svg" style="font-family:'DM Sans',sans-serif">
-      <!-- CREATE -->
-      <circle cx="60" cy="140" r="18" fill="rgba(79,142,247,.12)" stroke="#4f8ef7" stroke-width="1.5"/>
-      <text x="60" y="136" text-anchor="middle" fill="#4f8ef7" font-size="8.5" font-weight="700">СТАРТ</text>
-      <text x="60" y="147" text-anchor="middle" fill="#4f8ef7" font-size="11">●</text>
+    <svg viewBox="0 0 760 250" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family:'DM Sans',sans-serif">
 
-      <!-- → ACTIVE -->
-      <line x1="78" y1="140" x2="148" y2="140" stroke="#4f8ef7" stroke-width="1.5" opacity=".5" marker-end="url(#ab)"/>
-      <text x="113" y="133" text-anchor="middle" fill="#4b556b" font-size="10">створено</text>
+      <!-- ── START ── -->
+      <circle cx="52" cy="78" r="18" fill="rgba(79,142,247,.12)" stroke="#4f8ef7" stroke-width="1.5"/>
+      <text x="52" y="74" text-anchor="middle" fill="#4f8ef7" font-size="8" font-weight="700">СТАРТ</text>
+      <text x="52" y="85" text-anchor="middle" fill="#4f8ef7" font-size="11">●</text>
 
-      <!-- ACTIVE -->
-      <rect x="150" y="100" width="140" height="80" rx="10" fill="#111520" stroke="#4f8ef7" stroke-width="2"/>
-      <rect x="150" y="100" width="140" height="28" rx="10" fill="rgba(79,142,247,.1)"/>
-      <rect x="150" y="118" width="140" height="10" fill="rgba(79,142,247,.1)"/>
-      <text x="220" y="118" text-anchor="middle" fill="#4f8ef7" font-size="12" font-weight="700">ACTIVE</text>
-      <text x="220" y="140" text-anchor="middle" fill="#7888aa" font-size="11">Задачі у «Моя Робота»</text>
-      <text x="220" y="156" text-anchor="middle" fill="#7888aa" font-size="11">Прогрес відстежується</text>
-      <text x="220" y="170" text-anchor="middle" fill="#7888aa" font-size="11">Редагування доступне</text>
+      <!-- START → ACTIVE -->
+      <line x1="70" y1="78" x2="96" y2="78" stroke="#4f8ef7" stroke-width="1.5" opacity=".5" marker-end="url(#ab)"/>
+      <text x="83" y="70" text-anchor="middle" fill="#4b556b" font-size="9.5">створено</text>
 
-      <!-- ACTIVE → ARCHIVED (down) -->
-      <line x1="220" y1="180" x2="220" y2="226" stroke="#f5a623" stroke-width="1.5" opacity=".55" marker-end="url(#aam)"/>
-      <text x="234" y="207" fill="#f5a623" font-size="10" font-weight="600">архівувати</text>
-      <text x="234" y="219" fill="#4b556b" font-size="10">(Керівник / Адмін)</text>
+      <!-- ── ACTIVE box: x=98, y=28, w=168, h=100 ── -->
+      <rect x="98" y="28" width="168" height="100" rx="10" fill="#111520" stroke="#4f8ef7" stroke-width="2"/>
+      <rect x="98" y="28" width="168" height="28" rx="10" fill="rgba(79,142,247,.1)"/>
+      <rect x="98" y="46" width="168" height="10" fill="rgba(79,142,247,.1)"/>
+      <text x="182" y="48" text-anchor="middle" fill="#4f8ef7" font-size="12" font-weight="700">ACTIVE</text>
+      <text x="182" y="72" text-anchor="middle" fill="#7888aa" font-size="10.5">Задачі у «Моя Робота»</text>
+      <text x="182" y="87" text-anchor="middle" fill="#7888aa" font-size="10.5">Редагування доступне</text>
+      <text x="182" y="102" text-anchor="middle" fill="#7888aa" font-size="10.5">Прогрес відстежується</text>
 
-      <!-- ARCHIVED -->
-      <rect x="150" y="228" width="140" height="48" rx="10" fill="#111520" stroke="#f5a623" stroke-width="1.5"/>
-      <text x="220" y="249" text-anchor="middle" fill="#f5a623" font-size="12" font-weight="700">ARCHIVED</text>
-      <text x="220" y="265" text-anchor="middle" fill="#7888aa" font-size="11">Read-only · Вкладка «Архів»</text>
+      <!-- ACTIVE → ARCHIVED: вертикально вниз по центру -->
+      <line x1="182" y1="128" x2="182" y2="170" stroke="#f5a623" stroke-width="1.5" opacity=".65" marker-end="url(#aam)"/>
+      <text x="198" y="148" fill="#f5a623" font-size="10" font-weight="600">архівувати</text>
+      <text x="198" y="160" fill="#4b556b" font-size="9.5">(Керівник / Адмін)</text>
 
-      <!-- ARCHIVED → ACTIVE (right loop) -->
-      <path d="M 290 252 Q 360 252 360 140 Q 360 80 290 100" fill="none" stroke="#34d399" stroke-width="1.5" opacity=".5" marker-end="url(#agn)" stroke-dasharray="5,3"/>
-      <text x="368" y="197" fill="#34d399" font-size="10" font-weight="600">відновити</text>
-      <text x="368" y="210" fill="#4b556b" font-size="10">(Керівник / Адмін)</text>
+      <!-- ── ARCHIVED box: x=98, y=172, w=168, h=56 ── -->
+      <rect x="98" y="172" width="168" height="56" rx="10" fill="#111520" stroke="#f5a623" stroke-width="1.5"/>
+      <text x="182" y="196" text-anchor="middle" fill="#f5a623" font-size="12" font-weight="700">ARCHIVED</text>
+      <text x="182" y="213" text-anchor="middle" fill="#7888aa" font-size="10.5">Read-only · Вкладка «Архів»</text>
 
-      <!-- ACTIVE → DELETED -->
-      <line x1="290" y1="130" x2="440" y2="106" stroke="#f87171" stroke-width="1.5" opacity=".5" marker-end="url(#ard)"/>
-      <text x="370" y="110" fill="#f87171" font-size="10" font-weight="600">видалити</text>
-      <text x="370" y="122" fill="#4b556b" font-size="10">(тільки Адмін)</text>
+      <!-- ARCHIVED → ACTIVE: петля по ПРАВОМУ боці обох блоків -->
+      <path d="M 266 200 Q 330 200 330 78 Q 330 45 266 42" fill="none" stroke="#34d399" stroke-width="1.5" opacity=".6" stroke-dasharray="5,3" marker-end="url(#agn)"/>
+      <text x="352" y="116" text-anchor="middle" fill="#34d399" font-size="10" font-weight="600">відновити</text>
+      <text x="352" y="129" text-anchor="middle" fill="#4b556b" font-size="9.5">(Керівник /</text>
+      <text x="352" y="141" text-anchor="middle" fill="#4b556b" font-size="9.5">Адмін)</text>
 
-      <!-- ARCHIVED → DELETED -->
-      <line x1="290" y1="248" x2="440" y2="228" stroke="#f87171" stroke-width="1.5" opacity=".5" marker-end="url(#ard)"/>
+      <!-- ACTIVE → DELETED: від правої сторони ACTIVE горизонтально до DELETED -->
+      <line x1="266" y1="58" x2="440" y2="58" stroke="#f87171" stroke-width="1.5" opacity=".55" marker-end="url(#ard)"/>
+      <text x="353" y="50" text-anchor="middle" fill="#f87171" font-size="10" font-weight="600">видалити</text>
+      <text x="353" y="39" text-anchor="middle" fill="#4b556b" font-size="9.5">(тільки Адмін + підтвердження)</text>
 
-      <!-- DELETED -->
-      <rect x="442" y="170" width="270" height="90" rx="10" fill="#111520" stroke="#f87171" stroke-width="1.5"/>
-      <rect x="442" y="170" width="270" height="28" rx="10" fill="rgba(248,113,113,.07)"/>
-      <rect x="442" y="188" width="270" height="10" fill="rgba(248,113,113,.07)"/>
-      <text x="577" y="188" text-anchor="middle" fill="#f87171" font-size="12" font-weight="700">DELETED ⚠️</text>
-      <text x="577" y="212" text-anchor="middle" fill="#7888aa" font-size="11">Безповоротна операція</text>
-      <text x="577" y="228" text-anchor="middle" fill="#7888aa" font-size="11">Задачі, файли, коментарі — видалено</text>
-      <text x="577" y="244" text-anchor="middle" fill="#7888aa" font-size="11">Підтвердження обов'язкове</text>
+      <!-- ARCHIVED → DELETED: від правої сторони ARCHIVED горизонтально до DELETED -->
+      <line x1="266" y1="196" x2="440" y2="196" stroke="#f87171" stroke-width="1.5" opacity=".45" marker-end="url(#ard)"/>
+      <text x="353" y="213" text-anchor="middle" fill="#f87171" font-size="10" font-weight="600">видалити</text>
+      <text x="353" y="224" text-anchor="middle" fill="#4b556b" font-size="9.5">(тільки Адмін + підтвердження)</text>
 
-      <!-- ACTIVE label with note -->
-      <text x="150" y="92" fill="#4b556b" font-size="10">Видно у CRM-картці угоди · Журнал змін зберігається</text>
+      <!-- ── DELETED box: x=442, y=80, w=300, h=134 ── -->
+      <rect x="442" y="80" width="300" height="134" rx="10" fill="#111520" stroke="#f87171" stroke-width="1.5"/>
+      <rect x="442" y="80" width="300" height="28" rx="10" fill="rgba(248,113,113,.08)"/>
+      <rect x="442" y="98" width="300" height="10" fill="rgba(248,113,113,.08)"/>
+      <text x="592" y="100" text-anchor="middle" fill="#f87171" font-size="12" font-weight="700">DELETED</text>
+      <text x="592" y="126" text-anchor="middle" fill="#7888aa" font-size="10.5">⚠️  Безповоротна операція</text>
+      <text x="592" y="143" text-anchor="middle" fill="#7888aa" font-size="10.5">Задачі, файли, коментарі — видалено</text>
+      <text x="592" y="160" text-anchor="middle" fill="#7888aa" font-size="10.5">Відновлення неможливе</text>
+      <text x="592" y="177" text-anchor="middle" fill="#7888aa" font-size="10.5">Тільки Адмін · Потрібне підтвердження</text>
 
-      <!-- ARCHIVED note -->
-      <text x="30" y="264" fill="#4b556b" font-size="10">Задачі зникають</text>
-      <text x="30" y="276" fill="#4b556b" font-size="10">з «Моя Робота»</text>
-      <line x1="104" y1="270" x2="148" y2="260" stroke="#4b556b" stroke-width="1" opacity=".4"/>
+      <!-- легенда -->
+      <line x1="442" y1="234" x2="466" y2="234" stroke="#34d399" stroke-width="1.5" stroke-dasharray="5,3" opacity=".7"/>
+      <text x="472" y="238" fill="#4b556b" font-size="9.5">— зворотний перехід (відновлення)</text>
     </svg>
   </div>
-  <p class="dcap">Рис. 4 — State Machine lifecycle проєкту. Жовта пунктирна стрілка — зворотний перехід (відновлення).</p>
-  <div class="ib d" style="margin-top:12px"><span class="ib-ic">⛔</span><div><strong>Видалення незворотне:</strong> видаляється все — задачі, підзадачі, чек-листи, коментарі, файли. Задачі не конвертуються в Standalone. Тільки Адміністратор + підтвердження.</div></div>
+  <p class="dcap">Рис. 4 — Lifecycle проєкту. Пунктирна стрілка — зворотний перехід (відновлення з архіву).</p>
+  <div class="ib d" style="margin-top:12px"><span class="ib-ic">⛔</span><div><strong>Видалення незворотне:</strong> видаляється все — задачі, підзадачі, чек-листи, коментарі, файли. Задачі не переносяться нікуди і не перетворюються. Тільки Адміністратор, і потрібне підтвердження.</div></div>
 </section>
 
 <!-- ═══ 12 METRICS ═══ -->
@@ -797,201 +844,192 @@ strong{color:var(--t1)}
           <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t1);font-weight:600">Adoption</td>
           <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t2)">% команд, що створили 1+ проєктів</td>
           <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t2)">0%</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--gn);font-weight:600">≥ 40%</td>
+          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--gn);font-weight:600">≥ 10%</td>
         </tr>
         <tr>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t1);font-weight:600">Ефективність пошуку</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t2)">Середній час пошуку файлу по угоді</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t2)">~12 хв</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--gn);font-weight:600">≤ 2 хв</td>
-        </tr>
-        <tr>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t1);font-weight:600">Шаблони</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t2)">% проєктів, створених із шаблону</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t2)">0%</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--gn);font-weight:600">≥ 30%</td>
-        </tr>
-        <tr>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t1);font-weight:600">Retention фічі</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t2)">% команд, що використовують проєкти на 30-й день після активації</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t2)">—</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--gn);font-weight:600">≥ 60%</td>
-        </tr>
-        <tr>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t1);font-weight:600">Видимість прогресу</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t2)">NPS-питання: «Мені зрозуміло, що відбувається по угоді»</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t2)">Потребує базового виміру</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--gn);font-weight:600">+20 пунктів</td>
-        </tr>
-        <tr>
-          <td style="padding:13px 18px;color:var(--t1);font-weight:600">Безпомилкова простота</td>
-          <td style="padding:13px 18px;color:var(--t2)">% користувачів без проєктів, що помітили зміни в інтерфейсі</td>
+          <td style="padding:13px 18px;color:var(--t1);font-weight:600">Retention фічі</td>
+          <td style="padding:13px 18px;color:var(--t2)">% команд, що використовують проєкти на 30-й день після активації</td>
           <td style="padding:13px 18px;color:var(--t2)">—</td>
-          <td style="padding:13px 18px;color:var(--gn);font-weight:600">≤ 5%</td>
+          <td style="padding:13px 18px;color:var(--gn);font-weight:600">≥ 60%</td>
         </tr>
+
       </tbody>
     </table>
   </div>
-  <div class="ib i"><span class="ib-ic">ℹ️</span><div>Baseline по «часу пошуку файлів» та NPS потребують виміру до релізу. Рекомендується провести <strong>user research сесію</strong> з 5–7 цільовими клієнтами до початку розробки.</div></div>
+
 </section>
 
 <!-- ═══ 13 ROADMAP ═══ -->
 <section id="s13" class="sec">
   <div class="sh">
     <div class="sn">13</div>
-    <div class="st"><h2>Roadmap</h2><p class="ss">Фазова діаграма. Загальний горизонт — не менше 4 місяців</p></div>
+    <div class="st"><h2>Roadmap v1.0</h2><p class="ss">Два паралельні треки розробки + фаза тестування після завершення</p></div>
   </div>
   <div class="db">
-    <svg viewBox="0 0 740 320" width="692" xmlns="http://www.w3.org/2000/svg" style="font-family:'DM Sans',sans-serif">
-      <!-- Timeline header -->
-      <rect x="0" y="0" width="740" height="30" rx="0" fill="rgba(79,142,247,.04)"/>
-      <line x1="0" y1="30" x2="740" y2="30" stroke="rgba(79,142,247,.12)" stroke-width="1"/>
-      <!-- Month labels -->
-      <text x="94" y="20" text-anchor="middle" fill="#4b556b" font-size="11" font-weight="600">Місяць 1</text>
-      <text x="278" y="20" text-anchor="middle" fill="#4b556b" font-size="11" font-weight="600">Місяць 2</text>
-      <text x="462" y="20" text-anchor="middle" fill="#4b556b" font-size="11" font-weight="600">Місяць 3</text>
-      <text x="646" y="20" text-anchor="middle" fill="#4b556b" font-size="11" font-weight="600">Місяць 4</text>
-      <!-- Grid lines -->
-      <line x1="185" y1="30" x2="185" y2="320" stroke="rgba(79,142,247,.07)" stroke-width="1"/>
-      <line x1="370" y1="30" x2="370" y2="320" stroke="rgba(79,142,247,.07)" stroke-width="1"/>
-      <line x1="555" y1="30" x2="555" y2="320" stroke="rgba(79,142,247,.07)" stroke-width="1"/>
+    <svg viewBox="0 0 800 310" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family:'DM Sans',sans-serif">
 
-      <!-- TRACK 1: Backend/Core -->
-      <text x="8" y="62" fill="#7888aa" font-size="11" font-weight="700">⚙️ Трек 1: Ядро</text>
-      <!-- Sprint 1 -->
-      <rect x="8" y="68" width="172" height="34" rx="6" fill="rgba(79,142,247,.12)" stroke="rgba(79,142,247,.3)" stroke-width="1.5"/>
-      <text x="94" y="83" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">Модель даних</text>
-      <text x="94" y="96" text-anchor="middle" fill="#7888aa" font-size="10">Проєкт · Задача · Підзадача</text>
-      <!-- Sprint 2 -->
-      <rect x="192" y="68" width="172" height="34" rx="6" fill="rgba(79,142,247,.12)" stroke="rgba(79,142,247,.3)" stroke-width="1.5"/>
-      <text x="278" y="83" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">CRM API + Права</text>
-      <text x="278" y="96" text-anchor="middle" fill="#7888aa" font-size="10">Зв'язки · Доступ · RTM</text>
-      <!-- Sprint 3 -->
-      <rect x="376" y="68" width="172" height="34" rx="6" fill="rgba(79,142,247,.12)" stroke="rgba(79,142,247,.3)" stroke-width="1.5"/>
-      <text x="462" y="83" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">Статуси + Lifecycle</text>
-      <text x="462" y="96" text-anchor="middle" fill="#7888aa" font-size="10">Системні · Кастомні · Архів</text>
-      <!-- Sprint 4 -->
-      <rect x="560" y="68" width="172" height="34" rx="6" fill="rgba(79,142,247,.12)" stroke="rgba(79,142,247,.3)" stroke-width="1.5"/>
-      <text x="646" y="83" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">Шаблони + Прогрес</text>
-      <text x="646" y="96" text-anchor="middle" fill="#7888aa" font-size="10">Відносні дедлайни · Бар</text>
+      <!-- Header bg -->
+      <rect x="0" y="0" width="800" height="30" fill="rgba(79,142,247,.04)"/>
+      <line x1="0" y1="30" x2="800" y2="30" stroke="rgba(79,142,247,.12)" stroke-width="1"/>
 
-      <!-- TRACK 2: UI -->
-      <text x="8" y="140" fill="#7888aa" font-size="11" font-weight="700">🖥️ Трек 2: Інтерфейс</text>
-      <!-- Sprint 1 -->
-      <rect x="8" y="146" width="172" height="34" rx="6" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.25)" stroke-width="1.5"/>
-      <text x="94" y="161" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">«Моя Робота»</text>
-      <text x="94" y="174" text-anchor="middle" fill="#7888aa" font-size="10">Канбан за датами · Бейджі</text>
-      <!-- Sprint 2 -->
-      <rect x="192" y="146" width="172" height="34" rx="6" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.25)" stroke-width="1.5"/>
-      <text x="278" y="161" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">Картка проєкту</text>
-      <text x="278" y="174" text-anchor="middle" fill="#7888aa" font-size="10">Хедер · Канбан · Дровер</text>
-      <!-- Sprint 3 -->
-      <rect x="376" y="146" width="172" height="34" rx="6" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.25)" stroke-width="1.5"/>
-      <text x="462" y="161" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">Список проєктів</text>
-      <text x="462" y="174" text-anchor="middle" fill="#7888aa" font-size="10">Прогрес-бари · Фільтри</text>
-      <!-- Sprint 4 -->
-      <rect x="560" y="146" width="172" height="34" rx="6" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.25)" stroke-width="1.5"/>
-      <text x="646" y="161" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">Шаблони + Пошук</text>
-      <text x="646" y="174" text-anchor="middle" fill="#7888aa" font-size="10">UI шаблонів · Глобальний пошук</text>
+      <!-- Month labels: 5 columns of 160px -->
+      <text x="80"  y="20" text-anchor="middle" fill="#4b556b" font-size="11" font-weight="600">Місяць 1</text>
+      <text x="240" y="20" text-anchor="middle" fill="#4b556b" font-size="11" font-weight="600">Місяць 2</text>
+      <text x="400" y="20" text-anchor="middle" fill="#4b556b" font-size="11" font-weight="600">Місяць 3</text>
+      <text x="560" y="20" text-anchor="middle" fill="#4b556b" font-size="11" font-weight="600">Місяць 4</text>
+      <text x="720" y="20" text-anchor="middle" fill="#4b556b" font-size="11" font-weight="700" fill-opacity=".7">Місяць 5</text>
 
-      <!-- MILESTONES -->
-      <text x="8" y="218" fill="#7888aa" font-size="11" font-weight="700">🏁 Milestones</text>
-      <!-- M1 -->
-      <rect x="8" y="224" width="172" height="34" rx="6" fill="rgba(52,211,153,.08)" stroke="rgba(52,211,153,.22)" stroke-width="1.5"/>
-      <text x="94" y="240" text-anchor="middle" fill="#34d399" font-size="11" font-weight="600">Alpha</text>
-      <text x="94" y="252" text-anchor="middle" fill="#7888aa" font-size="10">Internal · Data model ready</text>
-      <!-- M2 -->
-      <rect x="192" y="224" width="357" height="34" rx="6" fill="rgba(52,211,153,.05)" stroke="rgba(52,211,153,.15)" stroke-width="1.5"/>
-      <text x="370" y="240" text-anchor="middle" fill="#34d399" font-size="11" font-weight="600">Beta</text>
-      <text x="370" y="252" text-anchor="middle" fill="#7888aa" font-size="10">Закрите тестування з 3–5 клієнтами</text>
-      <!-- M3 -->
-      <rect x="560" y="224" width="172" height="34" rx="6" fill="rgba(79,142,247,.1)" stroke="rgba(79,142,247,.3)" stroke-width="1.5"/>
-      <text x="646" y="240" text-anchor="middle" fill="#4f8ef7" font-size="11" font-weight="600">GA Release</text>
-      <text x="646" y="252" text-anchor="middle" fill="#7888aa" font-size="10">Загальний реліз · Toggle ON</text>
+      <!-- Grid dividers -->
+      <line x1="160" y1="30" x2="160" y2="270" stroke="rgba(79,142,247,.07)" stroke-width="1"/>
+      <line x1="320" y1="30" x2="320" y2="270" stroke="rgba(79,142,247,.07)" stroke-width="1"/>
+      <line x1="480" y1="30" x2="480" y2="270" stroke="rgba(79,142,247,.07)" stroke-width="1"/>
+      <line x1="640" y1="30" x2="640" y2="270" stroke="rgba(79,142,247,.07)" stroke-width="1"/>
+      <!-- Month 5 separator — dashed, it's testing phase -->
+      <line x1="640" y1="30" x2="640" y2="270" stroke="rgba(79,142,247,.15)" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+      <!-- ── TRACK 1: BACKEND ── -->
+      <text x="8" y="58" fill="#7888aa" font-size="11" font-weight="700">⚙️ Трек 1: Ядро</text>
+
+      <rect x="8"   y="64" width="144" height="38" rx="6" fill="rgba(79,142,247,.12)" stroke="rgba(79,142,247,.3)" stroke-width="1.5"/>
+      <text x="80"  y="80" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">Модель даних</text>
+      <text x="80"  y="94" text-anchor="middle" fill="#7888aa" font-size="10">Проєкт · Задача · Підзадача</text>
+
+      <rect x="168" y="64" width="144" height="38" rx="6" fill="rgba(79,142,247,.12)" stroke="rgba(79,142,247,.3)" stroke-width="1.5"/>
+      <text x="240" y="80" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">CRM API + Права</text>
+      <text x="240" y="94" text-anchor="middle" fill="#7888aa" font-size="10">Зв'язки · Доступ · Видимість</text>
+
+      <rect x="328" y="64" width="144" height="38" rx="6" fill="rgba(79,142,247,.12)" stroke="rgba(79,142,247,.3)" stroke-width="1.5"/>
+      <text x="400" y="80" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">Статуси + Lifecycle</text>
+      <text x="400" y="94" text-anchor="middle" fill="#7888aa" font-size="10">Системні · Кастомні · Видалення</text>
+
+      <rect x="488" y="64" width="144" height="38" rx="6" fill="rgba(79,142,247,.12)" stroke="rgba(79,142,247,.3)" stroke-width="1.5"/>
+      <text x="560" y="80" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">Прогрес + Файли</text>
+      <text x="560" y="94" text-anchor="middle" fill="#7888aa" font-size="10">Прогрес-бар · Файловий дровер</text>
+
+      <!-- ── TRACK 2: UI ── -->
+      <text x="8" y="130" fill="#7888aa" font-size="11" font-weight="700">🖥️ Трек 2: Інтерфейс</text>
+
+      <rect x="8"   y="136" width="144" height="38" rx="6" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.25)" stroke-width="1.5"/>
+      <text x="80"  y="152" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">«Моя Робота»</text>
+      <text x="80"  y="166" text-anchor="middle" fill="#7888aa" font-size="10">Канбан за датами · Перемикач</text>
+
+      <rect x="168" y="136" width="144" height="38" rx="6" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.25)" stroke-width="1.5"/>
+      <text x="240" y="152" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">Картка проєкту</text>
+      <text x="240" y="166" text-anchor="middle" fill="#7888aa" font-size="10">Хедер · Канбан · Дровер</text>
+
+      <rect x="328" y="136" width="144" height="38" rx="6" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.25)" stroke-width="1.5"/>
+      <text x="400" y="152" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">Список проєктів</text>
+      <text x="400" y="166" text-anchor="middle" fill="#7888aa" font-size="10">Картки · Прогрес · Фільтри</text>
+
+      <rect x="488" y="136" width="144" height="38" rx="6" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.25)" stroke-width="1.5"/>
+      <text x="560" y="152" text-anchor="middle" fill="#dde6ff" font-size="11" font-weight="600">Пошук + Доопрацювання</text>
+      <text x="560" y="166" text-anchor="middle" fill="#7888aa" font-size="10">Глобальний пошук · Bugfix</text>
+
+      <!-- ── MILESTONES: рядок після розробки ── -->
+      <text x="8" y="202" fill="#7888aa" font-size="11" font-weight="700">🏁 Milestone</text>
+
+      <!-- Alpha — кінець місяця 1 -->
+      <rect x="8" y="208" width="144" height="38" rx="6" fill="rgba(52,211,153,.08)" stroke="rgba(52,211,153,.22)" stroke-width="1.5"/>
+      <text x="80" y="224" text-anchor="middle" fill="#34d399" font-size="11" font-weight="600">Alpha</text>
+      <text x="80" y="238" text-anchor="middle" fill="#7888aa" font-size="10">Внутрішній — модель готова</text>
+
+      <!-- Beta + GA — місяць 5, після завершення розробки -->
+      <rect x="652" y="208" width="140" height="38" rx="6" fill="rgba(52,211,153,.06)" stroke="rgba(52,211,153,.18)" stroke-width="1.5"/>
+      <text x="722" y="221" text-anchor="middle" fill="#34d399" font-size="11" font-weight="600">Beta → GA Release</text>
+      <text x="722" y="235" text-anchor="middle" fill="#7888aa" font-size="10">Тестування 3–5 клієнтів</text>
+      <text x="722" y="247" text-anchor="middle" fill="#7888aa" font-size="10">→ Публічний реліз</text>
+
+      <!-- Arrow Alpha → Beta -->
+      <line x1="152" y1="227" x2="648" y2="227" stroke="rgba(52,211,153,.25)" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="400" y="222" text-anchor="middle" fill="#2e3a55" font-size="9.5">розробка завершена</text>
+
+      <!-- Month 5 label bg -->
+      <rect x="641" y="0" width="159" height="30" fill="rgba(52,211,153,.04)"/>
+      <text x="720" y="20" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">Місяць 5 — Тест</text>
 
       <!-- Legend -->
-      <rect x="8" y="286" width="12" height="12" rx="3" fill="rgba(79,142,247,.12)" stroke="rgba(79,142,247,.3)" stroke-width="1.5"/>
-      <text x="26" y="297" fill="#4b556b" font-size="10.5">Трек 1 (Backend)</text>
-      <rect x="160" y="286" width="12" height="12" rx="3" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.25)" stroke-width="1.5"/>
-      <text x="178" y="297" fill="#4b556b" font-size="10.5">Трек 2 (UI)</text>
-      <rect x="290" y="286" width="12" height="12" rx="3" fill="rgba(52,211,153,.08)" stroke="rgba(52,211,153,.22)" stroke-width="1.5"/>
-      <text x="308" y="297" fill="#4b556b" font-size="10.5">Milestone</text>
+      <rect x="8"   y="278" width="11" height="11" rx="2" fill="rgba(79,142,247,.12)" stroke="rgba(79,142,247,.3)" stroke-width="1.5"/>
+      <text x="24"  y="287" fill="#4b556b" font-size="10">Трек 1 — Backend</text>
+      <rect x="160" y="278" width="11" height="11" rx="2" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.25)" stroke-width="1.5"/>
+      <text x="176" y="287" fill="#4b556b" font-size="10">Трек 2 — UI</text>
+      <rect x="300" y="278" width="11" height="11" rx="2" fill="rgba(52,211,153,.08)" stroke="rgba(52,211,153,.22)" stroke-width="1.5"/>
+      <text x="316" y="287" fill="#4b556b" font-size="10">Milestone</text>
+      <text x="520" y="287" fill="#2e3a55" font-size="10">Місяць 5 — лише після завершення обох треків</text>
     </svg>
   </div>
-  <p class="dcap">Рис. 5 — Фазова roadmap. Два паралельні треки. Alpha → Beta → GA Release.</p>
-  <div class="ib i" style="margin-top:12px"><span class="ib-ic">ℹ️</span><div>Roadmap не фіксує конкретні дати — лише відносний порядок і залежності. <strong>Точний таймлайн</strong> визначається командою після оцінки на sprint planning. Бета обов'язково включає живих клієнтів.</div></div>
+  <p class="dcap">Рис. 5 — Roadmap v1.0. Місяці 1–4 — паралельна розробка двох треків. Місяць 5 — тестування і реліз тільки після завершення розробки.</p>
+  <div class="ib i" style="margin-top:12px"><span class="ib-ic">ℹ️</span><div>Roadmap не фіксує конкретні дати — лише відносний порядок і залежності. <strong>Точний таймлайн</strong> визначається після оцінки технічною командою. Beta обов'язково включає живих клієнтів з реальним болем.</div></div>
 </section>
 
 <!-- ═══ 14 RISKS ═══ -->
 <section id="s14" class="sec">
   <div class="sh">
     <div class="sn">14</div>
-    <div class="st"><h2>Ризики та допущення</h2><p class="ss">Що може піти не так і як це митигувати</p></div>
-  </div>
-  <div style="overflow:hidden;border-radius:var(--r);border:1px solid var(--b);margin-bottom:20px">
-    <table style="width:100%;border-collapse:collapse;font-size:13px">
-      <thead>
-        <tr>
-          <th style="background:rgba(79,142,247,.07);color:var(--t2);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:11px 18px;text-align:left;border-bottom:1px solid var(--b);width:200px">Ризик</th>
-          <th style="background:rgba(79,142,247,.07);color:var(--t2);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:11px 18px;text-align:center;border-bottom:1px solid var(--b);width:80px">Рівень</th>
-          <th style="background:rgba(79,142,247,.07);color:var(--t2);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:11px 18px;text-align:left;border-bottom:1px solid var(--b)">Стратегія митигації</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t1);font-weight:500;vertical-align:top">Scope creep — «додайте Ганту»</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);text-align:center;vertical-align:top"><span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;border-radius:4px;padding:2px 8px;background:var(--rs);color:var(--rd)">High</span></td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t2);vertical-align:top">Чіткий Out of Scope документ. Окремий backlog для v2. Рев'ю скоупу на кожному sprint planning.</td>
-        </tr>
-        <tr>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t1);font-weight:500;vertical-align:top">Низький adoption — команди не переходять</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);text-align:center;vertical-align:top"><span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;border-radius:4px;padding:2px 8px;background:var(--rs);color:var(--rd)">High</span></td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t2);vertical-align:top">Ранній Beta з цільовими клієнтами. Онбординг-флоу. Відстеження метрик з дня релізу.</td>
-        </tr>
-        <tr>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t1);font-weight:500;vertical-align:top">Міграція даних — збій конвертації задач</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);text-align:center;vertical-align:top"><span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;border-radius:4px;padding:2px 8px;background:var(--ams);color:var(--am)">Med</span></td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t2);vertical-align:top">Dry run міграції на staging. Rollback план. Логування всіх конвертацій.</td>
-        </tr>
-        <tr>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t1);font-weight:500;vertical-align:top">Продуктивність при великих проєктах (500+ задач)</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);text-align:center;vertical-align:top"><span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;border-radius:4px;padding:2px 8px;background:var(--ams);color:var(--am)">Med</span></td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t2);vertical-align:top">Load testing на Alpha. Pagination/virtualization у списках. Soft limit з попередженням.</td>
-        </tr>
-        <tr>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t1);font-weight:500;vertical-align:top">Складність прав — команди плутаються</td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);text-align:center;vertical-align:top"><span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;border-radius:4px;padding:2px 8px;background:var(--ams);color:var(--am)">Med</span></td>
-          <td style="padding:13px 18px;border-bottom:1px solid var(--b);color:var(--t2);vertical-align:top">Usability testing прав у Beta. Чіткі UI-підказки при обмеженнях. Документація для адмінів.</td>
-        </tr>
-        <tr>
-          <td style="padding:13px 18px;color:var(--t1);font-weight:500;vertical-align:top">Видалення проєкту через помилку</td>
-          <td style="padding:13px 18px;text-align:center;vertical-align:top"><span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;border-radius:4px;padding:2px 8px;background:var(--gs);color:var(--gn)">Low</span></td>
-          <td style="padding:13px 18px;color:var(--t2);vertical-align:top">Двоетапне підтвердження. Ввід назви проєкту для підтвердження. Тільки Адмін.</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="st"><h2>Ризики та допущення</h2><p class="ss">Що може піти не так — і що ми з цим робимо</p></div>
   </div>
 
-  <!-- ASSUMPTIONS -->
-  <h3 style="font-size:14px;font-weight:700;color:var(--t1);margin-bottom:12px">Ключові допущення</h3>
-  <div class="g2">
-    <div class="card al">
-      <h3>📐 Технічні</h3>
-      <ul>
-        <li>Існуюча схема задач підтримує розширення без повної міграції</li>
-        <li>CRM API повертає стабільні ID для зв'язків</li>
-        <li>Файловий сервіс підтримує агрегацію по entity_id</li>
-      </ul>
+  <!-- RISKS -->
+  <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:36px">
+
+    <!-- R1 -->
+    <div style="background:var(--card);border:1px solid var(--b);border-left:3px solid var(--rd);border-radius:var(--r);padding:20px 22px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:18px">📈</span>
+        <h3 style="font-size:14px;font-weight:700;color:var(--t1);flex:1">Нас попросять додати «ще трохи» — і проєкт розпухне</h3>
+        <span style="display:inline-flex;font-size:11px;font-weight:700;border-radius:4px;padding:2px 9px;background:var(--rs);color:var(--rd);white-space:nowrap">Високий</span>
+      </div>
+      <p style="font-size:13px;color:var(--t2);margin:0 0 10px;line-height:1.6">Як тільки команди побачать проєкти в роботі, одразу з'являться запити: «а можна ще Ганту?», «а залежності між задачами?», «а бюджет?». Кожна окрема «дрібниця» додає тижні до розробки і зсуває реліз.</p>
+      <div style="background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.15);border-radius:var(--rs2);padding:12px 14px">
+        <p style="font-size:12px;font-weight:700;color:var(--gn);margin:0 0 5px;text-transform:uppercase;letter-spacing:.06em">Що робимо</p>
+        <p style="font-size:13px;color:var(--t2);margin:0;line-height:1.55">Цей документ — перша лінія захисту: чіткий список того, що <em>не входить</em> в v1.0. Всі нові запити фіксуємо окремо — для наступних версій. При кожному обговоренні задач — явна перевірка: «чи не вийшли ми за рамки?»</p>
+      </div>
     </div>
-    <div class="card gl">
-      <h3>📊 Продуктові</h3>
-      <ul>
-        <li>Цільові клієнти готові брати участь у бета-тестуванні</li>
-        <li>Більшість команд потребує ≤ 10 кастомних статусів</li>
-        <li>Шаблони дадуть достатній ROI для команд з 3+ проєктами/місяць</li>
-      </ul>
+
+    <!-- R2 -->
+    <div style="background:var(--card);border:1px solid var(--b);border-left:3px solid var(--rd);border-radius:var(--r);padding:20px 22px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:18px">😶</span>
+        <h3 style="font-size:14px;font-weight:700;color:var(--t1);flex:1">Ми зробимо фічу — а команди нею не користуватимуться</h3>
+        <span style="display:inline-flex;font-size:11px;font-weight:700;border-radius:4px;padding:2px 9px;background:var(--rs);color:var(--rd);white-space:nowrap">Високий</span>
+      </div>
+      <p style="font-size:13px;color:var(--t2);margin:0 0 10px;line-height:1.6">Найпоширеніший результат у продукті — нова фіча є, але люди продовжують працювати по-старому. Особливо ризиковано для фіч, що змінюють звички: потрібно не просто увімкнути, а переконати перейти.</p>
+      <div style="background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.15);border-radius:var(--rs2);padding:12px 14px">
+        <p style="font-size:12px;font-weight:700;color:var(--gn);margin:0 0 5px;text-transform:uppercase;letter-spacing:.06em">Що робимо</p>
+        <p style="font-size:13px;color:var(--t2);margin:0;line-height:1.55">До публічного релізу — закрите бета-тестування з 3–5 реальними клієнтами, які вже мають проблему з хаосом задач. Їхній фідбек визначає, чи готові ми до релізу. З першого дня запуску відстежуємо метрики adoption щотижня.</p>
+      </div>
     </div>
+
+    <!-- R4 -->
+    <div style="background:var(--card);border:1px solid var(--b);border-left:3px solid var(--am);border-radius:var(--r);padding:20px 22px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:18px">🐢</span>
+        <h3 style="font-size:14px;font-weight:700;color:var(--t1);flex:1">Великі проєкти зі сотнями задач гальмуватимуть систему</h3>
+        <span style="display:inline-flex;font-size:11px;font-weight:700;border-radius:4px;padding:2px 9px;background:var(--ams);color:var(--am);white-space:nowrap">Середній</span>
+      </div>
+      <p style="font-size:13px;color:var(--t2);margin:0 0 10px;line-height:1.6">Юридичні фірми або виробництва можуть створювати проєкти з 300–500+ задачами. Якщо ми не подбаємо про це заздалегідь — канбан-дошка такого проєкту буде відкриватись по кілька секунд, що вб'є весь UX.</p>
+      <div style="background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.15);border-radius:var(--rs2);padding:12px 14px">
+        <p style="font-size:12px;font-weight:700;color:var(--gn);margin:0 0 5px;text-transform:uppercase;letter-spacing:.06em">Що робимо</p>
+        <p style="font-size:13px;color:var(--t2);margin:0;line-height:1.55">На стадії Alpha — навантажувальні тести зі штучно великими проєктами. Інтерфейс рендерить тільки видимі картки, а не всі одразу. Якщо проєкт розростається понад розумну межу — показуємо попередження і пропонуємо розбити на підпроєкти (v2).</p>
+      </div>
+    </div>
+
+    <!-- R6 -->
+    <div style="background:var(--card);border:1px solid var(--b);border-left:3px solid var(--gn);border-radius:var(--r);padding:20px 22px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:18px">🗑️</span>
+        <h3 style="font-size:14px;font-weight:700;color:var(--t1);flex:1">Хтось випадково видалить проєкт з усіма даними</h3>
+        <span style="display:inline-flex;font-size:11px;font-weight:700;border-radius:4px;padding:2px 9px;background:var(--gs);color:var(--gn);white-space:nowrap">Низький</span>
+      </div>
+      <p style="font-size:13px;color:var(--t2);margin:0 0 10px;line-height:1.6">Видалення проєкту — незворотна операція: зникають усі задачі, файли та коментарі. Якщо адмін натисне «Видалити» замість «Архівувати» — відновити буде неможливо.</p>
+      <div style="background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.15);border-radius:var(--rs2);padding:12px 14px">
+        <p style="font-size:12px;font-weight:700;color:var(--gn);margin:0 0 5px;text-transform:uppercase;letter-spacing:.06em">Що робимо</p>
+        <p style="font-size:13px;color:var(--t2);margin:0;line-height:1.55">Кнопка «Видалити» доступна тільки Адміністраторам і стоїть окремо від «Архівувати». Перед видаленням — діалог з явним попередженням і полем для введення назви проєкту вручну (як це робить GitHub при видаленні репозиторію).</p>
+      </div>
+    </div>
+
   </div>
+
+
 </section>
 
 </main>

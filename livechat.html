@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body>
-    <h2>test</h2>
+  <body style="background-color: #d67805; padding: 20px">
     <!-- KeyCRM online chat widget begin -->
     <script type="text/javascript">
       (function (w, d, t, u, c) {
@@ -24,7 +23,11 @@
         document,
         "script",
         "https://chat.key.live/bundles/widget.min.js",
-        { token: "598f35a4-af2e-4548-9682-d9972f63a430" },
+        {
+          token: "598f35a4-af2e-4548-9682-d9972f63a430",
+          iframeUrlOverride: "https://online-chat.widgets.keycrm.dev",
+          baseUrl: "https://online-chat.widgets.keycrm.dev",
+        },
       );
     </script>
     <!-- KeyCRM online chat widget end -->

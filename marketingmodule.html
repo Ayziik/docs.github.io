@@ -1,0 +1,2727 @@
+<!doctype html>
+<html lang="uk" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Візуальна специфікація MVP маркетингового модуля keyCRM: сегменти, разові email-розсилки та автоматизації."
+    />
+    <title>keyCRM — Marketing Module MVP</title>
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --surface: #ffffff;
+        --surface-2: #f9fbff;
+        --surface-3: #eef3ff;
+        --text: #172033;
+        --muted: #62708a;
+        --line: #dfe6f1;
+        --brand: #4f46e5;
+        --brand-2: #7c3aed;
+        --accent: #0ea5e9;
+        --success: #059669;
+        --warning: #d97706;
+        --danger: #dc2626;
+        --shadow: 0 18px 45px rgba(39, 51, 89, 0.1);
+        --shadow-sm: 0 8px 22px rgba(39, 51, 89, 0.08);
+        --radius: 20px;
+        --radius-sm: 12px;
+        --sidebar: 278px;
+        --header-h: 72px;
+      }
+
+      html[data-theme="dark"] {
+        --bg: #0d1220;
+        --surface: #151c2e;
+        --surface-2: #101728;
+        --surface-3: #202b48;
+        --text: #eef2ff;
+        --muted: #a9b4cc;
+        --line: #2b3652;
+        --brand: #8b83ff;
+        --brand-2: #b087ff;
+        --accent: #4cc9ff;
+        --success: #40d49a;
+        --warning: #ffb84d;
+        --danger: #ff6b6b;
+        --shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
+        --shadow-sm: 0 8px 22px rgba(0, 0, 0, 0.22);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(
+            circle at 12% 0%,
+            rgba(79, 70, 229, 0.1),
+            transparent 28rem
+          ),
+          radial-gradient(
+            circle at 100% 18%,
+            rgba(14, 165, 233, 0.08),
+            transparent 24rem
+          ),
+          var(--bg);
+        color: var(--text);
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        line-height: 1.55;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+      a {
+        color: inherit;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        height: var(--header-h);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 0 24px;
+        border-bottom: 1px solid
+          color-mix(in srgb, var(--line) 80%, transparent);
+        background: color-mix(in srgb, var(--surface) 88%, transparent);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        color: white;
+        box-shadow: 0 10px 25px rgba(79, 70, 229, 0.25);
+        font-weight: 800;
+      }
+
+      .brand-copy strong {
+        display: block;
+        font-size: 14px;
+        line-height: 1.15;
+      }
+      .brand-copy span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .icon-btn,
+      .action-btn {
+        border: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--text);
+        border-radius: 11px;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+      }
+      .action-btn {
+        padding: 9px 13px;
+        font-weight: 700;
+        font-size: 13px;
+      }
+      .icon-btn:hover,
+      .action-btn:hover {
+        border-color: color-mix(in srgb, var(--brand) 55%, var(--line));
+        transform: translateY(-1px);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: var(--sidebar) minmax(0, 1fr);
+        min-height: calc(100vh - var(--header-h));
+      }
+
+      aside {
+        position: sticky;
+        top: var(--header-h);
+        align-self: start;
+        height: calc(100vh - var(--header-h));
+        overflow: auto;
+        border-right: 1px solid var(--line);
+        padding: 24px 18px 40px;
+        background: color-mix(in srgb, var(--surface) 82%, transparent);
+      }
+
+      .toc-label {
+        padding: 0 10px 8px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .toc a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        padding: 9px 10px;
+        border-radius: 10px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 650;
+        margin-bottom: 2px;
+        transition: 0.18s ease;
+      }
+
+      .toc a:hover {
+        background: var(--surface-3);
+        color: var(--text);
+      }
+      .toc a.active {
+        background: linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--brand) 15%, transparent),
+          transparent
+        );
+        color: var(--brand);
+      }
+      .toc-num {
+        width: 22px;
+        height: 22px;
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        font-size: 10px;
+        color: var(--muted);
+        background: var(--surface);
+      }
+      .toc a.active .toc-num {
+        color: white;
+        border-color: var(--brand);
+        background: var(--brand);
+      }
+
+      .sidebar-note {
+        margin: 26px 8px 0;
+        padding: 14px;
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+        border-radius: 14px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      main {
+        min-width: 0;
+        padding: 36px clamp(20px, 4vw, 64px) 80px;
+      }
+
+      .content {
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        padding: clamp(28px, 5vw, 58px);
+        background: linear-gradient(
+          135deg,
+          color-mix(in srgb, var(--surface) 93%, transparent),
+          color-mix(in srgb, var(--surface-3) 78%, transparent)
+        );
+        box-shadow: var(--shadow);
+        margin-bottom: 28px;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        right: -140px;
+        top: -180px;
+        background: radial-gradient(
+          circle,
+          rgba(79, 70, 229, 0.28),
+          transparent 68%
+        );
+        pointer-events: none;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid color-mix(in srgb, var(--brand) 34%, var(--line));
+        background: color-mix(in srgb, var(--brand) 9%, var(--surface));
+        color: var(--brand);
+        padding: 7px 11px;
+        border-radius: 999px;
+        font-weight: 800;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        font-size: clamp(36px, 6vw, 68px);
+        line-height: 0.98;
+        letter-spacing: -0.055em;
+        margin: 22px 0 18px;
+        max-width: 860px;
+      }
+
+      .hero p {
+        color: var(--muted);
+        font-size: clamp(16px, 2vw, 20px);
+        max-width: 850px;
+        margin: 0 0 28px;
+      }
+
+      .hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .meta-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 12px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 750;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--success);
+        box-shadow: 0 0 0 4px
+          color-mix(in srgb, var(--success) 15%, transparent);
+      }
+
+      section {
+        scroll-margin-top: calc(var(--header-h) + 18px);
+        margin-top: 30px;
+        padding: clamp(22px, 3vw, 34px);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: color-mix(in srgb, var(--surface) 96%, transparent);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .section-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 24px;
+      }
+
+      .section-index {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 42px;
+        height: 28px;
+        border-radius: 999px;
+        background: var(--surface-3);
+        color: var(--brand);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+      }
+
+      h2 {
+        font-size: clamp(25px, 3vw, 36px);
+        line-height: 1.12;
+        letter-spacing: -0.035em;
+        margin: 8px 0 5px;
+      }
+
+      h3 {
+        font-size: 19px;
+        line-height: 1.25;
+        letter-spacing: -0.015em;
+        margin: 0 0 10px;
+      }
+
+      h4 {
+        margin: 0 0 7px;
+        font-size: 15px;
+      }
+      p {
+        margin: 0 0 12px;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .small {
+        font-size: 13px;
+      }
+      .kicker {
+        color: var(--muted);
+        max-width: 760px;
+        margin: 0;
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+      }
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .grid-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+        border-radius: 16px;
+        padding: 18px;
+      }
+
+      .card.emphasis {
+        background: linear-gradient(
+          145deg,
+          color-mix(in srgb, var(--brand) 9%, var(--surface)),
+          var(--surface)
+        );
+        border-color: color-mix(in srgb, var(--brand) 30%, var(--line));
+      }
+
+      .card-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .mini-icon {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        flex: 0 0 auto;
+        border-radius: 10px;
+        background: var(--surface-3);
+        color: var(--brand);
+        font-weight: 900;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 8px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 850;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .badge.in {
+        background: color-mix(in srgb, var(--success) 14%, transparent);
+        color: var(--success);
+      }
+      .badge.out {
+        background: color-mix(in srgb, var(--danger) 12%, transparent);
+        color: var(--danger);
+      }
+      .badge.later {
+        background: color-mix(in srgb, var(--warning) 14%, transparent);
+        color: var(--warning);
+      }
+      .badge.core {
+        background: color-mix(in srgb, var(--brand) 13%, transparent);
+        color: var(--brand);
+      }
+
+      .decision {
+        border-left: 4px solid var(--brand);
+        background: color-mix(in srgb, var(--brand) 7%, var(--surface));
+        border-radius: 0 14px 14px 0;
+        padding: 18px 20px;
+        margin: 18px 0;
+        font-size: 17px;
+        font-weight: 680;
+      }
+
+      .hypothesis {
+        position: relative;
+        overflow: hidden;
+        padding: 28px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #24206a, #5533a8);
+        color: white;
+      }
+      .hypothesis p {
+        font-size: 18px;
+        margin: 0;
+        max-width: 880px;
+      }
+      .hypothesis::after {
+        content: "“";
+        position: absolute;
+        right: 24px;
+        top: -35px;
+        font-family: Georgia, serif;
+        font-size: 190px;
+        opacity: 0.1;
+      }
+
+      .architecture {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 20px;
+        margin: 24px 0 6px;
+      }
+
+      .architecture .root,
+      .architecture .branch {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--surface);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .root {
+        padding: 22px;
+      }
+      .root .root-title {
+        font-size: 25px;
+        font-weight: 900;
+        letter-spacing: -0.03em;
+      }
+      .root .root-sub {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .connector {
+        width: 70px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--brand), var(--accent));
+        position: relative;
+      }
+      .connector::after {
+        content: "";
+        position: absolute;
+        right: -1px;
+        top: -4px;
+        border-left: 8px solid var(--accent);
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+      }
+
+      .branch {
+        padding: 12px;
+      }
+      .branch-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px;
+        border-radius: 12px;
+        background: var(--surface-2);
+      }
+      .branch-row + .branch-row {
+        margin-top: 10px;
+      }
+      .branch-row strong {
+        display: block;
+      }
+      .branch-row span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(7, auto);
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 18px 4px 6px;
+      }
+
+      .flow-node {
+        min-width: 135px;
+        padding: 15px 13px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        text-align: center;
+        background: var(--surface);
+        box-shadow: var(--shadow-sm);
+      }
+      .flow-node strong {
+        display: block;
+        font-size: 13px;
+      }
+      .flow-node span {
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .flow-arrow {
+        color: var(--brand);
+        font-weight: 900;
+      }
+
+      .scope-board {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 16px;
+        margin-top: 18px;
+      }
+
+      .scope-column {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px;
+        background: var(--surface-2);
+      }
+
+      .scope-column h3 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .scope-item {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 11px;
+        align-items: start;
+        padding: 13px 0;
+        border-top: 1px solid var(--line);
+      }
+      .scope-item:first-of-type {
+        border-top: 0;
+      }
+      .scope-item p {
+        color: var(--muted);
+        font-size: 13px;
+        margin: 3px 0 0;
+      }
+
+      .check,
+      .cross {
+        width: 24px;
+        height: 24px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        font-weight: 900;
+        font-size: 13px;
+      }
+      .check {
+        color: var(--success);
+        background: color-mix(in srgb, var(--success) 12%, transparent);
+      }
+      .cross {
+        color: var(--danger);
+        background: color-mix(in srgb, var(--danger) 11%, transparent);
+      }
+
+      .data-table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        margin: 16px 0;
+      }
+      table {
+        width: 100%;
+        min-width: 680px;
+        border-collapse: collapse;
+        background: var(--surface);
+      }
+      th,
+      td {
+        padding: 13px 15px;
+        text-align: left;
+        vertical-align: top;
+        border-bottom: 1px solid var(--line);
+        font-size: 13px;
+      }
+      th {
+        background: var(--surface-3);
+        color: var(--text);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      tr:last-child td {
+        border-bottom: 0;
+      }
+      td strong {
+        color: var(--text);
+      }
+
+      .rule-builder {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr auto 1fr;
+        align-items: stretch;
+        gap: 12px;
+        margin: 18px 0;
+      }
+      .rule {
+        border: 1px solid color-mix(in srgb, var(--brand) 28%, var(--line));
+        background: color-mix(in srgb, var(--brand) 7%, var(--surface));
+        border-radius: 15px;
+        padding: 15px;
+      }
+      .rule label {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        margin-bottom: 5px;
+      }
+      .rule strong {
+        font-size: 14px;
+      }
+      .and {
+        align-self: center;
+        padding: 7px 9px;
+        border-radius: 9px;
+        background: var(--brand);
+        color: white;
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+      }
+
+      .result-banner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        border: 1px solid color-mix(in srgb, var(--success) 30%, var(--line));
+        background: color-mix(in srgb, var(--success) 7%, var(--surface));
+        padding: 14px 16px;
+        border-radius: 14px;
+        margin-top: 12px;
+      }
+
+      .lifecycle {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        margin: 20px 0;
+      }
+      .life-step {
+        text-align: center;
+        padding: 14px 10px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+        position: relative;
+      }
+      .life-step:not(:last-child)::after {
+        content: "→";
+        position: absolute;
+        right: -11px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--brand);
+        font-weight: 900;
+        z-index: 2;
+      }
+      .life-step b {
+        display: block;
+        font-size: 13px;
+      }
+      .life-step span {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .example-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin: 15px 0;
+      }
+      .example-card {
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        padding: 16px;
+        background: var(--surface-2);
+      }
+      .example-card .use {
+        margin-top: 11px;
+        padding-top: 10px;
+        border-top: 1px dashed var(--line);
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 9px;
+      }
+      .chip {
+        padding: 5px 8px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--surface);
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 700;
+      }
+
+      .stepper {
+        counter-reset: step;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin: 18px 0;
+      }
+      .step {
+        counter-increment: step;
+        position: relative;
+        min-height: 120px;
+        padding: 18px 16px 15px;
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        background: var(--surface-2);
+      }
+      .step::before {
+        content: counter(step, decimal-leading-zero);
+        display: inline-grid;
+        place-items: center;
+        width: 34px;
+        height: 26px;
+        margin-bottom: 14px;
+        border-radius: 8px;
+        background: var(--surface-3);
+        color: var(--brand);
+        font-size: 11px;
+        font-weight: 900;
+      }
+      .step strong {
+        display: block;
+        font-size: 14px;
+      }
+      .step span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .guardrail {
+        display: flex;
+        gap: 13px;
+        align-items: flex-start;
+        padding: 16px;
+        border: 1px solid color-mix(in srgb, var(--warning) 35%, var(--line));
+        background: color-mix(in srgb, var(--warning) 8%, var(--surface));
+        border-radius: 15px;
+        margin: 15px 0;
+      }
+      .guardrail .symbol {
+        width: 34px;
+        height: 34px;
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        border-radius: 10px;
+        background: color-mix(in srgb, var(--warning) 16%, transparent);
+        color: var(--warning);
+        font-weight: 900;
+      }
+
+      .metric-row {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 15px;
+      }
+      .metric {
+        text-align: center;
+        padding: 13px 8px;
+        border-radius: 13px;
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+      }
+      .metric .metric-icon {
+        font-size: 18px;
+      }
+      .metric b {
+        display: block;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+      .metric span {
+        font-size: 10px;
+        color: var(--muted);
+      }
+
+      .automation-diagram {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr auto 1fr;
+        gap: 14px;
+        align-items: center;
+        margin: 20px 0;
+      }
+      .auto-node {
+        padding: 18px;
+        min-height: 128px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface-2);
+      }
+      .auto-node strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+      .auto-node span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .auto-node.trigger {
+        border-color: color-mix(in srgb, var(--brand) 38%, var(--line));
+      }
+      .auto-node.action {
+        border-color: color-mix(in srgb, var(--accent) 38%, var(--line));
+      }
+      .auto-node.memory {
+        border-color: color-mix(in srgb, var(--success) 38%, var(--line));
+      }
+
+      .config {
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+        margin-top: 14px;
+      }
+      .config dt,
+      .config dd {
+        margin: 0;
+        padding: 12px 15px;
+        border-bottom: 1px solid var(--line);
+        font-size: 13px;
+      }
+      .config dt {
+        background: var(--surface-3);
+        font-weight: 800;
+      }
+      .config dd {
+        background: var(--surface);
+      }
+      .config dt:last-of-type,
+      .config dd:last-of-type {
+        border-bottom: 0;
+      }
+
+      .safety-stack {
+        display: grid;
+        gap: 10px;
+      }
+      .safety-item {
+        display: grid;
+        grid-template-columns: 42px 1fr auto;
+        gap: 12px;
+        align-items: center;
+        padding: 13px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--surface-2);
+      }
+      .safety-item .status {
+        font-size: 10px;
+        font-weight: 900;
+        color: var(--success);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .permission-map {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin: 17px 0;
+      }
+      .permission-level {
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface-2);
+      }
+      .permission-level ul {
+        padding-left: 18px;
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .hypothesis-table td:first-child {
+        width: 48%;
+      }
+      .signal {
+        display: inline-flex;
+        gap: 7px;
+        align-items: center;
+        font-weight: 700;
+        color: var(--success);
+      }
+
+      .roadmap {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .roadmap-card {
+        min-height: 150px;
+        padding: 16px;
+        border-radius: 15px;
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+      }
+      .roadmap-card p {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .roadmap-card .phase {
+        display: inline-block;
+        margin-bottom: 10px;
+        color: var(--warning);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+
+      details {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--surface-2);
+        overflow: hidden;
+        margin: 10px 0;
+      }
+      summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 15px 16px;
+        font-weight: 800;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      summary::after {
+        content: "+";
+        font-size: 20px;
+        color: var(--brand);
+      }
+      details[open] summary::after {
+        content: "−";
+      }
+      .details-body {
+        padding: 0 16px 16px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .search-box {
+        position: fixed;
+        z-index: 2000;
+        inset: 84px 24px auto auto;
+        width: min(420px, calc(100vw - 48px));
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+        display: none;
+      }
+      .search-box.open {
+        display: block;
+      }
+      .search-box input {
+        width: 100%;
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+        color: var(--text);
+        padding: 12px 13px;
+        border-radius: 11px;
+        outline: none;
+      }
+      .search-status {
+        color: var(--muted);
+        font-size: 11px;
+        margin-top: 8px;
+      }
+      .search-hit {
+        outline: 3px solid color-mix(in srgb, var(--warning) 35%, transparent);
+        outline-offset: 4px;
+      }
+
+      .coverage {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .coverage-item {
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        padding: 13px;
+        background: var(--surface-2);
+      }
+      .coverage-item b {
+        font-size: 12px;
+      }
+      .coverage-item span {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        margin-top: 4px;
+      }
+
+      footer {
+        max-width: 1180px;
+        margin: 28px auto 0;
+        color: var(--muted);
+        text-align: center;
+        font-size: 12px;
+        padding: 0 20px;
+      }
+
+      @media (max-width: 1100px) {
+        :root {
+          --sidebar: 230px;
+        }
+        .grid-4 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .metric-row {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .flow {
+          justify-content: start;
+        }
+      }
+
+      @media (max-width: 860px) {
+        .layout {
+          display: block;
+        }
+        aside {
+          display: none;
+        }
+        main {
+          padding: 22px 14px 60px;
+        }
+        .topbar {
+          padding: 0 14px;
+        }
+        .brand-copy span {
+          display: none;
+        }
+        .action-btn {
+          display: none;
+        }
+        .grid-2,
+        .grid-3,
+        .grid-4,
+        .scope-board,
+        .example-grid,
+        .permission-map,
+        .roadmap,
+        .coverage {
+          grid-template-columns: 1fr;
+        }
+        .architecture {
+          grid-template-columns: 1fr;
+        }
+        .connector {
+          width: 2px;
+          height: 42px;
+          justify-self: center;
+          background: linear-gradient(var(--brand), var(--accent));
+        }
+        .connector::after {
+          right: -4px;
+          top: auto;
+          bottom: -1px;
+          border-left: 5px solid transparent;
+          border-right: 5px solid transparent;
+          border-top: 8px solid var(--accent);
+          border-bottom: 0;
+        }
+        .rule-builder,
+        .automation-diagram {
+          grid-template-columns: 1fr;
+        }
+        .and,
+        .flow-arrow {
+          justify-self: center;
+        }
+        .lifecycle {
+          grid-template-columns: 1fr;
+        }
+        .life-step:not(:last-child)::after {
+          right: 50%;
+          top: auto;
+          bottom: -17px;
+          transform: translateX(50%);
+          content: "↓";
+        }
+        .stepper {
+          grid-template-columns: 1fr;
+        }
+        .config {
+          grid-template-columns: 1fr;
+        }
+        .config dt {
+          border-bottom: 0;
+        }
+        .safety-item {
+          grid-template-columns: 38px 1fr;
+        }
+        .safety-item .status {
+          grid-column: 2;
+        }
+      }
+
+      @media print {
+        :root {
+          --bg: white;
+          --surface: white;
+          --surface-2: #fafafa;
+          --surface-3: #f1f3f8;
+          --text: #111827;
+          --muted: #4b5563;
+          --line: #d1d5db;
+        }
+        body {
+          background: white;
+        }
+        .topbar,
+        aside,
+        .search-box {
+          display: none !important;
+        }
+        .layout {
+          display: block;
+        }
+        main {
+          padding: 0;
+        }
+        section,
+        .hero {
+          box-shadow: none;
+          break-inside: avoid;
+          margin: 12px 0;
+        }
+        .hero {
+          padding: 28px;
+        }
+        .content {
+          max-width: none;
+        }
+        details {
+          break-inside: avoid;
+        }
+        details > * {
+          display: block !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">k</div>
+        <div class="brand-copy">
+          <strong>keyCRM · Marketing MVP</strong>
+          <span>Візуальна продуктово-технічна специфікація</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="action-btn" id="expandAll" type="button">
+          Розгорнути деталі
+        </button>
+        <button
+          class="icon-btn"
+          id="searchBtn"
+          type="button"
+          title="Пошук"
+          aria-label="Пошук"
+        >
+          ⌕
+        </button>
+        <button
+          class="icon-btn"
+          id="themeBtn"
+          type="button"
+          title="Змінити тему"
+          aria-label="Змінити тему"
+        >
+          ◐
+        </button>
+        <button
+          class="icon-btn"
+          id="printBtn"
+          type="button"
+          title="Друк / PDF"
+          aria-label="Друк"
+        >
+          ⎙
+        </button>
+      </div>
+    </header>
+
+    <div class="search-box" id="searchBox">
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Знайти вимогу, сценарій або рішення…"
+        autocomplete="off"
+      />
+      <div class="search-status" id="searchStatus">
+        Введіть щонайменше 2 символи
+      </div>
+    </div>
+
+    <div class="layout">
+      <aside>
+        <div class="toc-label">Зміст</div>
+        <nav class="toc" id="toc">
+          <a href="#overview"
+            ><span class="toc-num">00</span> Коротке рішення</a
+          >
+          <a href="#why"><span class="toc-num">01</span> Навіщо це робимо</a>
+          <a href="#scope"><span class="toc-num">02</span> Склад MVP</a>
+          <a href="#segments"><span class="toc-num">03</span> Сегменти</a>
+          <a href="#campaigns"
+            ><span class="toc-num">04</span> Разові розсилки</a
+          >
+          <a href="#automations"
+            ><span class="toc-num">05</span> Автоматизації</a
+          >
+          <a href="#delivery"
+            ><span class="toc-num">06</span> Контент і безпека</a
+          >
+          <a href="#permissions"
+            ><span class="toc-num">07</span> Права доступу</a
+          >
+          <a href="#validation"
+            ><span class="toc-num">08</span> Перевірка гіпотез</a
+          >
+          <a href="#roadmap"><span class="toc-num">09</span> Після MVP</a>
+          <a href="#coverage"><span class="toc-num">✓</span> Покриття вимог</a>
+        </nav>
+      </aside>
+
+      <main>
+        <div class="content">
+          <article class="hero" id="overview">
+            <span class="eyebrow">MVP · Прийняте продуктове рішення</span>
+            <h1>Маркетинговий модуль у keyCRM</h1>
+            <p>
+              Динамічні сегменти покупців як фундамент для двох email-сценаріїв:
+              разових розсилок та автоматичних листів у момент входу покупця в
+              сегмент.
+            </p>
+            <div class="hero-meta">
+              <span class="meta-pill"
+                ><span class="dot"></span> Аудиторія: покупці</span
+              >
+              <span class="meta-pill">Канал MVP: Email</span>
+              <span class="meta-pill">Контент: HTML</span>
+              <span class="meta-pill">Логіка сегмента: AND</span>
+              <span class="meta-pill">Автоматизація: 1 лист / покупця</span>
+            </div>
+          </article>
+
+          <section aria-labelledby="overview-title">
+            <div class="section-head">
+              <div>
+                <span class="section-index">00</span>
+                <h2 id="overview-title">Коротке рішення</h2>
+                <p class="kicker">
+                  Невеликий за обсягом MVP, але з правильною основою для
+                  розвитку маркетингу всередині CRM.
+                </p>
+              </div>
+              <span class="badge core">Core MVP</span>
+            </div>
+
+            <div class="architecture">
+              <div class="root">
+                <div class="root-title">Маркетинг</div>
+                <div class="root-sub">Новий модуль у keyCRM</div>
+              </div>
+              <div class="connector" aria-hidden="true"></div>
+              <div class="branch">
+                <div class="branch-row">
+                  <div class="mini-icon">S</div>
+                  <div>
+                    <strong>Сегменти</strong
+                    ><span>Динамічні аудиторії покупців</span>
+                  </div>
+                </div>
+                <div class="branch-row">
+                  <div class="mini-icon">@</div>
+                  <div>
+                    <strong>Email</strong
+                    ><span>Разові розсилки · Автоматизації</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-2" style="margin-top: 22px">
+              <div class="card emphasis">
+                <div class="card-title">
+                  <div class="mini-icon">1×</div>
+                  <h3>Разова розсилка</h3>
+                </div>
+                <p class="muted small">
+                  Користувач обирає сегмент, вставляє HTML-контент і один раз
+                  запускає лист по зафіксованому складу аудиторії.
+                </p>
+              </div>
+              <div class="card emphasis">
+                <div class="card-title">
+                  <div class="mini-icon">↻</div>
+                  <h3>Автоматизація</h3>
+                </div>
+                <p class="muted small">
+                  Користувач обирає сегмент, а keyCRM надсилає лист покупцю в
+                  момент, коли той потрапляє в сегмент.
+                </p>
+              </div>
+            </div>
+
+            <div class="decision">
+              У MVP немає окремого розділу шаблонів, візуального редактора,
+              месенджерів, каскадів, складних ланцюжків і глибокої аналітики.
+              HTML вставляється безпосередньо в розсилку або автоматизацію.
+            </div>
+          </section>
+
+          <section id="why" aria-labelledby="why-title">
+            <div class="section-head">
+              <div>
+                <span class="section-index">01</span>
+                <h2 id="why-title">Навіщо це робимо</h2>
+                <p class="kicker">
+                  Перетворюємо вже наявні CRM-дані на керовані маркетингові
+                  сценарії без зовнішніх сервісів і ручної роботи.
+                </p>
+              </div>
+            </div>
+
+            <div class="flow" aria-label="Потік цінності">
+              <div class="flow-node">
+                <strong>Дані keyCRM</strong
+                ><span
+                  >покупці, замовлення, угоди, оплати, доставки,
+                  комунікації</span
+                >
+              </div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-node">
+                <strong>Умови</strong><span>правила аудиторії</span>
+              </div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-node">
+                <strong>Сегмент</strong><span>самооновлювана група</span>
+              </div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-node">
+                <strong>Email-сценарій</strong
+                ><span>разово або автоматично</span>
+              </div>
+            </div>
+
+            <div class="hypothesis" style="margin-top: 22px">
+              <p>
+                <strong>Головна гіпотеза:</strong> користувачам потрібен не
+                просто інструмент «відправити лист», а можливість один раз
+                налаштувати аудиторію і правило, після чого keyCRM сама
+                комунікує з покупцями у потрібний момент.
+              </p>
+            </div>
+
+            <div class="grid grid-3" style="margin-top: 16px">
+              <div class="card">
+                <h3>Поточний біль</h3>
+                <p class="muted small">
+                  Маркетинг доводиться виносити у зовнішні сервіси або
+                  підтримувати вручну.
+                </p>
+              </div>
+              <div class="card">
+                <h3>Цінність MVP</h3>
+                <p class="muted small">
+                  Дані, аудиторія і дія живуть в одному продукті та не
+                  потребують ручної синхронізації.
+                </p>
+              </div>
+              <div class="card">
+                <h3>Стратегічна основа</h3>
+                <p class="muted small">
+                  Залишається архітектура, яку можна розширити каналами,
+                  тригерами, ланцюжками та аналітикою.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section id="scope" aria-labelledby="scope-title">
+            <div class="section-head">
+              <div>
+                <span class="section-index">02</span>
+                <h2 id="scope-title">Що входить у MVP</h2>
+                <p class="kicker">
+                  Функціональність обмежена, але охоплює повний цикл: аудиторія
+                  → запуск → доставка → базовий результат → відписка.
+                </p>
+              </div>
+            </div>
+
+            <div class="scope-board">
+              <div class="scope-column">
+                <h3>Включено <span class="badge in">MVP</span></h3>
+                <div class="scope-item">
+                  <div class="check">✓</div>
+                  <div>
+                    <strong>Динамічні сегменти</strong>
+                    <p>
+                      Система сама переобчислює склад аудиторії за умовами. Це
+                      фундамент для розсилок, автоматизацій і наступних
+                      сценаріїв.
+                    </p>
+                  </div>
+                </div>
+                <div class="scope-item">
+                  <div class="check">✓</div>
+                  <div>
+                    <strong>Разові email-розсилки</strong>
+                    <p>
+                      Вибір сегмента, тема, підтверджений відправник,
+                      HTML-контент, preview, test send, запуск і базова
+                      статистика.
+                    </p>
+                  </div>
+                </div>
+                <div class="scope-item">
+                  <div class="check">✓</div>
+                  <div>
+                    <strong>Email-автоматизації</strong>
+                    <p>
+                      Коли покупець входить у сегмент, система один раз надсилає
+                      йому email у межах конкретної автоматизації.
+                    </p>
+                  </div>
+                </div>
+                <div class="scope-item">
+                  <div class="check">✓</div>
+                  <div>
+                    <strong>Контент без бібліотеки шаблонів</strong>
+                    <p>
+                      HTML вставляється прямо у конкретну розсилку або
+                      автоматизацію.
+                    </p>
+                  </div>
+                </div>
+                <div class="scope-item">
+                  <div class="check">✓</div>
+                  <div>
+                    <strong>Статуси, статистика та відписки</strong>
+                    <p>
+                      Доставлення, помилки, відкриття, кліки, відписки;
+                      маркетингові листи не йдуть відписаним або проблемним
+                      адресам.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="scope-column">
+                <h3>
+                  Свідомо відкладено <span class="badge out">Не MVP</span>
+                </h3>
+                <div class="scope-item">
+                  <div class="cross">×</div>
+                  <div>
+                    <strong>Шаблони й drag&amp;drop</strong>
+                    <p>Окремий розділ шаблонів та візуальний редактор.</p>
+                  </div>
+                </div>
+                <div class="scope-item">
+                  <div class="cross">×</div>
+                  <div>
+                    <strong>Інші канали</strong>
+                    <p>Telegram, Viber, WhatsApp, SMS та messenger-каскади.</p>
+                  </div>
+                </div>
+                <div class="scope-item">
+                  <div class="cross">×</div>
+                  <div>
+                    <strong>Складні сценарії</strong>
+                    <p>
+                      Ланцюжки, паузи, розгалуження, повторні входи та гнучкі
+                      frequency caps.
+                    </p>
+                  </div>
+                </div>
+                <div class="scope-item">
+                  <div class="cross">×</div>
+                  <div>
+                    <strong>Глибока аналітика</strong>
+                    <p>
+                      Cohort/revenue-звіти, порівняння автоматизацій і вплив на
+                      повторні покупки.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="segments" aria-labelledby="segments-title">
+            <div class="section-head">
+              <div>
+                <span class="section-index">03</span>
+                <h2 id="segments-title">Сегменти</h2>
+                <p class="kicker">
+                  Сегмент — це маркетингова аудиторія, а не просто збережений
+                  фільтр. Він повторно використовується у розсилках та
+                  автоматизаціях.
+                </p>
+              </div>
+              <span class="badge core">Foundation</span>
+            </div>
+
+            <div class="grid grid-4">
+              <div class="card">
+                <h4>Сутність</h4>
+                <p class="muted small">
+                  Працюємо по <strong>покупцях</strong>. Контакти не є окремою
+                  аудиторією MVP.
+                </p>
+              </div>
+              <div class="card">
+                <h4>Оновлення</h4>
+                <p class="muted small">
+                  Автоматично за розкладом. Покупець може входити у сегмент і
+                  виходити з нього.
+                </p>
+              </div>
+              <div class="card">
+                <h4>Видимість</h4>
+                <p class="muted small">
+                  Назва, умови, поточна кількість покупців, останнє оновлення та
+                  місця використання.
+                </p>
+              </div>
+              <div class="card">
+                <h4>Пам’ять входу</h4>
+                <p class="muted small">
+                  Система фіксує момент входу покупця, щоб автоматизація не
+                  відправляла зайві листи.
+                </p>
+              </div>
+            </div>
+
+            <h3 style="margin-top: 26px">Життєвий цикл сегмента</h3>
+            <div class="lifecycle">
+              <div class="life-step">
+                <b>1. Умови</b><span>користувач задає правила</span>
+              </div>
+              <div class="life-step">
+                <b>2. Розрахунок</b><span>система перевіряє покупців</span>
+              </div>
+              <div class="life-step">
+                <b>3. Вхід / вихід</b><span>склад змінюється автоматично</span>
+              </div>
+              <div class="life-step">
+                <b>4. Подія входу</b><span>фіксується для автоматизації</span>
+              </div>
+              <div class="life-step">
+                <b>5. Використання</b><span>розсилка або автоматизація</span>
+              </div>
+            </div>
+
+            <h3 style="margin-top: 25px">Базова логіка умов: тільки AND</h3>
+            <p class="muted">
+              Покупець потрапляє до сегмента лише тоді, коли одночасно виконує
+              всі задані умови.
+            </p>
+
+            <div class="rule-builder" aria-label="Приклад AND-умов">
+              <div class="rule">
+                <label>Умова 1</label
+                ><strong>Кількість замовлень &gt; 0</strong>
+              </div>
+              <div class="and">AND</div>
+              <div class="rule">
+                <label>Умова 2</label
+                ><strong>Днів з останнього замовлення &gt; 60</strong>
+              </div>
+              <div class="and">AND</div>
+              <div class="rule">
+                <label>Умова 3</label><strong>Є email</strong>
+              </div>
+            </div>
+            <div class="result-banner">
+              <div>
+                <strong>Результат</strong>
+                <div class="muted small">
+                  Покупці, які вже купували, не купували понад 60 днів і мають
+                  email.
+                </div>
+              </div>
+              <span class="badge in">У сегменті</span>
+            </div>
+
+            <div class="guardrail">
+              <div class="symbol">!</div>
+              <div>
+                <strong>Обмеження MVP</strong>
+                <p class="muted small">
+                  Не підтримуються складні групи на кшталт
+                  <code
+                    >(Є email OR Є Viber) AND (LTV &gt; 10 000 OR Замовлень &gt;
+                    5)</code
+                  >. OR-логіка та вкладені групи — після перевірки попиту.
+                </p>
+              </div>
+            </div>
+
+            <h3 style="margin-top: 26px">Типи умов і оператори</h3>
+            <div class="data-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Тип умови</th>
+                    <th>Приклади полів</th>
+                    <th>Оператори MVP</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Число</strong></td>
+                    <td>
+                      Кількість замовлень, LTV, середній чек, кількість угод
+                    </td>
+                    <td>більше, менше, дорівнює, між</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Дата</strong></td>
+                    <td>
+                      Дата створення покупця, першого та останнього замовлення
+                    </td>
+                    <td>до, після, між, за останні X днів</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Днів з події</strong></td>
+                    <td>
+                      Днів з останнього замовлення, днів з останньої угоди
+                    </td>
+                    <td>більше, менше, дорівнює, між</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Текст / селект</strong></td>
+                    <td>Кастомні поля покупця</td>
+                    <td>дорівнює, не дорівнює, порожнє, не порожнє</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Канал зв’язку</strong></td>
+                    <td>Є email, телефон, Telegram, Viber, WhatsApp</td>
+                    <td>є, немає</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3 style="margin-top: 26px">Приклади сегментів</h3>
+            <div class="example-grid">
+              <article class="example-card">
+                <h4>Не купували 60 днів</h4>
+                <div class="chips">
+                  <span class="chip">Замовлень &gt; 0</span
+                  ><span class="chip">Днів &gt; 60</span
+                  ><span class="chip">Є email</span>
+                </div>
+                <div class="use">
+                  <strong>Використання:</strong> win-back автоматизація при
+                  вході в сегмент.
+                </div>
+              </article>
+              <article class="example-card">
+                <h4>VIP-покупці</h4>
+                <div class="chips">
+                  <span class="chip">LTV &gt; 10 000 грн</span
+                  ><span class="chip">Замовлень &gt; 2</span
+                  ><span class="chip">Є email</span>
+                </div>
+                <div class="use">
+                  <strong>Використання:</strong> разова розсилка з
+                  VIP-пропозицією.
+                </div>
+              </article>
+              <article class="example-card">
+                <h4>Нові покупці за 30 днів</h4>
+                <div class="chips">
+                  <span class="chip">Створено за 30 днів</span
+                  ><span class="chip">Замовлень = 1</span
+                  ><span class="chip">Є email</span>
+                </div>
+                <div class="use">
+                  <strong>Використання:</strong> welcome-автоматизація або
+                  разова пропозиція.
+                </div>
+              </article>
+              <article class="example-card">
+                <h4>Після першої покупки</h4>
+                <div class="chips">
+                  <span class="chip">Замовлень = 1</span
+                  ><span class="chip">7–21 день</span
+                  ><span class="chip">Є email</span>
+                </div>
+                <div class="use">
+                  <strong>Використання:</strong> подяка + персональна пропозиція
+                  для другої покупки.
+                </div>
+              </article>
+              <article class="example-card">
+                <h4>Високий середній чек</h4>
+                <div class="chips">
+                  <span class="chip">Середній чек &gt; 5 000 грн</span
+                  ><span class="chip">Замовлень &gt; 1</span
+                  ><span class="chip">Є email</span>
+                </div>
+                <div class="use">
+                  <strong>Використання:</strong> преміальні товари або
+                  персональна пропозиція.
+                </div>
+              </article>
+              <article class="example-card">
+                <h4>Давно не було угоди</h4>
+                <div class="chips">
+                  <span class="chip">Угод &gt; 0</span
+                  ><span class="chip">Днів з угоди &gt; 90</span
+                  ><span class="chip">Є email</span>
+                </div>
+                <div class="use">
+                  <strong>Використання:</strong> реактивація для сервісного
+                  бізнесу / B2B.
+                </div>
+              </article>
+              <article class="example-card">
+                <h4>Потенційний опт</h4>
+                <div class="chips">
+                  <span class="chip">LTV &gt; 50 000 грн</span
+                  ><span class="chip">Чек &gt; 5 000 грн</span
+                  ><span class="chip">Замовлень &gt; 3</span
+                  ><span class="chip">Є email</span>
+                </div>
+                <div class="use">
+                  <strong>Використання:</strong> разова розсилка з умовами опту.
+                </div>
+              </article>
+              <article class="example-card">
+                <h4>Email є, месенджера немає</h4>
+                <div class="chips">
+                  <span class="chip">Є email</span
+                  ><span class="chip">Немає Telegram</span
+                  ><span class="chip">Немає Viber</span>
+                </div>
+                <div class="use">
+                  <strong>Використання:</strong> email-only комунікація.
+                </div>
+              </article>
+              <article class="example-card">
+                <h4>Кастомне поле покупця</h4>
+                <div class="chips">
+                  <span class="chip">Тип клієнта = Опт</span
+                  ><span class="chip">Є email</span>
+                </div>
+                <div class="use">
+                  <strong>Використання:</strong> вузька B2B-пропозиція.
+                </div>
+              </article>
+              <article class="example-card">
+                <h4>День народження через 5 днів</h4>
+                <div class="chips">
+                  <span class="chip">Дата народження +5 днів</span
+                  ><span class="chip">Є email</span>
+                </div>
+                <div class="use">
+                  <strong>Використання:</strong> автоматичне привітання зі
+                  знижкою.
+                </div>
+              </article>
+            </div>
+
+            <details>
+              <summary>Сегменти, які краще не брати в MVP</summary>
+              <div class="details-body">
+                <div class="data-table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Приклад</th>
+                        <th>Чому не MVP</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Купили товар X або товар Y</td>
+                        <td>
+                          Потребує OR-логіки або складніших товарних умов.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Відкрили лист, але не клікнули</td>
+                        <td>
+                          Потребує сегментації за email-поведінкою після запуску
+                          email-модуля.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Не відповіли в месенджері після email</td>
+                        <td>Потребує messenger-каналів і каскадів.</td>
+                      </tr>
+                      <tr>
+                        <td>Різні правила повторного входу</td>
+                        <td>Потребує складнішої логіки автоматизацій.</td>
+                      </tr>
+                      <tr>
+                        <td>Сегмент мінус інший сегмент</td>
+                        <td>
+                          Корисно, але належить до складних сегментів після MVP.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </details>
+          </section>
+
+          <section id="campaigns" aria-labelledby="campaigns-title">
+            <div class="section-head">
+              <div>
+                <span class="section-index">04</span>
+                <h2 id="campaigns-title">Разові email-розсилки</h2>
+                <p class="kicker">
+                  Сценарій «Я хочу один раз написати вибраному сегменту»: акція,
+                  новина, промо, сезонна пропозиція, VIP-комунікація або
+                  розпродаж залишків.
+                </p>
+              </div>
+              <span class="badge core">One-time</span>
+            </div>
+
+            <div class="stepper" aria-label="Кроки створення розсилки">
+              <div class="step">
+                <strong>Створити розсилку</strong
+                ><span>Нова сутність зі статусом чернетки.</span>
+              </div>
+              <div class="step">
+                <strong>Обрати сегмент</strong
+                ><span>Джерело аудиторії для одного запуску.</span>
+              </div>
+              <div class="step">
+                <strong>Задати тему</strong
+                ><span>Тема email для отримувача.</span>
+              </div>
+              <div class="step">
+                <strong>Обрати відправника</strong
+                ><span>Лише підтверджена адреса / домен.</span>
+              </div>
+              <div class="step">
+                <strong>Вставити HTML</strong
+                ><span>Контент живе прямо у розсилці.</span>
+              </div>
+              <div class="step">
+                <strong>Переглянути preview</strong
+                ><span>Візуальна перевірка до запуску.</span>
+              </div>
+              <div class="step">
+                <strong>Надіслати тест</strong
+                ><span>Обов’язкова перевірка реального листа.</span>
+              </div>
+              <div class="step">
+                <strong>Підтвердити запуск</strong
+                ><span>Окрема ризикована дія з правом доступу.</span>
+              </div>
+              <div class="step">
+                <strong>Переглянути статистику</strong
+                ><span>Базові результати відправки.</span>
+              </div>
+            </div>
+
+            <div class="grid grid-2">
+              <div class="card emphasis">
+                <h3>Фіксація аудиторії</h3>
+                <p class="muted small">
+                  Склад сегмента «заморожується» на момент запуску. Навіть якщо
+                  сегмент зміниться пізніше, результат конкретної розсилки
+                  залишається пояснюваним і відтворюваним.
+                </p>
+              </div>
+              <div class="card">
+                <h3>Автоматичні виключення</h3>
+                <p class="muted small">
+                  До відправки не потрапляють покупці без email, відписані
+                  покупці та адреси з критичними помилками.
+                </p>
+              </div>
+            </div>
+
+            <h3 style="margin-top: 25px">Базова статистика</h3>
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-icon">↗</div>
+                <b>Відправлено</b><span>accepted</span>
+              </div>
+              <div class="metric">
+                <div class="metric-icon">✓</div>
+                <b>Доставлено</b><span>delivered</span>
+              </div>
+              <div class="metric">
+                <div class="metric-icon">!</div>
+                <b>Помилки</b><span>bounced / failed</span>
+              </div>
+              <div class="metric">
+                <div class="metric-icon">◉</div>
+                <b>Відкриття</b><span>opened</span>
+              </div>
+              <div class="metric">
+                <div class="metric-icon">↗</div>
+                <b>Кліки</b><span>clicked</span>
+              </div>
+              <div class="metric">
+                <div class="metric-icon">−</div>
+                <b>Відписки</b><span>unsubscribed</span>
+              </div>
+            </div>
+          </section>
+
+          <section id="automations" aria-labelledby="automations-title">
+            <div class="section-head">
+              <div>
+                <span class="section-index">05</span>
+                <h2 id="automations-title">Email-автоматизації</h2>
+                <p class="kicker">
+                  Постійне правило, яке може спрацьовувати багато разів для
+                  різних покупців: «коли покупець входить у сегмент → надіслати
+                  email».
+                </p>
+              </div>
+              <span class="badge core">Always-on</span>
+            </div>
+
+            <div class="automation-diagram" aria-label="Логіка автоматизації">
+              <div class="auto-node trigger">
+                <strong>Тригер</strong
+                ><span>Покупець увійшов у вибраний сегмент.</span>
+              </div>
+              <div class="flow-arrow">→</div>
+              <div class="auto-node action">
+                <strong>Дія</strong
+                ><span
+                  >Надіслати email з темою, відправником і HTML-контентом.</span
+                >
+              </div>
+              <div class="flow-arrow">→</div>
+              <div class="auto-node memory">
+                <strong>Запобіжник</strong
+                ><span
+                  >Позначити, що цей покупець уже отримав лист у цій
+                  автоматизації.</span
+                >
+              </div>
+            </div>
+
+            <div class="data-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Питання</th>
+                    <th>Прийняте рішення</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Де налаштовувати?</strong></td>
+                    <td>
+                      Маркетинг → Email → Автоматизації. Це режим email-модуля,
+                      а не окремий великий пункт меню.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Чому не на сторінці сегмента?</strong></td>
+                    <td>
+                      Один сегмент може використовуватись у багатьох
+                      автоматизаціях; сегмент має залишатися аудиторією.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Чому не в разових розсилках?</strong></td>
+                    <td>
+                      Разова розсилка має один запуск. Автоматизація постійна й
+                      спрацьовує багато разів для різних покупців.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Де статистика?</strong></td>
+                    <td>
+                      На сторінці конкретної автоматизації: загальні показники,
+                      історія спрацювань і список отримувачів.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Безпечний дефолт</strong></td>
+                    <td>
+                      Один покупець отримує лист один раз у межах конкретної
+                      автоматизації. Складні повтори — після MVP.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="grid grid-2" style="margin-top: 18px">
+              <div class="card">
+                <h3>Що бачить користувач</h3>
+                <div class="chips">
+                  <span class="chip">назва</span
+                  ><span class="chip">статус: чернетка / активна / пауза</span>
+                  <span class="chip">сегмент</span><span class="chip">тема</span
+                  ><span class="chip">відправник</span>
+                  <span class="chip">HTML</span
+                  ><span class="chip">дата створення</span
+                  ><span class="chip">останнє спрацювання</span>
+                  <span class="chip">загальна статистика</span
+                  ><span class="chip">отримувачі та статуси</span>
+                </div>
+              </div>
+              <div class="card emphasis">
+                <h3>Приклад: Win-back 60 днів</h3>
+                <dl class="config">
+                  <dt>Назва</dt>
+                  <dd>Win-back 60 днів</dd>
+                  <dt>Сегмент</dt>
+                  <dd>Не купували 60 днів</dd>
+                  <dt>Правило</dt>
+                  <dd>Коли покупець входить у сегмент</dd>
+                  <dt>Дія</dt>
+                  <dd>Надіслати email</dd>
+                  <dt>Повтор</dt>
+                  <dd>Один раз для покупця в межах цієї автоматизації</dd>
+                </dl>
+              </div>
+            </div>
+          </section>
+
+          <section id="delivery" aria-labelledby="delivery-title">
+            <div class="section-head">
+              <div>
+                <span class="section-index">06</span>
+                <h2 id="delivery-title">Контент, доставка та безпека</h2>
+                <p class="kicker">
+                  Email-модуль має бути не лише функціональним, а й безпечним
+                  для репутації відправника та керованим з погляду помилок.
+                </p>
+              </div>
+            </div>
+
+            <div class="safety-stack">
+              <div class="safety-item">
+                <div class="mini-icon">&lt;/&gt;</div>
+                <div>
+                  <strong>Контент</strong>
+                  <div class="muted small">
+                    HTML вставляється прямо в розсилку або автоматизацію.
+                    Окремої бібліотеки шаблонів немає.
+                  </div>
+                </div>
+                <span class="status">MVP</span>
+              </div>
+              <div class="safety-item">
+                <div class="mini-icon">◫</div>
+                <div>
+                  <strong>Preview і test send</strong>
+                  <div class="muted small">
+                    Обов’язкові, щоб користувач не запускав лист «наосліп».
+                  </div>
+                </div>
+                <span class="status">Required</span>
+              </div>
+              <div class="safety-item">
+                <div class="mini-icon">✓</div>
+                <div>
+                  <strong>Підтверджений відправник</strong>
+                  <div class="muted small">
+                    Запуск можливий тільки з підтвердженої адреси / домену
+                    відправника.
+                  </div>
+                </div>
+                <span class="status">Guardrail</span>
+              </div>
+              <div class="safety-item">
+                <div class="mini-icon">−</div>
+                <div>
+                  <strong>Відписка</strong>
+                  <div class="muted small">
+                    Кожен маркетинговий лист містить відписку; відписані покупці
+                    більше не отримують маркетингові листи.
+                  </div>
+                </div>
+                <span class="status">Required</span>
+              </div>
+              <div class="safety-item">
+                <div class="mini-icon">☁</div>
+                <div>
+                  <strong>Зовнішній email-провайдер</strong>
+                  <div class="muted small">
+                    Доставку виконує Mailgun або аналог. keyCRM отримує й
+                    зберігає статуси доставки.
+                  </div>
+                </div>
+                <span class="status">Integration</span>
+              </div>
+              <div class="safety-item">
+                <div class="mini-icon">!</div>
+                <div>
+                  <strong>Помилки та скарги</strong>
+                  <div class="muted small">
+                    Критичний bounce або spam complaint блокує подальші
+                    маркетингові відправки на адресу.
+                  </div>
+                </div>
+                <span class="status">Suppression</span>
+              </div>
+            </div>
+
+            <div class="guardrail">
+              <div class="symbol">⚑</div>
+              <div>
+                <strong>Ключовий системний принцип</strong>
+                <p class="muted small">
+                  Suppression-статус адреси має враховуватися перед кожною
+                  відправкою — незалежно від того, чи це разова розсилка, чи
+                  автоматизація.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section id="permissions" aria-labelledby="permissions-title">
+            <div class="section-head">
+              <div>
+                <span class="section-index">07</span>
+                <h2 id="permissions-title">Права доступу</h2>
+                <p class="kicker">
+                  Підготовка контенту та запуск масової комунікації — різні
+                  рівні ризику, тому їх потрібно розділити.
+                </p>
+              </div>
+            </div>
+
+            <div class="permission-map">
+              <div class="permission-level">
+                <span class="badge core">Read</span>
+                <h3 style="margin-top: 10px">Перегляд</h3>
+                <ul>
+                  <li>Перегляд сегментів</li>
+                  <li>Кількість покупців в аудиторіях</li>
+                  <li>Перегляд email та статистики</li>
+                  <li>Історія розсилок і автоматизацій</li>
+                </ul>
+              </div>
+              <div class="permission-level">
+                <span class="badge later">Edit</span>
+                <h3 style="margin-top: 10px">Підготовка</h3>
+                <ul>
+                  <li>Створення / редагування сегментів</li>
+                  <li>Створення / редагування email</li>
+                  <li>Підготовка контенту й налаштувань</li>
+                </ul>
+              </div>
+              <div class="permission-level">
+                <span class="badge out">High risk</span>
+                <h3 style="margin-top: 10px">Запуск і адміністрація</h3>
+                <ul>
+                  <li>Запуск розсилки</li>
+                  <li>Активація автоматизації</li>
+                  <li>Налаштування відправників — лише адміністратори</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section id="validation" aria-labelledby="validation-title">
+            <div class="section-head">
+              <div>
+                <span class="section-index">08</span>
+                <h2 id="validation-title">Що перевіряє MVP</h2>
+                <p class="kicker">
+                  Не просто факт використання, а повторювану цінність: сегменти
+                  застосовуються, розсилки повторюються, автоматизації регулярно
+                  спрацьовують.
+                </p>
+              </div>
+            </div>
+
+            <div class="data-table-wrap hypothesis-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Гіпотеза</th>
+                    <th>Ознака підтвердження</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Сегменти потрібні як маркетингова аудиторія.</td>
+                    <td>
+                      <span class="signal">●</span> Користувачі створюють
+                      сегменти й використовують їх у email-сценаріях.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Разові розсилки мають цінність.</td>
+                    <td>
+                      <span class="signal">●</span> Користувачі запускають не
+                      лише тест, а повторюють сценарій.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Автоматизація — головна цінність.</td>
+                    <td>
+                      <span class="signal">●</span> Користувачі активують
+                      автоматизації, і вони регулярно спрацьовують.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Email достатній для першої перевірки.</td>
+                    <td>
+                      <span class="signal">●</span> Попит видно навіть без
+                      месенджерів і каскадів.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Відсутність шаблонів не блокує старт.</td>
+                    <td>
+                      <span class="signal">●</span> Користувачі можуть запустити
+                      лист через HTML або copy/paste.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3 style="margin-top: 24px">Базові метрики</h3>
+            <div class="coverage">
+              <div class="coverage-item">
+                <b>Активація</b><span>створення першого сегмента</span>
+              </div>
+              <div class="coverage-item">
+                <b>Перший value moment</b
+                ><span>запуск першої разової розсилки</span>
+              </div>
+              <div class="coverage-item">
+                <b>Automation adoption</b
+                ><span>активація першої автоматизації</span>
+              </div>
+              <div class="coverage-item">
+                <b>Регулярність</b
+                ><span>кількість спрацювань автоматизацій</span>
+              </div>
+              <div class="coverage-item">
+                <b>Доставлення</b><span>delivered rate</span>
+              </div>
+              <div class="coverage-item">
+                <b>Якість бази</b><span>помилки та bounce</span>
+              </div>
+              <div class="coverage-item">
+                <b>Довіра</b><span>відписки та скарги</span>
+              </div>
+              <div class="coverage-item">
+                <b>Операційна складність</b><span>звернення у підтримку</span>
+              </div>
+            </div>
+          </section>
+
+          <section id="roadmap" aria-labelledby="roadmap-title">
+            <div class="section-head">
+              <div>
+                <span class="section-index">09</span>
+                <h2 id="roadmap-title">Не входить у MVP, але може бути далі</h2>
+                <p class="kicker">
+                  Наступні напрями логічно нарощуються поверх сегментів,
+                  email-доставки, suppression-логіки та журналу спрацювань.
+                </p>
+              </div>
+              <span class="badge later">Post-MVP</span>
+            </div>
+
+            <div class="roadmap">
+              <div class="roadmap-card">
+                <span class="phase">Content</span>
+                <h3>Шаблони</h3>
+                <p>
+                  Окремий розділ, бібліотека, дублювання, категорії та версії.
+                </p>
+              </div>
+              <div class="roadmap-card">
+                <span class="phase">Content</span>
+                <h3>Візуальний редактор</h3>
+                <p>
+                  Drag&amp;drop для користувачів, які не хочуть працювати з
+                  HTML.
+                </p>
+              </div>
+              <div class="roadmap-card">
+                <span class="phase">Channels</span>
+                <h3>Messenger</h3>
+                <p>Telegram, Viber, WhatsApp і SMS як додаткові канали.</p>
+              </div>
+              <div class="roadmap-card">
+                <span class="phase">Orchestration</span>
+                <h3>Каскади</h3>
+                <p>Наприклад: email не доставлено → спробувати інший канал.</p>
+              </div>
+              <div class="roadmap-card">
+                <span class="phase">Orchestration</span>
+                <h3>Ланцюжки</h3>
+                <p>Серії листів із паузами, умовами та розгалуженнями.</p>
+              </div>
+              <div class="roadmap-card">
+                <span class="phase">Platform</span>
+                <h3>Загальні тригери</h3>
+                <p>
+                  Подія сегмента, кліку або відписки → задача, тег, поле чи
+                  webhook. Це другий шар, не основний UI email-маркетингу.
+                </p>
+              </div>
+              <div class="roadmap-card">
+                <span class="phase">Audience</span>
+                <h3>Складні сегменти</h3>
+                <p>
+                  OR-умови, виключення, статичні списки та сегмент у сегменті.
+                </p>
+              </div>
+              <div class="roadmap-card">
+                <span class="phase">CRM Actions</span>
+                <h3>Sales / service сценарії</h3>
+                <p>
+                  Сегмент → задача менеджеру, картка у воронці або персональна
+                  дія з картки покупця.
+                </p>
+              </div>
+              <div class="roadmap-card">
+                <span class="phase">Acquisition</span>
+                <h3>Форми та попапи</h3>
+                <p>Збір контактів із сайту як окремий acquisition-напрям.</p>
+              </div>
+              <div class="roadmap-card">
+                <span class="phase">Analytics</span>
+                <h3>Розширена аналітика</h3>
+                <p>
+                  Порівняння автоматизацій, вплив на повторні покупки, cohort- і
+                  revenue-звіти.
+                </p>
+              </div>
+              <div class="roadmap-card">
+                <span class="phase">Behavior</span>
+                <h3>Поведінкові сегменти</h3>
+                <p>
+                  Відкрив, клікнув, не відкрив або отримав помилку доставки.
+                </p>
+              </div>
+              <div class="roadmap-card">
+                <span class="phase">Frequency</span>
+                <h3>Розширені правила повтору</h3>
+                <p>
+                  Повтор через N днів, повторний вхід у сегмент і обмеження
+                  частоти.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section id="coverage" aria-labelledby="coverage-title">
+            <div class="section-head">
+              <div>
+                <span class="section-index">✓</span>
+                <h2 id="coverage-title">Матриця покриття вимог</h2>
+                <p class="kicker">
+                  Контрольний список, щоб бізнесова подача не приховала технічні
+                  обмеження або прийняті рішення.
+                </p>
+              </div>
+            </div>
+
+            <div class="coverage">
+              <div class="coverage-item">
+                <b>Інформаційна архітектура</b
+                ><span
+                  >Маркетинг → Сегменти / Email → Разові / Автоматизації</span
+                >
+              </div>
+              <div class="coverage-item">
+                <b>Сутність аудиторії</b
+                ><span>Покупці, динамічний склад, заплановане оновлення</span>
+              </div>
+              <div class="coverage-item">
+                <b>Логіка умов</b
+                ><span>AND, типи полів, перелік операторів, без OR-груп</span>
+              </div>
+              <div class="coverage-item">
+                <b>Повторне використання</b
+                ><span>Один сегмент у багатьох email-сценаріях</span>
+              </div>
+              <div class="coverage-item">
+                <b>Разова розсилка</b
+                ><span
+                  >9 кроків, фіксація аудиторії, exclusions, статистика</span
+                >
+              </div>
+              <div class="coverage-item">
+                <b>Автоматизація</b
+                ><span>Тригер входу, статуси, історія, один раз / покупця</span>
+              </div>
+              <div class="coverage-item">
+                <b>Email-контент</b
+                ><span>HTML inline, preview, test send, без шаблонів</span>
+              </div>
+              <div class="coverage-item">
+                <b>Доставка</b
+                ><span>Зовнішній провайдер, статуси, критичні помилки</span>
+              </div>
+              <div class="coverage-item">
+                <b>Compliance</b
+                ><span>Відписка та глобальне блокування маркетингу</span>
+              </div>
+              <div class="coverage-item">
+                <b>Ризикові дії</b
+                ><span>Окреме право на запуск та активацію</span>
+              </div>
+              <div class="coverage-item">
+                <b>Валідація MVP</b
+                ><span>Гіпотези, ознаки підтвердження, базові метрики</span>
+              </div>
+              <div class="coverage-item">
+                <b>Межі та розвиток</b
+                ><span>Повний перелік відкладених напрямів</span>
+              </div>
+            </div>
+
+            <details style="margin-top: 18px">
+              <summary>Ключові рішення в одному списку</summary>
+              <div class="details-body">
+                <ol>
+                  <li>Єдина аудиторія MVP — покупці.</li>
+                  <li>
+                    Сегменти динамічні, оновлюються за розкладом і зберігають
+                    факт входу покупця.
+                  </li>
+                  <li>Усі умови сегмента поєднуються через AND.</li>
+                  <li>
+                    Разова розсилка фіксує склад аудиторії на момент запуску.
+                  </li>
+                  <li>
+                    Автоматизація реагує на вхід у сегмент і за замовчуванням
+                    пише покупцю один раз.
+                  </li>
+                  <li>
+                    HTML зберігається у самій розсилці / автоматизації; шаблонів
+                    і drag&amp;drop немає.
+                  </li>
+                  <li>Preview і test send обов’язкові.</li>
+                  <li>Дозволений лише підтверджений відправник.</li>
+                  <li>
+                    Відписані, критично помилкові та complaint-адреси
+                    виключаються з маркетингових відправок.
+                  </li>
+                  <li>
+                    Запуск масової комунікації та налаштування відправників
+                    мають окремі права доступу.
+                  </li>
+                </ol>
+              </div>
+            </details>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      (() => {
+        const root = document.documentElement;
+        const themeBtn = document.getElementById("themeBtn");
+        const printBtn = document.getElementById("printBtn");
+        const searchBtn = document.getElementById("searchBtn");
+        const searchBox = document.getElementById("searchBox");
+        const searchInput = document.getElementById("searchInput");
+        const searchStatus = document.getElementById("searchStatus");
+        const expandAll = document.getElementById("expandAll");
+        const details = [...document.querySelectorAll("details")];
+        const sections = [...document.querySelectorAll("main [id]")];
+        const navLinks = [...document.querySelectorAll(".toc a")];
+
+        const savedTheme = localStorage.getItem("keycrm-theme");
+        if (savedTheme) root.dataset.theme = savedTheme;
+
+        themeBtn.addEventListener("click", () => {
+          const next = root.dataset.theme === "dark" ? "light" : "dark";
+          root.dataset.theme = next;
+          localStorage.setItem("keycrm-theme", next);
+        });
+
+        printBtn.addEventListener("click", () => window.print());
+
+        searchBtn.addEventListener("click", () => {
+          searchBox.classList.toggle("open");
+          if (searchBox.classList.contains("open")) searchInput.focus();
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (
+            (event.ctrlKey || event.metaKey) &&
+            event.key.toLowerCase() === "k"
+          ) {
+            event.preventDefault();
+            searchBox.classList.add("open");
+            searchInput.focus();
+          }
+          if (event.key === "Escape") {
+            searchBox.classList.remove("open");
+            searchInput.blur();
+          }
+        });
+
+        let allOpen = false;
+        expandAll.addEventListener("click", () => {
+          allOpen = !allOpen;
+          details.forEach((item) => (item.open = allOpen));
+          expandAll.textContent = allOpen
+            ? "Згорнути деталі"
+            : "Розгорнути деталі";
+        });
+
+        searchInput.addEventListener("input", () => {
+          document
+            .querySelectorAll(".search-hit")
+            .forEach((el) => el.classList.remove("search-hit"));
+          const query = searchInput.value.trim().toLowerCase();
+          if (query.length < 2) {
+            searchStatus.textContent = "Введіть щонайменше 2 символи";
+            return;
+          }
+
+          const matches = sections.filter((section) =>
+            section.innerText.toLowerCase().includes(query),
+          );
+          searchStatus.textContent = matches.length
+            ? `Знайдено блоків: ${matches.length}. Enter — перейти до першого.`
+            : "Нічого не знайдено";
+
+          matches.forEach((section) => section.classList.add("search-hit"));
+        });
+
+        searchInput.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter") return;
+          const first = document.querySelector(".search-hit");
+          if (first) {
+            first.scrollIntoView({ behavior: "smooth", block: "start" });
+            searchBox.classList.remove("open");
+          }
+        });
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            const visible = entries
+              .filter((entry) => entry.isIntersecting)
+              .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+            if (!visible) return;
+            navLinks.forEach((link) => {
+              link.classList.toggle(
+                "active",
+                link.getAttribute("href") === `#${visible.target.id}`,
+              );
+            });
+          },
+          { rootMargin: "-18% 0px -65% 0px", threshold: [0.01, 0.2, 0.5] },
+        );
+
+        document
+          .querySelectorAll("section[id], article[id]")
+          .forEach((section) => observer.observe(section));
+      })();
+    </script>
+  </body>
+</html>

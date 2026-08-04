@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Типи цін — контекст, підготовка та сценарій інтерв'ю</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --bg:#EEF1EC;
+    --surface:#FFFFFF;
+    --surface-2:#F6F8F4;
+    --ink:#16211C;
+    --ink-soft:#4C5A53;
+    --line:#D8DFD8;
+    --teal:#1F6F5C;
+    --teal-soft:#E3EFEA;
+    --ochre:#B9822A;
+    --ochre-soft:#F6EDD9;
+    --violet:#6C4FA0;
+    --violet-soft:#EEE8F6;
+    --rust:#A8462E;
+    --rust-soft:#F7E6E0;
+    --serif:'Newsreader', Georgia, serif;
+    --mono:'IBM Plex Mono', ui-monospace, monospace;
+    --sans:'IBM Plex Sans', system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--sans); line-height:1.55;
+  }
+  section, header{ scroll-margin-top:64px; }
+  .wrap{ max-width:900px; margin:0 auto; padding:0 28px; }
+
+  /* nav */
+  .topnav{
+    position:sticky; top:0; z-index:20;
+    background:rgba(238,241,236,0.92); backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .topnav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:14px; padding-bottom:14px; gap:16px; flex-wrap:wrap;
+  }
+  .topnav .brand{
+    font-family:var(--mono); font-size:12px; letter-spacing:.08em;
+    color:var(--ink-soft); text-transform:uppercase; white-space:nowrap;
+  }
+  .topnav ul{ list-style:none; display:flex; gap:16px; margin:0; padding:0; flex-wrap:wrap; }
+  .topnav a{
+    font-family:var(--mono); font-size:12px; letter-spacing:.06em;
+    color:var(--ink); text-decoration:none; text-transform:uppercase;
+    border-bottom:1px solid transparent; padding-bottom:2px;
+  }
+  .topnav a:hover, .topnav a:focus-visible{ border-bottom-color:var(--teal); color:var(--teal); }
+
+  /* hero */
+  .hero{ padding:64px 0 40px; }
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--teal); margin:0 0 14px;
+  }
+  h1{
+    font-family:var(--serif); font-weight:600;
+    font-size:clamp(32px,5.5vw,52px); line-height:1.08;
+    margin:0 0 16px; letter-spacing:-.01em;
+  }
+  h1 em{ font-style:italic; font-weight:500; color:var(--teal); }
+  .lede{ font-size:18px; color:var(--ink-soft); max-width:58ch; margin:0 0 36px; }
+
+  .diagram-scroll{ overflow-x:auto; margin:0 -4px; padding:4px; }
+  .diagram-scroll svg{ display:block; min-width:620px; width:100%; height:auto; }
+  .frame{
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:14px; padding:20px 16px;
+  }
+
+  /* sections */
+  section{ padding:56px 0; border-top:1px solid var(--line); }
+  .section-head{ display:flex; align-items:center; gap:12px; margin-bottom:8px; flex-wrap:wrap; }
+  .tag-eyebrow{
+    font-family:var(--mono); font-size:12px; line-height:1; letter-spacing:.1em;
+    color:var(--teal); background:var(--teal-soft);
+    padding:6px 10px; border-radius:100px; text-transform:uppercase;
+    display:inline-flex; align-items:center; flex-shrink:0;
+  }
+  h2{ font-family:var(--serif); font-weight:600; font-size:clamp(24px,3.4vw,32px); margin:0; }
+  h3{ font-family:var(--serif); font-weight:600; font-size:20px; margin:34px 0 14px; }
+  .section-note{ color:var(--ink-soft); max-width:66ch; margin:14px 0 30px; }
+  p.body{ max-width:66ch; }
+
+  /* callout */
+  .callout{
+    background:var(--surface-2); border-left:4px solid var(--teal);
+    border-radius:0 12px 12px 0; padding:24px 28px; margin-top:32px;
+  }
+  .callout p.big{
+    font-family:var(--serif); font-style:italic; font-size:clamp(19px,2.6vw,24px);
+    margin:0 0 8px; color:var(--ink);
+  }
+  .callout p.small{ margin:0; color:var(--ink-soft); font-size:14px; max-width:64ch; }
+  .callout--warn{ border-left-color:var(--rust); background:var(--rust-soft); }
+
+  .note{
+    font-size:14px; color:var(--ink-soft); background:var(--surface-2);
+    border:1px dashed var(--line); border-radius:10px; padding:12px 16px; margin:24px 0 0;
+    max-width:70ch;
+  }
+
+  /* translate table */
+  .tr-grid{ display:grid; gap:12px; }
+  .tr{
+    background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px;
+  }
+  .tr-said{
+    font-family:var(--serif); font-style:italic; font-size:17px;
+    margin:0 0 12px; color:var(--ink);
+  }
+  .tr-body{ display:grid; gap:12px; }
+  @media(min-width:720px){ .tr-body{ grid-template-columns:1fr 1fr; gap:20px; } }
+  .tr-col .lbl{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.09em;
+    text-transform:uppercase; color:var(--ink-soft); display:block; margin-bottom:5px;
+  }
+  .tr-col .lbl.ask{ color:var(--ochre); }
+  .tr-col p{ margin:0; font-size:14.5px; color:var(--ink-soft); }
+  .tr-col p strong{ color:var(--ink); font-weight:600; }
+
+  /* example calc */
+  .calc{
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:12px; padding:22px; margin-bottom:20px;
+  }
+  .calc-row{
+    display:flex; justify-content:space-between; align-items:baseline; gap:14px;
+    padding:9px 0; border-bottom:1px dashed var(--line);
+    font-family:var(--mono); font-size:13.5px; color:var(--ink-soft);
+  }
+  .calc-row:last-child{ border-bottom:none; }
+  .calc-row .who{ color:var(--ink); }
+  .calc-row.dim{ opacity:.55; text-decoration:line-through; }
+  .calc-row.win{ color:var(--ink); font-weight:600; }
+  .calc-row.win .who::after{
+    content:'обрано'; font-size:10px; letter-spacing:.08em; text-transform:uppercase;
+    background:var(--teal-soft); color:var(--teal); border-radius:100px;
+    padding:2px 8px; margin-left:10px; font-weight:600;
+  }
+  .calc-total{
+    display:flex; justify-content:space-between; align-items:baseline; gap:14px;
+    margin-top:14px; padding-top:14px; border-top:2px solid var(--ink);
+    font-family:var(--mono); font-size:15px; font-weight:600;
+  }
+  .step-row{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:16px; }
+  @media(max-width:520px){ .step-row{ flex-direction:column; align-items:flex-start; } .step-row .arrow{ transform:rotate(90deg); } }
+  .step{
+    font-family:var(--mono); font-size:12.5px; background:var(--surface-2);
+    border:1px solid var(--line); border-radius:8px; padding:6px 10px;
+    color:var(--ink-soft); white-space:nowrap;
+  }
+  .step--result{ background:var(--ochre-soft); border-color:var(--ochre); color:var(--ink); font-weight:600; }
+  .arrow{ color:var(--ink-soft); font-size:14px; }
+
+  /* forks */
+  .forks{ display:grid; gap:14px; }
+  .fork{
+    background:var(--surface); border:1px solid var(--line);
+    border-left:3px solid var(--violet); border-radius:0 12px 12px 0; padding:18px 20px;
+  }
+  .fork-head{ display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap; }
+  .fork-num{
+    font-family:var(--mono); font-size:11px; line-height:1; color:var(--violet);
+    background:var(--violet-soft); border-radius:100px; padding:6px 10px; letter-spacing:.06em;
+    display:inline-flex; align-items:center; flex-shrink:0;
+  }
+  .fork-name{ font-weight:600; font-size:16px; margin:0; line-height:1.3; }
+  .fork p{ margin:0 0 10px; font-size:14.5px; color:var(--ink-soft); max-width:66ch; }
+  .fork .askline{
+    font-family:var(--mono); font-size:13px; color:var(--ink);
+    background:var(--surface-2); border:1px solid var(--line);
+    border-radius:8px; padding:10px 12px; margin:0;
+  }
+  .fork .askline::before{
+    content:'запитати ▸ '; color:var(--ochre); font-weight:600;
+    font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
+  }
+
+  /* traps */
+  .traps{ display:grid; gap:12px; }
+  .trap{
+    background:var(--surface); border:1px solid var(--line);
+    border-left:3px solid var(--rust); border-radius:0 12px 12px 0; padding:16px 20px;
+  }
+  .trap h4{ margin:0 0 6px; font-size:15.5px; font-weight:600; }
+  .trap p{ margin:0; font-size:14.5px; color:var(--ink-soft); max-width:66ch; }
+
+  .rules{ list-style:none; margin:0; padding:0; display:grid; gap:10px; max-width:68ch; }
+  .rules li{ display:flex; gap:10px; align-items:baseline; font-size:15px; }
+  .rules li::before{ content:'—'; color:var(--ink-soft); flex-shrink:0; }
+
+  /* script clusters */
+  .cluster{
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:12px; padding:22px 24px; margin-bottom:16px;
+  }
+  .cl-head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .cl-num{
+    font-family:var(--mono); font-size:11px; line-height:1; color:var(--teal);
+    background:var(--teal-soft); border-radius:100px; padding:6px 10px; letter-spacing:.06em;
+    display:inline-flex; align-items:center; flex-shrink:0;
+  }
+  .cl-name{ font-family:var(--serif); font-weight:600; font-size:21px; margin:0; line-height:1.2; }
+  .cl-why{ font-size:14px; color:var(--ink-soft); margin:0 0 16px; max-width:66ch; }
+  .cl-links{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--violet); margin:0 0 14px;
+  }
+  .gate{
+    background:var(--teal-soft); border:1px solid var(--teal);
+    border-radius:10px; padding:14px 16px; margin-bottom:18px;
+  }
+  .gate .glbl{
+    font-family:var(--mono); font-size:10px; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--teal); display:block; margin-bottom:6px;
+  }
+  .gate p{ margin:0; font-size:15px; }
+  .gate .skip{ font-size:13px; color:var(--ink-soft); margin-top:8px; }
+
+  .qgroup{ margin-bottom:18px; }
+  .qgroup:last-child{ margin-bottom:0; }
+  .qgroup h5{
+    font-family:var(--mono); font-size:11px; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--ink-soft); margin:0 0 10px; font-weight:500;
+  }
+  ul.q{ list-style:none; margin:0; padding:0; display:grid; gap:9px; }
+  ul.q li{ display:flex; gap:10px; align-items:baseline; font-size:15px; max-width:70ch; }
+  ul.q li::before{ content:'?'; font-family:var(--mono); color:var(--teal); flex-shrink:0; font-weight:600; }
+  ul.q li.new::before{ content:'+'; color:var(--ochre); }
+  ul.q li .hint{ color:var(--ink-soft); font-size:13.5px; display:block; margin-top:3px; }
+
+  .signal{
+    background:var(--surface-2); border:1px dashed var(--line); border-radius:10px;
+    padding:12px 15px; margin-top:16px; font-size:14px; color:var(--ink-soft); max-width:70ch;
+  }
+  .signal strong{ color:var(--ink); }
+  .signal .slbl{
+    font-family:var(--mono); font-size:10px; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--ochre); display:block; margin-bottom:5px;
+  }
+
+  .legend{
+    display:flex; gap:20px; flex-wrap:wrap; font-family:var(--mono); font-size:12px;
+    color:var(--ink-soft); margin:0 0 26px;
+  }
+  .legend b{ color:var(--teal); }
+  .legend b.add{ color:var(--ochre); }
+
+
+  /* ---------- part dividers ---------- */
+  .part{
+    padding:70px 0 0; border-top:2px solid var(--ink);
+  }
+  .part-head{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:14px; }
+  .part-num{
+    font-family:var(--mono); font-size:12px; line-height:1; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--bg); background:var(--ink); border-radius:100px; padding:8px 14px;
+    display:inline-flex; align-items:center; flex-shrink:0;
+  }
+  .part h2.part-title{
+    font-family:var(--serif); font-weight:600; font-size:clamp(28px,4.4vw,40px);
+    margin:0; letter-spacing:-.01em;
+  }
+  .part-lede{ font-size:17px; color:var(--ink-soft); max-width:62ch; margin:0 0 24px; }
+  .toc{
+    list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:10px;
+  }
+  .toc a{
+    font-family:var(--mono); font-size:12px; letter-spacing:.04em;
+    color:var(--ink-soft); text-decoration:none;
+    background:var(--surface); border:1px solid var(--line); border-radius:100px;
+    padding:6px 13px; display:inline-block;
+  }
+  .toc a:hover, .toc a:focus-visible{ border-color:var(--teal); color:var(--teal); }
+  section.first{ border-top:none; padding-top:44px; }
+
+  /* ---------- 1.3 конструктор цін ---------- */
+  .dims{ display:grid; gap:10px; margin:0 0 8px; }
+  @media(min-width:640px){ .dims{ grid-template-columns:repeat(3,1fr); } }
+  .dimcard{
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:10px; padding:14px 16px;
+  }
+  .dimcard .dn{
+    font-family:var(--mono); font-size:12px; letter-spacing:.04em;
+    color:var(--teal); margin:0 0 6px; font-weight:600;
+  }
+  .dimcard .dd{ margin:0; font-size:13.5px; color:var(--ink-soft); }
+
+  .combos{
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:12px; padding:8px 20px;
+  }
+  .combo{
+    display:flex; align-items:center; gap:9px; flex-wrap:wrap;
+    padding:15px 0; border-bottom:1px dashed var(--line);
+  }
+  .combo:last-child{ border-bottom:none; }
+  .chip{
+    font-family:var(--mono); font-size:12px; line-height:1;
+    background:var(--surface-2); border:1px solid var(--line);
+    border-radius:100px; padding:7px 12px; color:var(--ink-soft);
+    display:inline-flex; align-items:center;
+  }
+  .op{ font-family:var(--mono); font-size:13px; color:var(--ink-soft); }
+  .res{
+    font-family:var(--mono); font-size:12.5px; line-height:1; font-weight:600;
+    background:var(--teal-soft); border:1px solid var(--teal); color:var(--teal);
+    border-radius:8px; padding:7px 13px; display:inline-flex; align-items:center;
+  }
+
+  .types{ display:grid; gap:10px; }
+  @media(min-width:620px){ .types{ grid-template-columns:1fr 1fr; } }
+  .type{
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:10px; padding:15px 17px;
+  }
+  .type .tname{ font-weight:600; font-size:15.5px; margin:0 0 8px; }
+  .type .trow{ display:flex; gap:8px; align-items:flex-start; margin-bottom:5px; font-size:13.5px; }
+  .type .trow:last-child{ margin-bottom:0; }
+  .type .tk{
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.07em; text-transform:uppercase;
+    color:var(--ink-soft); flex-shrink:0; width:62px; padding-top:3px;
+  }
+  .type .tv{ margin:0; color:var(--ink-soft); }
+  .type .tv.said{ font-family:var(--serif); font-style:italic; color:var(--ink); }
+
+  .vs{ display:grid; gap:12px; }
+  @media(min-width:640px){ .vs{ grid-template-columns:1fr 1fr; } }
+  .vs-col{
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:12px; padding:18px 20px;
+  }
+  .vs-col.a{ border-top:3px solid var(--ochre); }
+  .vs-col.b{ border-top:3px solid var(--violet); }
+  .vs-col h4{ margin:0 0 6px; font-size:16px; font-weight:600; }
+  .vs-col p{ margin:0 0 12px; font-size:14px; color:var(--ink-soft); }
+  .vs-demo{
+    font-family:var(--mono); font-size:12.5px; background:var(--surface-2);
+    border:1px solid var(--line); border-radius:8px; padding:11px 13px; color:var(--ink-soft);
+  }
+  .vs-demo b{ color:var(--ink); }
+
+  body{ padding-bottom:80px; }
+
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="wrap">
+    <span class="brand">FR-488 · типи цін</span>
+    <ul>
+      <li><a href="#part1">I · Теорія</a></li>
+      <li><a href="#part2">II · Інтерв'ю</a></li>
+      <li><a href="#part3">III · Сценарій</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Підготовка до discovery · FR-488</p>
+    <h1>Типи цін: <em>розібратись</em>, підготуватись, запитати</h1>
+    <p class="lede">Клієнти просять «додати типи цін». Перш ніж іти з'ясовувати, що саме їм потрібно, треба розуміти три речі: як влаштоване ціноутворення взагалі, як вести розмову, щоб отримати правду, і які конкретно питання ставити. Документ іде саме в цьому порядку.</p>
+
+    <div class="frame">
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 640 132" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Три частини документа: теорія, підготовка до інтерв'ю, сценарій по кластерах">
+          <defs>
+            <marker id="ah0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#4C5A53"/>
+            </marker>
+          </defs>
+          <rect x="12" y="34" width="184" height="66" rx="9" fill="#E3EFEA" stroke="#1F6F5C" stroke-width="1.4"/>
+          <text x="30" y="58" font-family="IBM Plex Mono" font-size="10.5" letter-spacing="1" fill="#1F6F5C">ЧАСТИНА I</text>
+          <text x="30" y="79" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#16211C">Як це влаштовано</text>
+          <line x1="200" y1="67" x2="222" y2="67" stroke="#4C5A53" stroke-width="1.5" marker-end="url(#ah0)"/>
+
+          <rect x="228" y="34" width="184" height="66" rx="9" fill="#F6EDD9" stroke="#B9822A" stroke-width="1.4"/>
+          <text x="246" y="58" font-family="IBM Plex Mono" font-size="10.5" letter-spacing="1" fill="#B9822A">ЧАСТИНА II</text>
+          <text x="246" y="79" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#16211C">Як вести розмову</text>
+          <line x1="416" y1="67" x2="438" y2="67" stroke="#4C5A53" stroke-width="1.5" marker-end="url(#ah0)"/>
+
+          <rect x="444" y="34" width="184" height="66" rx="9" fill="#EEE8F6" stroke="#6C4FA0" stroke-width="1.4"/>
+          <text x="462" y="58" font-family="IBM Plex Mono" font-size="10.5" letter-spacing="1" fill="#6C4FA0">ЧАСТИНА III</text>
+          <text x="462" y="79" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#16211C">Що конкретно питати</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="part" id="part1">
+  <div class="wrap">
+    <div class="part-head">
+      <span class="part-num">Частина I</span>
+      <h2 class="part-title">Як влаштоване ціноутворення</h2>
+    </div>
+    <p class="part-lede">Мінімум теорії, щоб розуміти, про що говорить клієнт. Без цього неможливо почути механіку за побутовими словами — а саме її ми й шукаємо.</p>
+    <ul class="toc">
+      <li><a href="#now">1.1 Що система вміє сьогодні</a></li>
+      <li><a href="#model">1.2 Два шари</a></li>
+      <li><a href="#types">1.3 Які бувають типи цін</a></li>
+      <li><a href="#example">1.4 Приклад на цифрах</a></li>
+    </ul>
+  </div>
+</div>
+
+<section id="now" class="first">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag-eyebrow">1.1</span>
+      <h2>Що система вміє сьогодні</h2>
+    </div>
+    <p class="section-note">Це наша відправна точка. Її треба тримати в голові, бо всі клієнти вже якось живуть на цій моделі — і саме те, як вони її обходять, є найціннішою інформацією на інтерв'ю.</p>
+
+    <div class="frame">
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 640 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Поточна модель: одна ціна в картці товару підставляється в позицію замовлення, менеджер може її змінити вручну, зверху додається знижка">
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#4C5A53"/>
+            </marker>
+          </defs>
+
+          <rect x="20" y="40" width="150" height="62" rx="8" fill="#FFFFFF" stroke="#D8DFD8" stroke-width="1.4"/>
+          <text x="95" y="66" text-anchor="middle" font-family="IBM Plex Mono" font-size="12.5" font-weight="600" fill="#16211C">Товар</text>
+          <text x="95" y="85" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#4C5A53">одна ціна</text>
+
+          <line x1="172" y1="71" x2="212" y2="71" stroke="#4C5A53" stroke-width="1.5" marker-end="url(#ah)"/>
+          <text x="192" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#4C5A53">дефолт</text>
+
+          <rect x="216" y="40" width="170" height="62" rx="8" fill="#E3EFEA" stroke="#1F6F5C" stroke-width="1.4"/>
+          <text x="301" y="66" text-anchor="middle" font-family="IBM Plex Mono" font-size="12.5" font-weight="600" fill="#16211C">Позиція замовлення</text>
+          <text x="301" y="85" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#4C5A53">ціну можна змінити руками</text>
+
+          <line x1="388" y1="71" x2="428" y2="71" stroke="#4C5A53" stroke-width="1.5" marker-end="url(#ah)"/>
+
+          <rect x="432" y="40" width="120" height="62" rx="8" fill="#F6EDD9" stroke="#B9822A" stroke-width="1.4"/>
+          <text x="492" y="66" text-anchor="middle" font-family="IBM Plex Mono" font-size="12.5" font-weight="600" fill="#16211C">Знижка</text>
+          <text x="492" y="85" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#4C5A53">зверху</text>
+
+          <line x1="301" y1="104" x2="301" y2="128" stroke="#A8462E" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ah)"/>
+          <rect x="120" y="132" width="400" height="52" rx="8" fill="#F7E6E0" stroke="#A8462E" stroke-width="1.4"/>
+          <text x="320" y="154" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="600" fill="#16211C">Ручна правка — це і є «типи цін» сьогодні</text>
+          <text x="320" y="172" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#4C5A53">менеджер тримає прайс у голові, файлі або чаті</text>
+        </svg>
+      </div>
+    </div>
+
+    <p class="body" style="margin-top:26px">Тобто окремої ціни під різних клієнтів у системі не існує взагалі. Вся варіативність зараз тримається на людині: менеджер десь підглядає потрібну цифру і вписує її в замовлення. Значить, у кожного клієнта є свій обхідний шлях — файл, дубль картки товару, окремий склад, домовленість «Петрову завжди мінус 15». Знайти цей обхідний шлях і є головна мета розмови.</p>
+
+    <div class="callout">
+      <p class="big">Клієнт, у якого є workaround, уже проголосував зусиллями. Клієнт, який сказав «було б добре» — ні.</p>
+      <p class="small">Тому головне полювання на інтерв'ю — за обхідними шляхами. Хто завів дублі карток товару під оптові ціни або тримає прайс у файлі, той має справжню потребу. Хто просто сказав «було б добре» — ні.</p>
+    </div>
+  </div>
+</section>
+
+<section id="model">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag-eyebrow">1.2</span>
+      <h2>Два шари: база і модифікатор</h2>
+    </div>
+    <p class="section-note">Мінімум теорії, який потрібен, щоб розуміти, про що говорить клієнт. Усе інше — деталі, які на цьому етапі не потрібні.</p>
+
+    <div class="frame">
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 640 232" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Шар бази: система обирає один тип ціни з кількох можливих. Шар модифікаторів: зверху накладаються знижки та лояльність. Разом дають фінальну ціну позиції">
+          <defs>
+            <marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#4C5A53"/>
+            </marker>
+          </defs>
+
+          <text x="20" y="20" font-family="IBM Plex Mono" font-size="10.5" letter-spacing="1" fill="#1F6F5C">ШАР 1 · БАЗА — ОБИРАЄТЬСЯ ОДНА</text>
+          <rect x="20" y="30" width="140" height="46" rx="7" fill="#FFFFFF" stroke="#D8DFD8" stroke-width="1.3"/>
+          <text x="90" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="11.5" fill="#4C5A53">роздрібна</text>
+          <text x="90" y="66" text-anchor="middle" font-family="IBM Plex Mono" font-size="11.5" fill="#4C5A53">1000 ₴</text>
+
+          <rect x="172" y="30" width="140" height="46" rx="7" fill="#E3EFEA" stroke="#1F6F5C" stroke-width="1.8"/>
+          <text x="242" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="11.5" font-weight="600" fill="#16211C">дилерська</text>
+          <text x="242" y="66" text-anchor="middle" font-family="IBM Plex Mono" font-size="11.5" font-weight="600" fill="#16211C">850 ₴</text>
+
+          <rect x="324" y="30" width="140" height="46" rx="7" fill="#FFFFFF" stroke="#D8DFD8" stroke-width="1.3"/>
+          <text x="394" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="11.5" fill="#4C5A53">оптова від 30 шт</text>
+          <text x="394" y="66" text-anchor="middle" font-family="IBM Plex Mono" font-size="11.5" fill="#4C5A53">800 ₴</text>
+
+          <rect x="476" y="30" width="144" height="46" rx="7" fill="#FFFFFF" stroke="#D8DFD8" stroke-width="1.3"/>
+          <text x="548" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="11.5" fill="#4C5A53">маркетплейс</text>
+          <text x="548" y="66" text-anchor="middle" font-family="IBM Plex Mono" font-size="11.5" fill="#4C5A53">950 ₴</text>
+
+          <line x1="242" y1="78" x2="242" y2="104" stroke="#1F6F5C" stroke-width="1.8" marker-end="url(#ah2)"/>
+          <text x="256" y="96" font-family="IBM Plex Mono" font-size="10" fill="#1F6F5C">перемогла за правилом пріоритету</text>
+
+          <text x="20" y="126" font-family="IBM Plex Mono" font-size="10.5" letter-spacing="1" fill="#B9822A">ШАР 2 · МОДИФІКАТОРИ — ЛЯГАЮТЬ ЗВЕРХУ</text>
+          <rect x="20" y="136" width="290" height="44" rx="7" fill="#F6EDD9" stroke="#B9822A" stroke-width="1.4"/>
+          <text x="165" y="163" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#16211C">Знижка · промо, персональна</text>
+
+          <rect x="322" y="136" width="298" height="44" rx="7" fill="#EEE8F6" stroke="#6C4FA0" stroke-width="1.4"/>
+          <text x="471" y="163" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#16211C">Лояльність · рівень за історією</text>
+
+          <line x1="320" y1="182" x2="320" y2="196" stroke="#4C5A53" stroke-width="1.5" marker-end="url(#ah2)"/>
+          <rect x="200" y="198" width="240" height="30" rx="6" fill="#16211C"/>
+          <text x="320" y="218" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="600" fill="#EEF1EC">ФІНАЛЬНА ЦІНА ПОЗИЦІЇ</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p class="big">Тип ціни — це яка база. Знижка — це що зверху на базу.</p>
+      <p class="small">Різниця не теоретична. Якщо «мінус 20% дилерам» — це окремий тип ціни, він стає новою базою, і промо −10% рахується вже від неї. Якщо це знижка — вона конкурує з промо, і треба вирішувати, чи вони складаються. Одна й та сама фраза клієнта дає дві різні механіки й дві різні цифри в чеку.</p>
+    </div>
+
+    <p class="note">Термінологія, яка зустрінеться далі: <strong>позиція замовлення</strong> — один товар усередині замовлення, саме на її рівні визначається ціна; <strong>контрагент</strong> — клієнт-компанія; <strong>канал</strong> — звідки прийшло замовлення: сайт, маркетплейс, менеджер вручну, роздрібна точка.</p>
+  </div>
+</section>
+
+<section id="types">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag-eyebrow">1.3</span>
+      <h2>Які бувають типи цін</h2>
+    </div>
+    <p class="section-note">Головна ідея розділу: окремих «типів цін» насправді не існує як самостійних сутностей. Є кілька ознак, за якими ціна може відрізнятись, і звичні назви на кшталт «оптова» чи «дилерська» — це просто ярлики для типових комбінацій цих ознак.</p>
+
+    <h3>Крок 1. Ознаки, за якими ціна відрізняється</h3>
+    <p class="body">Будь-яка ціна відрізняється від іншої однією або кількома з шести ознак. Більше нічого не буває.</p>
+
+    <div class="dims" style="margin-top:16px">
+      <div class="dimcard"><p class="dn">Хто купує</p><p class="dd">Роздріб, опт, дилер, дроп — група контрагента.</p></div>
+      <div class="dimcard"><p class="dn">Скільки бере</p><p class="dd">Пороги «від 10 штук», «від 50 штук».</p></div>
+      <div class="dimcard"><p class="dn">Де купує</p><p class="dd">Сайт, маркетплейс, точка продажу, склад.</p></div>
+      <div class="dimcard"><p class="dn">У якій валюті</p><p class="dd">Гривня, злотий, євро — або регіон продажу.</p></div>
+      <div class="dimcard"><p class="dn">Коли купує</p><p class="dd">Постійна ціна проти ціни з датами дії.</p></div>
+      <div class="dimcard"><p class="dn">Конкретний клієнт</p><p class="dd">Персональна домовленість поза всіма групами.</p></div>
+    </div>
+
+    <h3>Крок 2. Звичні назви — це комбінації ознак</h3>
+    <p class="body">Коли клієнт каже «у нас є оптова ціна», він насправді описує одну з таких комбінацій. Задача — почути, з яких саме ознак вона складена, бо в різних клієнтів під однією назвою ховається різне.</p>
+
+    <div class="combos" style="margin-top:16px">
+      <div class="combo">
+        <span class="chip">хто купує = дилер</span>
+        <span class="op">=</span>
+        <span class="res">Дилерська ціна</span>
+      </div>
+      <div class="combo">
+        <span class="chip">хто купує = опт</span>
+        <span class="op">+</span>
+        <span class="chip">скільки = від 50 шт</span>
+        <span class="op">=</span>
+        <span class="res">Оптова від 50</span>
+      </div>
+      <div class="combo">
+        <span class="chip">де = Rozetka</span>
+        <span class="op">+</span>
+        <span class="chip">коли = 1–14 грудня</span>
+        <span class="op">=</span>
+        <span class="res">Акція на маркетплейсі</span>
+      </div>
+      <div class="combo">
+        <span class="chip">конкретний клієнт = Петров</span>
+        <span class="op">=</span>
+        <span class="res">Індивідуальна ціна</span>
+      </div>
+      <div class="combo">
+        <span class="chip">де = Польща</span>
+        <span class="op">+</span>
+        <span class="chip">валюта = zł</span>
+        <span class="op">=</span>
+        <span class="res">Ціна для польського ринку</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p class="big">«Оптова ціна» в одного клієнта — це група контрагентів, а в іншого — поріг за кількістю.</p>
+      <p class="small">Це різні механіки під однією назвою. Тому на інтерв'ю ніколи не задовольняйся назвою: почув «оптова» — питай, за чим саме вона визначається. Інакше в зведенні по десятьох клієнтах буде десять «оптових цін», які означають різне.</p>
+    </div>
+
+    <h3>Крок 3. Довідник назв, які ти почуєш</h3>
+    <p class="body">Вісім усталених ярликів. Колонка «ознака» показує, з чого вони складені, колонка «як звучить» — те, що реально скаже клієнт.</p>
+
+    <div class="types" style="margin-top:16px">
+      <div class="type">
+        <p class="tname">Роздрібна</p>
+        <div class="trow"><span class="tk">ознака</span><p class="tv">хто купує</p></div>
+        <div class="trow"><span class="tk">як звучить</span><p class="tv said">«звичайна ціна», «ціна на сайті»</p></div>
+      </div>
+      <div class="type">
+        <p class="tname">Оптова</p>
+        <div class="trow"><span class="tk">ознака</span><p class="tv">хто купує + скільки бере</p></div>
+        <div class="trow"><span class="tk">як звучить</span><p class="tv said">«від 50 штук — по 80»</p></div>
+      </div>
+      <div class="type">
+        <p class="tname">Дилерська / дроп</p>
+        <div class="trow"><span class="tk">ознака</span><p class="tv">хто купує (статус, не обсяг)</p></div>
+        <div class="trow"><span class="tk">як звучить</span><p class="tv said">«дилерам мінус 20% завжди»</p></div>
+      </div>
+      <div class="type">
+        <p class="tname">Індивідуальна</p>
+        <div class="trow"><span class="tk">ознака</span><p class="tv">конкретний клієнт</p></div>
+        <div class="trow"><span class="tk">як звучить</span><p class="tv said">«у Петрова своя ціна»</p></div>
+      </div>
+      <div class="type">
+        <p class="tname">За джерелом</p>
+        <div class="trow"><span class="tk">ознака</span><p class="tv">де купує</p></div>
+        <div class="trow"><span class="tk">як звучить</span><p class="tv said">«на Пром у нас дорожче»</p></div>
+      </div>
+      <div class="type">
+        <p class="tname">Акційна</p>
+        <div class="trow"><span class="tk">ознака</span><p class="tv">коли купує</p></div>
+        <div class="trow"><span class="tk">як звучить</span><p class="tv said">«на час розпродажу знижуємо»</p></div>
+      </div>
+      <div class="type">
+        <p class="tname">За валютою / регіоном</p>
+        <div class="trow"><span class="tk">ознака</span><p class="tv">валюта + де купує</p></div>
+        <div class="trow"><span class="tk">як звучить</span><p class="tv said">«у Польщі — 20 zł»</p></div>
+      </div>
+      <div class="type">
+        <p class="tname">За складом / точкою</p>
+        <div class="trow"><span class="tk">ознака</span><p class="tv">де купує (фізична точка)</p></div>
+        <div class="trow"><span class="tk">як звучить</span><p class="tv said">«у центрі магазин дорожчий»</p></div>
+      </div>
+    </div>
+
+    <h3>Крок 4. Як ціна записана — сума чи відсоток</h3>
+    <p class="body">Останнє, що треба знати про будь-який тип: якою цифрою він заданий. Це не деталь реалізації — від цього залежить, що станеться, коли клієнт підніме базову ціну.</p>
+
+    <div class="vs" style="margin-top:16px">
+      <div class="vs-col a">
+        <h4>Фіксована сума</h4>
+        <p>Кожна ціна — незалежна цифра. Змінив одну — решта не зачеплена, їх треба оновлювати окремо.</p>
+        <div class="vs-demo">
+          роздріб 100 → <b>підняли до 120</b><br>
+          опт лишився <b>80</b> — треба міняти руками
+        </div>
+      </div>
+      <div class="vs-col b">
+        <h4>Відсоток від базової</h4>
+        <p>Ціна — похідна від базової. Змінив базову — всі решта перерахувались самі.</p>
+        <div class="vs-demo">
+          роздріб 100 → <b>підняли до 120</b><br>
+          опт −30% став <b>84</b> — автоматично
+        </div>
+      </div>
+    </div>
+
+    <p class="note">Більшість клієнтів використовує обидва способи одночасно, самі того не помічаючи: загальне правило у відсотках плюс десяток ручних винятків поверх нього. Саме ці винятки потім і ламають будь-яку автоматику, тому питай про них окремо.</p>
+  </div>
+</section>
+
+<section id="example">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag-eyebrow">1.4</span>
+      <h2>Як складається ціна — на цифрах</h2>
+    </div>
+    <p class="section-note">Один наскрізний випадок. Дилер бере 50 штук через маркетплейс у грудні, коли на товар діє акція.</p>
+
+    <div class="calc">
+      <div class="calc-row dim"><span class="who">Роздрібна</span><span>1000 ₴</span></div>
+      <div class="calc-row dim"><span class="who">Маркетплейс</span><span>950 ₴</span></div>
+      <div class="calc-row win"><span class="who">Дилерська</span><span>850 ₴</span></div>
+      <div class="calc-row dim"><span class="who">Оптова від 30 шт</span><span>800 ₴</span></div>
+      <div class="calc-total"><span>База</span><span>850 ₴</span></div>
+    </div>
+
+    <p class="body">Чотири ціни підходять одночасно — і тут з'являється перше рішення, яке ніхто не проговорює вголос: <strong>що перемагає</strong>. У прикладі виграв статус контрагента, тому базою стала дилерська, хоча оптова була вигіднішою для клієнта. Це вибір, а не даність: інша компанія вирішить, що завжди має перемагати найнижча ціна.</p>
+
+    <p class="body" style="margin-top:16px">Далі на базу лягають модифікатори — і тут друге рішення: вони складаються чи діє тільки один?</p>
+
+    <div class="step-row">
+      <span class="step">база 850</span>
+      <span class="arrow">→</span>
+      <span class="step">промо −10% → 765</span>
+      <span class="arrow">→</span>
+      <span class="step">лояльність −5% → 726.75</span>
+      <span class="arrow">→</span>
+      <span class="step step--result">726.75 ₴</span>
+    </div>
+
+    <p class="body" style="margin-top:20px">Або, за іншим правилом, промо взагалі не діє на дилерські ціни — і тоді в чеку 807.50. Різниця у 80 гривень на позиції береться не з налаштувань, а з бізнес-рішення, яке хтось має ухвалити свідомо.</p>
+
+    <div class="callout">
+      <p class="big">Цей приклад — не ілюстрація, а інструмент. Дай клієнту порахувати самому.</p>
+      <p class="small">Не питай «яке у вас правило пріоритету» — клієнт не думає такими категоріями і відповість «ну, як логічніше». Постав задачу: «дилер, 50 штук, у нас акція мінус 10, у нього ще й особиста домовленість — скільки він має заплатити?». Він порахує на пальцях і тим самим продиктує правило. Далі перепитай: «а якщо навпаки, вийде дешевше — так теж правильно?»</p>
+    </div>
+  </div>
+</section>
+
+<div class="part" id="part2">
+  <div class="wrap">
+    <div class="part-head">
+      <span class="part-num">Частина II</span>
+      <h2 class="part-title">Як вести інтерв'ю</h2>
+    </div>
+    <p class="part-lede">Ми робимо не рішення для одного клієнта, а механізм для всіх. Тому кожна відповідь — не вимога, а одна точка в розкиді. Ця частина про те, як отримати правду замість ввічливих «так» і що з цією правдою потім робити.</p>
+    <ul class="toc">
+      <li><a href="#goal">2.1 Навіщо ці інтерв'ю</a></li>
+      <li><a href="#rules">2.2 Правила розмови</a></li>
+      <li><a href="#glossary">2.3 Словник перекладу</a></li>
+      <li><a href="#traps">2.4 Пастки</a></li>
+      <li><a href="#forks">2.5 Що треба винести</a></li>
+    </ul>
+  </div>
+</div>
+
+<section id="goal" class="first">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag-eyebrow">2.1</span>
+      <h2>Навіщо ці інтерв'ю</h2>
+    </div>
+    <p class="section-note">До нас прийшов запит: «додайте типи цін». Це вже готове рішення, сформульоване клієнтами. Наша задача — дійти до проблеми, яка за ним стоїть, бо різні проблеми лікуються різними фічами.</p>
+
+    <p class="body">За однаковими словами «нам потрібні типи цін» зазвичай ховається щось із цього:</p>
+    <ul class="rules">
+      <li>менеджери щоразу правлять ціну вручну, це довго і в цьому помиляються;</li>
+      <li>прайси живуть у кількох Excel-файлах, і в CRM вони не потрапляють;</li>
+      <li>дилер не бачить свою ціну сам і дзвонить менеджеру за кожним запитом;</li>
+      <li>хтось продав нижче собівартості, і це помітили пізно;</li>
+      <li>неможливо зрозуміти заднім числом, чому в замовленні саме така ціна.</li>
+    </ul>
+    <p class="body" style="margin-top:18px">Це п'ять різних задач. Перша й друга — про типи цін. Третя — про особистий кабінет. Четверта — про мінімальну ціну й права. П'ята — взагалі про історію змін. Якщо піти на інтерв'ю з питанням «які типи цін вам потрібні», ми отримаємо відповідь саме на нього — і закріпимо чуже рішення замість того, щоб побачити проблему.</p>
+
+    <p class="body" style="margin-top:18px">Звідси перше правило розмови: питати не «що вам потрібно», а «як ви робите це зараз». Решта правил — у розділі 2.2.</p>
+  </div>
+</section>
+
+<section id="rules">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag-eyebrow">2.2</span>
+      <h2>Правила розмови</h2>
+    </div>
+    <p class="section-note">Чотири речі, які визначають, чи будуть зібрані дані придатними для рішень. Усе інше — техніка, якої можна навчитись по ходу.</p>
+
+    <div class="frame">
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Три відра, у які розкладаються відповіді клієнтів: однакове у всіх стає дефолтом, різне зі скінченним набором варіантів стає налаштуванням, різне у кожного стає правилом або відмовою">
+          <text x="20" y="22" font-family="IBM Plex Mono" font-size="11" letter-spacing="1" fill="#4C5A53">ВІДПОВІДІ ДЕСЯТИ КЛІЄНТІВ РОЗКЛАДАЮТЬСЯ У ТРИ ВІДРА</text>
+
+          <rect x="20" y="42" width="600" height="56" rx="8" fill="#E3EFEA" stroke="#1F6F5C" stroke-width="1.4"/>
+          <text x="40" y="67" font-family="IBM Plex Mono" font-size="13.5" font-weight="600" fill="#16211C">Однаково у всіх</text>
+          <text x="40" y="86" font-family="IBM Plex Mono" font-size="11.5" fill="#4C5A53">&#8594; хардкод і дефолт. Налаштування не потрібне.</text>
+
+          <rect x="20" y="108" width="600" height="56" rx="8" fill="#F6EDD9" stroke="#B9822A" stroke-width="1.4"/>
+          <text x="40" y="133" font-family="IBM Plex Mono" font-size="13.5" font-weight="600" fill="#16211C">Різне, але варіантів мало</text>
+          <text x="40" y="152" font-family="IBM Plex Mono" font-size="11.5" fill="#4C5A53">&#8594; налаштування з фіксованим набором значень.</text>
+
+          <rect x="20" y="174" width="600" height="56" rx="8" fill="#F7E6E0" stroke="#A8462E" stroke-width="1.4"/>
+          <text x="40" y="199" font-family="IBM Plex Mono" font-size="13.5" font-weight="600" fill="#16211C">У кожного по-своєму</text>
+          <text x="40" y="218" font-family="IBM Plex Mono" font-size="11.5" fill="#4C5A53">&#8594; правило/формула або свідома відмова. Не чекбокс.</text>
+        </svg>
+      </div>
+    </div>
+
+    <h3>1. Питай про минуле, не про майбутнє</h3>
+    <p class="body">«Чи будете користуватись?» і «чи потрібна вам оптова ціна?» — ненадійні дані: люди погано прогнозують свою поведінку і з ввічливості погоджуються з усім, що звучить розумно. «Як ви робите це зараз?», «коли востаннє помилились з ціною?», «що тоді сталося?» — надійні. Проси приклади, а не оцінки.</p>
+
+    <h3>2. Проси показати екран</h3>
+    <p class="body">Побачений Excel із трьома вкладками розкаже більше, ніж півгодини описів: скільки реально прайсів, за чим вони групуються, де ручні винятки, як часто оновлюються. Роби це на початку розмови — далі половина питань відпаде сама.</p>
+
+    <h3>3. Фіксуй відповіді однаково, а не переказом</h3>
+    <p class="body">По кожній розвилці з розділу 2.5 має бути порівнюваний запис. Тільки так після десяти інтерв'ю буде видно розкид: якщо у вісьмох із десяти індивідуальна ціна перемагає все — це дефолт, і налаштування не потрібне. Якщо думки розділились навпіл — тут потрібна конфігурація. Якщо у кожного своє — сигнал, що ми обрали неправильний примітив.</p>
+
+    <h3>4. Не обіцяй</h3>
+    <p class="body">Клієнт, який почув на дзвінку «так, ми це зробимо», прийде через місяць із питанням «де». Формула — «дякую, фіксую, це піде в аналіз».</p>
+
+    <div class="callout">
+      <p class="big">Конфліктні відповіді не треба усереднювати.</p>
+      <p class="small">Якщо один каже «лояльність має складатися з акцією», а другий «в жодному разі» — це не суперечність у даних, а знайдена точка конфігурації. Не вирішуй, хто правий, і не бери ту думку, що прозвучала переконливіше. Фіксуй обидві разом із поясненням чому.</p>
+    </div>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag-eyebrow">2.3</span>
+      <h2>Що клієнт каже і що це означає</h2>
+    </div>
+    <p class="section-note">Клієнт ніколи не скаже «нам потрібен тип ціни за каналом продажу». Він опише свій процес побутовими словами. Задача — почути за ними механіку і не додумати її самому.</p>
+
+    <div class="tr-grid">
+
+      <div class="tr">
+        <p class="tr-said">«Дилерам ми даємо мінус 20%»</p>
+        <div class="tr-body">
+          <div class="tr-col">
+            <span class="lbl">Що може ховатися</span>
+            <p><strong>Або</strong> окрема дилерська ціна, яку вони порахували один раз і зафіксували. <strong>Або</strong> знижка, яка щоразу рахується від роздрібу.</p>
+          </div>
+          <div class="tr-col">
+            <span class="lbl ask">Що уточнити</span>
+            <p>Коли ви піднімаєте роздрібну ціну — дилерська змінюється автоматично чи ви її перераховуєте окремо? Чи діє на дилера ще й акційна знижка зверху?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tr">
+        <p class="tr-said">«У Петрова своя ціна, він давно з нами»</p>
+        <div class="tr-body">
+          <div class="tr-col">
+            <span class="lbl">Що може ховатися</span>
+            <p>Індивідуальна ціна поза всякими групами. Питання — це один Петров чи таких сорок, і чи ціна в нього на всі товари або на п'ять позицій.</p>
+          </div>
+          <div class="tr-col">
+            <span class="lbl ask">Що уточнити</span>
+            <p>Скільки у вас таких клієнтів? У нього окрема ціна на весь каталог чи на окремі товари? Де вона зараз записана і хто про неї знає?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tr">
+        <p class="tr-said">«На маркетплейсі в нас свої ціни»</p>
+        <div class="tr-body">
+          <div class="tr-col">
+            <span class="lbl">Що може ховатися</span>
+            <p>Ціна за каналом. Часто веде не в CRM, а в інтеграцію: ціни живуть на боці майданчика, і питання в тому, хто кому їх передає.</p>
+          </div>
+          <div class="tr-col">
+            <span class="lbl ask">Що уточнити</span>
+            <p>Ці ціни зараз ставляться в кабінеті майданчика чи у вас? Куди має потрапляти правильна цифра, коли замовлення прилітає в CRM?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tr">
+        <p class="tr-said">«Від 50 штук — дешевше»</p>
+        <div class="tr-body">
+          <div class="tr-col">
+            <span class="lbl">Що може ховатися</span>
+            <p>Порогова логіка за кількістю. Ключове — від чого рахується поріг: від однієї позиції, від усього замовлення чи від обороту клієнта за місяць.</p>
+          </div>
+          <div class="tr-col">
+            <span class="lbl ask">Що уточнити</span>
+            <p>50 штук одного товару чи 50 штук у замовленні загалом? Якщо клієнт добере до порогу вже після оформлення — ціна перерахується?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tr">
+        <p class="tr-said">«Менеджер сам ставить ціну, ми йому довіряємо»</p>
+        <div class="tr-body">
+          <div class="tr-col">
+            <span class="lbl">Що може ховатися</span>
+            <p>Це і є поточний стан. Але фраза «ми довіряємо» майже завжди має продовження про випадок, коли довіра не спрацювала.</p>
+          </div>
+          <div class="tr-col">
+            <span class="lbl ask">Що уточнити</span>
+            <p>А бували випадки, коли поставили не ту ціну? Що тоді сталося? Чи є межа, нижче якої менеджер не має права опускатися?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tr">
+        <p class="tr-said">«У нас три прайси в екселі»</p>
+        <div class="tr-body">
+          <div class="tr-col">
+            <span class="lbl">Що може ховатися</span>
+            <p>Готова відповідь на питання про кількість і структуру типів цін — просто в іншій формі. Три вкладки = три типи, а їхні назви = виміри.</p>
+          </div>
+          <div class="tr-col">
+            <span class="lbl ask">Що уточнити</span>
+            <p>Покажіть, будь ласка. Хто їх оновлює і як часто? Що відбувається, коли з'являється новий товар — він одразу в усіх трьох?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tr">
+        <p class="tr-said">«Постійним клієнтам робимо знижку»</p>
+        <div class="tr-body">
+          <div class="tr-col">
+            <span class="lbl">Що може ховатися</span>
+            <p>Лояльність — модифікатор за історією замовлень. Або просто ручна знижка «на око», яку менеджер дає за відчуттям.</p>
+          </div>
+          <div class="tr-col">
+            <span class="lbl ask">Що уточнити</span>
+            <p>Є формальне правило — від якої суми чи кількості замовлень? Чи менеджер вирішує сам? Ця знижка діє й на оптові позиції?</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="traps">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag-eyebrow">2.4</span>
+      <h2>На чому найлегше зіпсувати інтерв'ю</h2>
+    </div>
+
+    <div class="traps">
+      <div class="trap">
+        <h4>Зачитувати список як меню</h4>
+        <p>Питання «а вам потрібна оптова ціна?» отримає «так» майже завжди. Клієнт із ввічливості й здорового глузду погоджується з усім, що звучить розумно. Вимоги, зібрані так, — вигадані на місці, і вигадали їх ми.</p>
+      </div>
+
+      <div class="trap">
+        <h4>Питати про майбутнє замість минулого</h4>
+        <p>«Чи будете ви користуватися?» — ненадійні дані. «Коли ви востаннє помилилися з ціною?» і «покажіть, як ви це робите зараз» — надійні. Проси приклади, а не оцінки.</p>
+      </div>
+
+      <div class="trap">
+        <h4>Приймати назву за механіку</h4>
+        <p>Клієнт сказав «оптова ціна» — це може бути група контрагентів, а може бути поріг за кількістю. Якщо записати назву й піти далі, у зведенні по десятьох клієнтах буде десять «оптових цін», які означають різне. Завжди перепитуй, за чим саме вона визначається.</p>
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
+<section id="forks">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag-eyebrow">2.5</span>
+      <h2>Що треба винести з розмови</h2>
+    </div>
+    <p class="section-note">Вісім місць, де рішення неоднозначне. Це кістяк розмови. Про більшість із цього клієнт не заговорить сам — не тому, що приховує, а тому, що не стикався з конфліктом і не думав про нього. Витягати треба задачами й прикладами, а не питанням «а яке у вас правило».</p>
+
+    <div class="forks">
+
+      <div class="fork">
+        <div class="fork-head"><span class="fork-num">01</span><p class="fork-name">Пріоритет бази — що перемагає</p></div>
+        <p>Коли клієнту підходять кілька цін одночасно. Найважливіша розвилка й найменш усвідомлена. Без неї фіча не працює взагалі.</p>
+        <p class="askline">Дай кейс із цифрами й попроси порахувати. Потім перевір межу: «а якщо оптова вийде дешевша за дилерську?»</p>
+      </div>
+
+      <div class="fork">
+        <div class="fork-head"><span class="fork-num">02</span><p class="fork-name">Стакання модифікаторів</p></div>
+        <p>Промо, персональна знижка й лояльність претендують разом: складаються послідовно чи діє одна найвигідніша?</p>
+        <p class="askline">У вас на товар акція, а клієнт має свою знижку — він отримує обидві чи одну? Яку саме?</p>
+      </div>
+
+      <div class="fork">
+        <div class="fork-head"><span class="fork-num">03</span><p class="fork-name">Дно ціни</p></div>
+        <p>Чи є межа, нижче якої не можна опуститися після всіх знижок. Зазвичай згадують уже після релізу, коли щось продали в мінус.</p>
+        <p class="askline">Чи бувало, що після всіх знижок продали дешевше, ніж купили? Хто це помітив і коли?</p>
+      </div>
+
+      <div class="fork">
+        <div class="fork-head"><span class="fork-num">04</span><p class="fork-name">Ручна правка — лишається чи ні</p></div>
+        <p>Сьогодні менеджер може вписати будь-яку цифру. Після появи типів цін це або залишається як аварійний вихід, або блокується, або обмежується межею.</p>
+        <p class="askline">Якщо система підставить ціну автоматично — менеджер має право її перебити? Завжди чи в межах?</p>
+      </div>
+
+      <div class="fork">
+        <div class="fork-head"><span class="fork-num">05</span><p class="fork-name">Хто що бачить</p></div>
+        <p>Оптова й контрактна ціни — чутлива інформація. Менеджеру роздрібу чи новому співробітнику їх зазвичай не показують.</p>
+        <p class="askline">Усі ваші менеджери бачать усі ціни? Є хтось, кому дилерську бачити не варто?</p>
+      </div>
+
+      <div class="fork">
+        <div class="fork-head"><span class="fork-num">06</span><p class="fork-name">Ціна в часі</p></div>
+        <p>Ціна зафіксувалася в момент оформлення чи перераховується? Питання спливає, коли акція скінчилася, а замовлення ще не відвантажене.</p>
+        <p class="askline">Замовлення оформили вчора під час акції, відвантажуєте завтра — за якою ціною?</p>
+      </div>
+
+      <div class="fork">
+        <div class="fork-head"><span class="fork-num">07</span><p class="fork-name">Хто заводить і оновлює</p></div>
+        <p>Операційний бік, який визначає половину вимог. Ручне ведення тисячі позицій нікому не потрібне, навіть якщо логіка ідеальна.</p>
+        <p class="askline">Хто фізично оновлює ціни й як часто? Це руками, імпортом чи прилітає з 1С? Що з новим товаром, у якого ціни ще нема?</p>
+      </div>
+
+      <div class="fork">
+        <div class="fork-head"><span class="fork-num">08</span><p class="fork-name">Масштаб</p></div>
+        <p>Числа, без яких неможливо оцінити ані складність, ані придатність рішення. Десять клієнтів з індивідуальною ціною і тисяча — це різні фічі.</p>
+        <p class="askline">Скільки у вас товарів? Скільки різних прайсів? Скільки клієнтів із персональними умовами?</p>
+      </div>
+
+    </div>
+
+    <p class="note">По кожній із цих восьми точок має бути порівнюваний запис після кожного інтерв'ю — саме на них будується рішення про те, що стане дефолтом, а що налаштуванням. Як саме питати, щоб їх закрити, — у частині III: кластери позначені номерами розвилок, які вони закривають.</p>
+  </div>
+</section>
+
+<div class="part" id="part3">
+  <div class="wrap">
+    <div class="part-head">
+      <span class="part-num">Частина III</span>
+      <h2 class="part-title">Сценарій по кластерах</h2>
+    </div>
+    <p class="part-lede">Робочий інструмент на саму розмову. Кластери проходимо не підряд, а тільки ті, що актуальні для конкретного клієнта: кожен блок відкривається питанням-воротами, і якщо відповідь «це не про нас» — пропускаємо весь блок.</p>
+  </div>
+</div>
+
+<section id="script" class="first">
+  <div class="wrap">
+    <p class="legend">
+      <span><b>?</b> — питання зі сценарію</span>
+      <span><b class="add">+</b> — дописано, часто забувають</span>
+    </p>
+
+    <div class="cluster">
+      <div class="cl-head"><span class="cl-num">Вступ</span><p class="cl-name">Розвідка перед кластерами</p></div>
+      <p class="cl-why">Мета — почути своїми словами клієнта, які взагалі ситуації різних цін у нього є. Відповідь визначає, які кластери розкручувати далі, а які пропустити.</p>
+
+      <div class="qgroup">
+        <ul class="q">
+          <li>Розкажіть, у яких ситуаціях один і той самий товар продається у вас за різною ціною — перерахуйте все, навіть якщо здається очевидним.</li>
+          <li class="new">Покажіть, будь ласка, де ці ціни зараз лежать — файл, таблиця, картка клієнта.
+            <span class="hint">Проси демонстрацію екрана прямо тут, на початку. Побачений файл дасть відповіді на половину подальших питань і зекономить час.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="signal">
+        <span class="slbl">На що звернути увагу</span>
+        Не перебивай і не підказуй варіанти. Що клієнт назвав сам і в якому порядку — це вже дані: перше названо зазвичай те, що болить найбільше.
+      </div>
+    </div>
+
+    <div class="cluster">
+      <div class="cl-head"><span class="cl-num">01</span><p class="cl-name">Опт / роздріб / дроп / дилер</p></div>
+      <p class="cl-why">Головний кластер: ціна залежить від того, хто купує. Тут же з'ясовуємо, як ціна технічно задається — сумою чи відсотком, — бо це різні моделі даних.</p>
+      <p class="cl-links">Закриває розвилки 01 · 04 · 05 · 07</p>
+
+      <div class="gate">
+        <span class="glbl">Ворота</span>
+        <p>Які типи цін у вас є зараз? Назвіть своїми словами — як ви їх називаєте всередині команди.</p>
+      </div>
+
+      <div class="qgroup">
+        <h5>Масштаб</h5>
+        <ul class="q">
+          <li>Скільки різних типів — два, три, більше?</li>
+          <li class="new">Скільки приблизно клієнтів у кожному типі? Оптовиків десять чи триста?</li>
+        </ul>
+      </div>
+
+      <div class="qgroup">
+        <h5>Прив'язка до клієнта</h5>
+        <ul class="q">
+          <li>Як ви визначаєте, якому клієнту яку ціну давати — є правило чи на розсуд менеджера?</li>
+          <li>Де це правило зараз зафіксоване — в голові, в таблиці, в картці клієнта?</li>
+          <li>Чи бувало, що менеджер помилився і дав не ту ціну? Як це виявилось?</li>
+        </ul>
+      </div>
+
+      <div class="qgroup">
+        <h5>Як задається ціна</h5>
+        <ul class="q">
+          <li>Ціна кожного типу — це окрема фіксована сума на товар (опт 80, роздріб 120) чи відсоток від базової (опт мінус 30%)?</li>
+          <li>Відсотки або суми однакові для всіх товарів чи на кожен товар свої?</li>
+        </ul>
+      </div>
+
+      <div class="qgroup">
+        <h5>Автоматика й доступи</h5>
+        <ul class="q">
+          <li>Коли менеджер відкриває замовлення і вибирає покупця — ціна має підтягуватись автоматично чи менеджер обирає з варіантів сам?</li>
+          <li>Якщо автоматично — що має статись, якщо менеджер хоче змінити на іншу?</li>
+          <li>Чи є ціни, які не всі менеджери мають бачити — закупівельна, дистриб'юторська?</li>
+          <li>Якщо так: менеджер не бачить її взагалі чи бачить, але не може вибрати?</li>
+        </ul>
+      </div>
+
+      <div class="signal">
+        <span class="slbl">На що звернути увагу</span>
+        Відповідь «сума» і «відсоток» — це дві різні системи. При відсотку зміна базової ціни автоматично тягне всі інші; при фіксованій сумі кожну треба оновлювати окремо. Якщо клієнт відповідає «ну, і так і так» — <strong>копай, на яких саме товарах як</strong>, це найчастіше означає, що правило є, але з винятками.
+      </div>
+    </div>
+
+    <div class="cluster">
+      <div class="cl-head"><span class="cl-num">02</span><p class="cl-name">Ціна залежно від кількості</p></div>
+      <p class="cl-why">Порогова логіка. Найголовніше тут — від чого рахується поріг, бо «від 10 штук» може означати три різні речі.</p>
+      <p class="cl-links">Закриває розвилки 01 · 06</p>
+
+      <div class="gate">
+        <span class="glbl">Ворота</span>
+        <p>Чи є у вас таке: клієнт бере більше — ціна за одиницю менша? Наприклад, від 10 штук діє інша ціна.</p>
+      </div>
+
+      <div class="qgroup">
+        <h5>Механіка порогів</h5>
+        <ul class="q">
+          <li>Від якої кількості спрацьовує — є конкретний поріг?</li>
+          <li>Поріг однаковий для всіх товарів чи кожен товар має свій?</li>
+          <li>Це фіксована ціна за одиницю (від 10 шт — 80 грн) чи відсоток знижки від базової?</li>
+          <li>Скільки таких порогів може бути на один товар — два, три, більше?</li>
+          <li>Ціна змінюється від кількості саме цього товару в рядку чи від загальної суми або кількості по всьому замовленню?</li>
+          <li class="new">Якщо клієнт добере до порогу вже після оформлення замовлення — ціна має перерахуватись автоматично?</li>
+        </ul>
+      </div>
+
+      <div class="qgroup">
+        <h5>Зв'язок з типом клієнта</h5>
+        <ul class="q">
+          <li>Якщо у клієнта є тип «опт» і він ще й бере від 10 штук — яка ціна має застосовуватись? Оптова, та що від кількості, чи менша з двох?</li>
+        </ul>
+      </div>
+
+      <div class="signal">
+        <span class="slbl">На що звернути увагу</span>
+        «Від кількості в рядку» і «від суми замовлення» — принципово різні механіки. Якщо клієнт не розуміє питання, дай приклад: <strong>«п'ять штук товару А і п'ять товару Б — це десять для порогу чи ні?»</strong>
+      </div>
+    </div>
+
+    <div class="cluster">
+      <div class="cl-head"><span class="cl-num">03</span><p class="cl-name">Мультивалютність</p></div>
+      <p class="cl-why">Ціна в іншій валюті — це або окрема зафіксована цифра, або похідна від курсу. Друге тягне за собою джерело курсу й момент перерахунку.</p>
+      <p class="cl-links">Закриває розвилки 07</p>
+
+      <div class="gate">
+        <span class="glbl">Ворота</span>
+        <p>Ви продаєте в кількох країнах або є клієнти, які платять в іноземній валюті?</p>
+      </div>
+
+      <div class="qgroup">
+        <ul class="q">
+          <li>Ціна в іноземній валюті — це окрема фіксована ціна (Польща завжди 20 zł незалежно від курсу) чи конвертація гривневої за поточним курсом?</li>
+          <li>Якщо фіксована — де ви її зараз зберігаєте і як менеджер її знаходить?</li>
+          <li class="new">Якщо конвертація — за яким курсом і на який момент: коли створили замовлення, коли оплатили, чи курс ставите руками раз на тиждень?</li>
+          <li>Валюта прив'язана до країни, джерела, типу клієнта — чи до товару безпосередньо?</li>
+          <li>Замовлення в іноземній валюті — це окреме джерело чи менеджер може обрати валюту вручну?</li>
+          <li class="new">Як округлюєте результат конвертації — до копійок, до цілого, до красивої цифри?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cluster">
+      <div class="cl-head"><span class="cl-num">04</span><p class="cl-name">Ціни для різних джерел і складів</p></div>
+      <p class="cl-why">Тут ціна часто живе поза CRM — у кабінеті майданчика. Питання не тільки «чи різна», а «хто джерело правди».</p>
+      <p class="cl-links">Закриває розвилки 04 · 07</p>
+
+      <div class="gate">
+        <span class="glbl">Ворота</span>
+        <p>Ви продаєте на кількох майданчиках або маєте кілька точок продажу чи складів з різними цінами?</p>
+      </div>
+
+      <div class="qgroup">
+        <h5>Джерела</h5>
+        <ul class="q">
+          <li>Ціна на Prom відрізняється від ціни на Rozetka на той самий товар?</li>
+          <li>Коли замовлення приходить з майданчика — воно вже має ціну. Якщо менеджер робить допродаж вручну, яку ціну він має бачити: ту, що з майданчика, чи базову з каталогу?</li>
+          <li>Чи треба, щоб CRM підтягувала ціну автоматично залежно від джерела замовлення?</li>
+          <li class="new">Ці ціни зараз ставляться в кабінеті майданчика чи у вас? Хто їх туди виганяє і як часто?</li>
+        </ul>
+      </div>
+
+      <div class="qgroup">
+        <h5>Склади й точки</h5>
+        <ul class="q">
+          <li>Якщо є кілька складів чи точок продажу — ціна різна на різних точках для одного товару?</li>
+          <li>Це фіксована різниця (точка А завжди дорожче на 20%) чи абсолютно незалежні ціни?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cluster">
+      <div class="cl-head"><span class="cl-num">05</span><p class="cl-name">Акційна ціна</p></div>
+      <p class="cl-why">Тимчасова ціна з датами. Головна прихована проблема — не сама акція, а її завершення й те, що стається із замовленнями на межі періоду.</p>
+      <p class="cl-links">Закриває розвилки 01 · 06</p>
+
+      <div class="gate">
+        <span class="glbl">Ворота</span>
+        <p>Чи проводите акції, де ціна на товар тимчасово знижується?</p>
+      </div>
+
+      <div class="qgroup">
+        <ul class="q">
+          <li>Як зараз міняєте ціну на час акції — вручну в кожному товарі?</li>
+          <li>Що робите після завершення — знову вручну повертаєте? Чи бувало, що забули?</li>
+          <li>Акційна ціна — це окрема ціна поруч зі звичайною, яку менеджер може обрати, чи вона автоматично замінює звичайну на певний період?</li>
+          <li>Якщо є тип клієнта «опт» і є акція — акційна ціна діє й для оптовиків чи тільки для роздрібу?</li>
+          <li class="new">Замовлення оформили під час акції, а відвантажуєте після її завершення — за якою ціною? А якщо клієнт щось додає в це замовлення вже після?
+            <span class="hint">Це питання про фіксацію ціни в часі. Клієнти майже ніколи не піднімають його самі, а потім воно стає багом.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cluster">
+      <div class="cl-head"><span class="cl-num">06</span><p class="cl-name">Знижки, індивідуальні ціни, лояльність</p></div>
+      <p class="cl-why">Шар модифікаторів. Ключова відмінність від попередніх кластерів: тут з'ясовуємо не яка база, а що лягає зверху і чи складається одне з одним.</p>
+      <p class="cl-links">Закриває розвилки 02 · 03</p>
+
+      <div class="gate">
+        <span class="glbl">Ворота</span>
+        <p>Ви даєте клієнтам персональні знижки — не «оптова ціна для всіх оптовиків», а конкретна домовленість з конкретним клієнтом? Чи є програма лояльності — бали, кешбек, знижка за історію покупок?</p>
+        <p class="skip">Якщо обох немає — пропускаємо блок.</p>
+      </div>
+
+      <div class="qgroup">
+        <h5>Індивідуальні знижки</h5>
+        <ul class="q">
+          <li>Де зараз фіксується, що цьому клієнту знижка 7% — у картці клієнта, в таблиці, в голові менеджера?</li>
+          <li>Ця знижка накладається поверх типу ціни (спочатку оптова, потім ще мінус 7%) чи замінює його?</li>
+          <li>Чи бувало, що менеджер не знав про індивідуальну знижку і виставив звичайну ціну?</li>
+        </ul>
+      </div>
+
+      <div class="qgroup">
+        <h5>Лояльність</h5>
+        <ul class="q">
+          <li>Від якої суми рахуються бали або знижка — від ціни до знижки чи після?</li>
+          <li>Якщо клієнт оптовик і ще має накопичену знижку по лояльності — що застосовується? Обидва чи щось одне?</li>
+          <li>Менеджер бачить це одночасно в замовленні чи змушений перевіряти окремо?</li>
+        </ul>
+      </div>
+
+      <div class="qgroup">
+        <h5>Дно ціни</h5>
+        <ul class="q">
+          <li class="new">Чи бувало, що після всіх знижок продали дешевше, ніж купили? Хто це помітив і коли?</li>
+          <li class="new">Чи є межа, нижче якої опускатись не можна взагалі — мінімальна ціна або відсоток від закупки?</li>
+        </ul>
+      </div>
+
+      <div class="signal">
+        <span class="slbl">На що звернути увагу</span>
+        Питання «поверх чи замість» — центральне для всієї фічі. Якщо клієнт вагається, не підказуй правильну відповідь: <strong>дай порахувати на цифрах</strong> і подивись, яку суму він назве.
+      </div>
+    </div>
+
+    <div class="cluster">
+      <div class="cl-head"><span class="cl-num">07</span><p class="cl-name">Логіка вибору й безпека автоматики</p></div>
+      <p class="cl-why">Фінальний блок. Задається після того, як зрозуміло, які кластери у клієнта є. Якщо кластер один і більше нічого — пропускаємо, конфлікту немає.</p>
+      <p class="cl-links">Закриває розвилки 01 · 04 · 07</p>
+
+      <div class="qgroup">
+        <h5>Як менеджер вибирає ціну зараз</h5>
+        <ul class="q">
+          <li>Коли менеджер створює замовлення — як він розуміє, яку ціну поставити? Є алгоритм у голові, інструкція, чи він просто знає?</li>
+          <li>Як новий менеджер дізнається, яку ціну ставити конкретному клієнту?</li>
+        </ul>
+      </div>
+
+      <div class="qgroup">
+        <h5>Наскільки логіка стабільна</h5>
+        <ul class="q">
+          <li>Чи бувають винятки — «за правилом мало б бути одне, але поставили інше»? Як часто?</li>
+          <li>Хто ухвалює рішення про виняток — менеджер сам чи погоджує з керівником?</li>
+        </ul>
+      </div>
+
+      <div class="qgroup">
+        <h5>Конфлікт кількох правил <span style="text-transform:none;letter-spacing:0">— тільки якщо клієнт підтвердив кілька кластерів</span></h5>
+        <ul class="q">
+          <li>Уявіть: клієнт оптовик, купує від 10 штук, і на цей товар зараз акція. Яка ціна має бути? Як ви зараз це вирішуєте?</li>
+          <li>Є правило, що головніше — тип клієнта, кількість чи акція? Чи це щоразу по ситуації?</li>
+          <li class="new">А якщо за цим правилом вийде дорожче, ніж за іншим — так теж правильно?
+            <span class="hint">Перевірка межі. Часто виявляється, що реальне правило — «завжди найвигідніше для клієнта», а не той порядок, який назвали.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="qgroup">
+        <h5>Хто веде ціни</h5>
+        <ul class="q">
+          <li class="new">Хто фізично заводить і оновлює ціни, як часто це відбувається?</li>
+          <li class="new">Це руками в системі, імпортом з файлу, чи прилітає з 1С або іншої системи?</li>
+          <li class="new">З'явився новий товар — у нього одразу є всі ціни чи хтось має проставити їх окремо?</li>
+        </ul>
+      </div>
+
+      <div class="qgroup">
+        <h5>Безпека автоматики</h5>
+        <ul class="q">
+          <li>Якби система сама підставляла ціну при виборі клієнта — це допомогло б чи навпаки лякає, що щось піде не так?</li>
+          <li>Чи були випадки, коли автоматична ціна з джерела дала неправильний результат і довелось виправляти?</li>
+        </ul>
+      </div>
+
+      <div class="signal">
+        <span class="slbl">Не питай про конфлікт чотири рази</span>
+        Питання «що головніше» зустрічається й у кластері 2, і в 5, і в 6. Якщо вже поставив його там — тут не повторюй дослівно, а склади кейс саме з тих кластерів, які клієнт підтвердив. Повторення тих самих питань виглядає як неуважність і з'їдає час.
+      </div>
+    </div>
+
+    <div class="cluster">
+      <div class="cl-head"><span class="cl-num">Фінал</span><p class="cl-name">Закриваючі питання — завжди</p></div>
+      <p class="cl-why">Тут вимірюється біль і масштаб. Ці відповіді потім найкраще працюють при пріоритизації, бо їх можна порівнювати між клієнтами.</p>
+      <p class="cl-links">Закриває розвилки 08</p>
+
+      <div class="qgroup">
+        <ul class="q">
+          <li>Зі всього, що обговорили — що забирає найбільше часу або найчастіше йде не так?</li>
+          <li>Скільки приблизно разів на день або тиждень менеджер вручну щось міняє через різні ціни?</li>
+          <li class="new">Скільки у вас товарів і скільки різних прайсів? Скільки клієнтів з персональними умовами?</li>
+          <li class="new">Якби ми зробили тільки одну річ із того, що обговорили — що саме?</li>
+        </ul>
+      </div>
+
+      <div class="signal">
+        <span class="slbl">Не питай те, що вже прозвучало</span>
+        Частина цих питань спливає сама по ходу розмови — костилі, частота ручних правок, кількість прайсів зазвичай згадуються ще в кластерах. Якщо відповідь уже є, <strong>не питай удруге</strong>: це виглядає як неуважність і з'їдає час. Пройдись очима по списку й постав тільки те, що лишилось незакритим.
+      </div>
+
+      <div class="signal">
+        <span class="slbl">Наостанок</span>
+        Нічого не обіцяй. Формула — <strong>«дякую, фіксую, це піде в аналіз»</strong>. Клієнт, який почув «так, зробимо», прийде через місяць із питанням «де».
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>

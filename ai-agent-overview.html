@@ -1,0 +1,3972 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI-агент у CRM-чатах</title>
+    <meta
+      name="description"
+      content="Короткий бізнесовий і технічний огляд AI-агента у CRM-чатах: поведінка, робота з тікетом, тули, оркестратор і межі v1."
+    />
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --surface: #ffffff;
+        --surface-2: #f8fafc;
+        --text: #132238;
+        --muted: #5b6b80;
+        --line: #d9e2ec;
+        --blue: #2563eb;
+        --blue-2: #eaf1ff;
+        --cyan: #0891b2;
+        --cyan-2: #e6f8fb;
+        --green: #059669;
+        --green-2: #eaf8f2;
+        --amber: #d97706;
+        --amber-2: #fff6df;
+        --red: #dc2626;
+        --red-2: #fff0f0;
+        --purple: #7c3aed;
+        --purple-2: #f3edff;
+        --shadow: 0 12px 36px rgba(22, 37, 66, 0.08);
+        --radius: 20px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        line-height: 1.55;
+      }
+      a {
+        color: inherit;
+      }
+      button {
+        font: inherit;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid rgba(217, 226, 236, 0.85);
+        background: rgba(245, 247, 251, 0.92);
+        backdrop-filter: blur(14px);
+      }
+      .topbar-inner {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 12px 24px;
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .brand-mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        color: white;
+        background: linear-gradient(135deg, var(--blue), var(--purple));
+        box-shadow: 0 8px 22px rgba(37, 99, 235, 0.25);
+      }
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 4px;
+      }
+      .nav a {
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 650;
+        padding: 7px 10px;
+        border-radius: 10px;
+      }
+      .nav a:hover {
+        background: white;
+        color: var(--text);
+      }
+
+      main {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 34px 24px 80px;
+      }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 28px;
+        padding: 54px;
+        background:
+          radial-gradient(
+            circle at 90% 0%,
+            rgba(124, 58, 237, 0.16),
+            transparent 36%
+          ),
+          radial-gradient(
+            circle at 10% 110%,
+            rgba(8, 145, 178, 0.14),
+            transparent 38%
+          ),
+          linear-gradient(145deg, #ffffff, #f7f9ff);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.5fr 0.8fr;
+        gap: 46px;
+        align-items: end;
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--blue);
+        background: var(--blue-2);
+        border: 1px solid #d7e4ff;
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-weight: 750;
+        font-size: 13px;
+        letter-spacing: 0.01em;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+      h1 {
+        margin: 18px 0 16px;
+        font-size: clamp(38px, 5vw, 66px);
+        line-height: 1.02;
+        letter-spacing: -0.045em;
+      }
+      .hero p {
+        margin: 0;
+        max-width: 800px;
+        color: var(--muted);
+        font-size: 19px;
+      }
+      .hero-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+      .metric {
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid var(--line);
+        padding: 16px 14px;
+        text-align: center;
+      }
+      .metric strong {
+        display: block;
+        font-size: 26px;
+        letter-spacing: -0.03em;
+      }
+      .metric span {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 3px;
+      }
+
+      section {
+        scroll-margin-top: 84px;
+        margin-top: 58px;
+      }
+      .section-head {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 18px;
+        align-items: end;
+        margin-bottom: 22px;
+      }
+      .section-kicker {
+        color: var(--blue);
+        font-weight: 800;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 5px;
+      }
+      h2 {
+        margin: 0;
+        font-size: clamp(28px, 3vw, 40px);
+        line-height: 1.12;
+        letter-spacing: -0.035em;
+      }
+      .section-note {
+        max-width: 430px;
+        color: var(--muted);
+        font-size: 14px;
+        text-align: right;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 24px;
+        box-shadow: 0 8px 24px rgba(22, 37, 66, 0.04);
+      }
+      .card h3 {
+        margin: 0 0 9px;
+        font-size: 19px;
+        letter-spacing: -0.02em;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+      }
+      .card ul {
+        margin: 12px 0 0;
+        padding-left: 18px;
+        color: var(--muted);
+      }
+      .card li + li {
+        margin-top: 6px;
+      }
+      .tone-blue {
+        border-top: 4px solid var(--blue);
+      }
+      .tone-purple {
+        border-top: 4px solid var(--purple);
+      }
+      .tone-green {
+        border-top: 4px solid var(--green);
+      }
+      .tone-amber {
+        border-top: 4px solid var(--amber);
+      }
+
+      .callout {
+        border-radius: 18px;
+        padding: 20px 22px;
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        border: 1px solid #d6e3ff;
+        background: linear-gradient(135deg, #eef4ff, #f8fbff);
+        color: #183153;
+      }
+      .callout strong {
+        display: block;
+        margin-bottom: 3px;
+      }
+      .callout-icon {
+        flex: 0 0 auto;
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: white;
+        border: 1px solid #d6e3ff;
+        display: grid;
+        place-items: center;
+        color: var(--blue);
+        font-weight: 850;
+      }
+
+      .flow-list {
+        counter-reset: flow;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .flow-step {
+        counter-increment: flow;
+        position: relative;
+        min-height: 142px;
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px 18px 18px 54px;
+      }
+      .flow-step::before {
+        content: counter(flow);
+        position: absolute;
+        left: 16px;
+        top: 17px;
+        width: 28px;
+        height: 28px;
+        border-radius: 9px;
+        display: grid;
+        place-items: center;
+        color: white;
+        font-weight: 800;
+        background: var(--blue);
+      }
+      .flow-step strong {
+        display: block;
+        margin-bottom: 5px;
+      }
+      .flow-step span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .scenario-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .scenario {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        overflow: hidden;
+      }
+      .scenario-title {
+        padding: 16px 18px 12px;
+        font-weight: 800;
+        font-size: 17px;
+        border-bottom: 1px solid var(--line);
+        background: var(--surface-2);
+      }
+      .scenario-body {
+        padding: 15px 18px 17px;
+        display: grid;
+        gap: 11px;
+      }
+      .scenario-row {
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        gap: 10px;
+        font-size: 14px;
+      }
+      .scenario-label {
+        color: var(--muted);
+        font-weight: 750;
+      }
+      .scenario-result {
+        color: var(--green);
+        font-weight: 700;
+      }
+
+      .diagram-card {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 22px;
+        box-shadow: var(--shadow);
+        margin-bottom: 18px;
+        overflow: hidden;
+      }
+      .diagram-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 16px;
+      }
+      .diagram-head h3 {
+        margin: 0 0 6px;
+        font-size: 21px;
+        letter-spacing: -0.025em;
+      }
+      .diagram-head p {
+        margin: 0;
+        color: var(--muted);
+        max-width: 780px;
+      }
+      .diagram-no {
+        flex: 0 0 auto;
+        min-width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: var(--blue-2);
+        color: var(--blue);
+        font-weight: 850;
+      }
+      .diagram-wrap {
+        overflow-x: auto;
+        border-radius: 18px;
+        background:
+          linear-gradient(#f8fafc 1px, transparent 1px),
+          linear-gradient(90deg, #f8fafc 1px, transparent 1px), #fbfcfe;
+        background-size: 24px 24px;
+        border: 1px solid #e7edf3;
+        padding: 12px;
+      }
+      .diagram-wrap svg {
+        width: 100%;
+        height: auto;
+        min-width: 900px;
+        display: block;
+        overflow: visible;
+      }
+      .diagram-wrap svg path[stroke] {
+        fill: none;
+      }
+      .caption {
+        margin-top: 12px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      .legend {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+      .legend-item {
+        display: inline-flex;
+        gap: 7px;
+        align-items: center;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .legend-swatch {
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+      }
+
+      .compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .compare-col {
+        border-radius: 18px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        background: white;
+      }
+      .compare-col h3 {
+        margin: 0 0 12px;
+        font-size: 19px;
+      }
+      .compare-col ul {
+        margin: 0;
+        padding-left: 19px;
+        color: var(--muted);
+      }
+      .compare-col li + li {
+        margin-top: 8px;
+      }
+      .compare-config {
+        border-top: 4px solid var(--purple);
+      }
+      .compare-core {
+        border-top: 4px solid var(--blue);
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 4px 8px;
+        font-size: 12px;
+        font-weight: 750;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        color: var(--muted);
+      }
+
+      .v1-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .v1-item {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px;
+      }
+      .v1-item strong {
+        display: block;
+        margin-bottom: 7px;
+      }
+      .v1-item span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .failure-table-wrap {
+        overflow-x: auto;
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        box-shadow: 0 8px 24px rgba(22, 37, 66, 0.04);
+      }
+      .failure-table {
+        width: 100%;
+        min-width: 920px;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      .failure-table th,
+      .failure-table td {
+        padding: 13px 15px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+      .failure-table th {
+        background: var(--surface-2);
+        color: var(--text);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .failure-table tr:last-child td {
+        border-bottom: 0;
+      }
+      .failure-table td:first-child {
+        font-weight: 750;
+        width: 22%;
+      }
+      .failure-table td:nth-child(2) {
+        width: 33%;
+        color: var(--muted);
+      }
+      .failure-table td:nth-child(3) {
+        width: 45%;
+      }
+
+      .rule-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .rule-card {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 19px;
+      }
+      .rule-card strong {
+        display: block;
+        margin: 8px 0 6px;
+        font-size: 16px;
+      }
+      .rule-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      footer {
+        margin-top: 60px;
+        padding-top: 22px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      /* SVG helpers */
+      .svg-title {
+        font-size: 17px;
+        font-weight: 800;
+        fill: #132238;
+      }
+      .svg-text {
+        font-size: 14px;
+        font-weight: 600;
+        fill: #52657d;
+      }
+      .svg-small {
+        font-size: 12.5px;
+        font-weight: 650;
+        fill: #6a7d93;
+      }
+      .svg-white {
+        fill: #fff;
+      }
+      .svg-arrow-label {
+        font-size: 12px;
+        font-weight: 750;
+        fill: #52657d;
+      }
+
+      @media (max-width: 980px) {
+        .hero {
+          padding: 36px;
+        }
+        .hero-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero-metrics {
+          max-width: 520px;
+        }
+        .grid-3,
+        .grid-4,
+        .v1-grid,
+        .rule-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .flow-list {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .section-head {
+          grid-template-columns: 1fr;
+        }
+        .section-note {
+          text-align: left;
+        }
+        .nav {
+          display: none;
+        }
+      }
+      @media (max-width: 680px) {
+        main {
+          padding: 20px 14px 54px;
+        }
+        .topbar-inner {
+          padding: 10px 14px;
+        }
+        .hero {
+          padding: 26px 20px;
+          border-radius: 22px;
+        }
+        .hero p {
+          font-size: 16px;
+        }
+        .hero-metrics {
+          grid-template-columns: 1fr;
+        }
+        .grid-2,
+        .grid-3,
+        .grid-4,
+        .scenario-grid,
+        .compare,
+        .v1-grid,
+        .flow-list,
+        .rule-grid {
+          grid-template-columns: 1fr;
+        }
+        .scenario-row {
+          grid-template-columns: 80px 1fr;
+        }
+        .diagram-card {
+          padding: 16px;
+        }
+        footer {
+          flex-direction: column;
+        }
+      }
+
+      @media print {
+        .topbar {
+          display: none;
+        }
+        body {
+          background: white;
+        }
+        main {
+          max-width: none;
+          padding: 0;
+        }
+        .hero,
+        .card,
+        .diagram-card,
+        .scenario,
+        .compare-col,
+        .flow-step,
+        .v1-item {
+          box-shadow: none;
+          break-inside: avoid;
+        }
+        section {
+          margin-top: 34px;
+        }
+        .diagram-wrap {
+          overflow: visible;
+        }
+        .diagram-wrap svg {
+          min-width: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <div class="brand-mark">AI</div>
+          <span>AI-агент</span>
+        </div>
+        <nav class="nav" aria-label="Навігація">
+          <a href="#overview">Огляд</a>
+          <a href="#behavior">Поведінка</a>
+          <a href="#diagrams">Схеми</a>
+          <a href="#config">Налаштування</a>
+          <a href="#reliability">Надійність</a>
+          <a href="#v1">Межі</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="top">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">
+              <span class="dot"></span> AI-агент у CRM-чатах · короткий огляд
+            </div>
+            <h1>Як агент поводиться, працює з CRM і передає чат людині</h1>
+            <p>
+              Універсальний AI-агент у чатах CRM: бізнес задає роль, канали,
+              доступи та правила запуску, а системне ядро контролює тули,
+              CRM-дії, AI-баланс, межі одного ходу, помилки та передачу тікету
+              людині.
+            </p>
+          </div>
+          <div class="hero-metrics" aria-label="Що є на сторінці">
+            <div class="metric">
+              <strong>7</strong><span>ключових схем</span>
+            </div>
+            <div class="metric">
+              <strong>8</strong><span>сценаріїв поведінки</span>
+            </div>
+            <div class="metric">
+              <strong>v1</strong><span>чіткі межі ядра</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="overview">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">01 · Бізнесова модель</div>
+            <h2>Що саме ми будуємо</h2>
+          </div>
+          <div class="section-note">
+            Не окремого бота для продажів, а універсальний механізм автоматичної
+            роботи з CRM-чатом.
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <article class="card tone-blue">
+            <h3>Поведінку задають «Інструкції»</h3>
+            <p>
+              Роль агента, межі відповідальності, тон і сценарна поведінка
+              задаються в налаштуваннях конкретного агента.
+            </p>
+          </article>
+          <article class="card tone-purple">
+            <h3>Можливості обмежують права</h3>
+            <p>
+              Права доступу визначають, які тули взагалі потрапляють у контекст
+              моделі. Інструкція не може дати агенту дію, якої немає в його
+              доступах.
+            </p>
+          </article>
+          <article class="card tone-green">
+            <h3>CRM лишається джерелом правди</h3>
+            <p>
+              Стан чату, покупці, замовлення, оплати та інші бізнес-факти
+              беруться з CRM, баз знань або фактичних результатів тулів.
+            </p>
+          </article>
+        </div>
+
+        <div class="callout" style="margin-top: 16px">
+          <div class="callout-icon">!</div>
+          <div>
+            <strong>Ключовий принцип роботи з тікетом</strong>Агент активується
+            для тікету тільки під час його відкриття й лише якщо виконані умови
+            запуску. Активація агента не змінює призначеного оператора й не
+            означає володіння тікетом. Логічне завершення сценарію включає
+            закриття тікету й припинення роботи агента з ним. Агент також
+            припиняє обробку поточного тікету після виклику тула передачі
+            оператору або ручного повідомлення користувача keyCRM. Повторна
+            активація можлива тільки через нове відкриття тікету та повторну
+            перевірку умов запуску.
+          </div>
+        </div>
+      </section>
+
+      <section id="work">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">02 · Один цикл роботи</div>
+            <h2>Як проходить робота з тікетом</h2>
+          </div>
+          <div class="section-note">
+            Запуск — це рішення активувати агента для тікету. Після цього кожна
+            нова репліка клієнта в цьому відкритому тікеті є наступним ходом
+            того самого діалогу з історією, а не новим запуском.
+          </div>
+        </div>
+
+        <div class="flow-list">
+          <div class="flow-step">
+            <strong>Відкриття тікету</strong
+            ><span
+              >Тригер — новий чат або повідомлення клієнта в закритий чат.
+              «Спам» агент не бере в роботу.</span
+            >
+          </div>
+          <div class="flow-step">
+            <strong>Перевірка запуску</strong
+            ><span
+              >Перевіряється канал, наявність призначеного оператора, його
+              статус і період дії ввімкненої умови.</span
+            >
+          </div>
+          <div class="flow-step">
+            <strong>Повідомлення + історія</strong
+            ><span
+              >Якщо агент активувався для тікету, він отримує репліки клієнта
+              разом із доступним контекстом діалогу.</span
+            >
+          </div>
+          <div class="flow-step">
+            <strong>Намір і межі ролі</strong
+            ><span
+              >Агент визначає, чого хоче клієнт, і чи може продовжити сценарій у
+              межах інструкцій та доступних тулів.</span
+            >
+          </div>
+          <div class="flow-step">
+            <strong>Дані або уточнення</strong
+            ><span
+              >Читає доступні джерела; якщо даних бракує або є неоднозначність —
+              ставить питання, а не вгадує.</span
+            >
+          </div>
+          <div class="flow-step">
+            <strong>Тул</strong
+            ><span
+              >Якщо потрібна CRM-дія або передача оператору, агент викликає
+              відповідний доступний тул.</span
+            >
+          </div>
+          <div class="flow-step">
+            <strong>Замітка в чаті</strong
+            ><span
+              >Після фактичного створення або зміни CRM-сутності залишається
+              одна внутрішня замітка з результатом.</span
+            >
+          </div>
+          <div class="flow-step">
+            <strong>Відправлення або новий цикл</strong
+            ><span
+              >Перед відповіддю перевіряється ручне втручання користувача keyCRM
+              і чи не з’явилась репліка клієнта, новіша за вхідну репліку
+              поточного execution. Втручання людини зупиняє агента для поточного
+              тікету; новіша репліка скасовує застарілу відповідь і запускає
+              новий цикл з актуальною історією та фактами вже виконаних тулів і
+              CRM-змін.</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <section id="behavior">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">03 · Карта поведінки</div>
+            <h2>Що агент робить у ключових ситуаціях</h2>
+          </div>
+          <div class="section-note">
+            Поведінка описана через те, що фактично відбувається в чаті та CRM.
+          </div>
+        </div>
+
+        <div class="scenario-grid">
+          <article class="scenario">
+            <div class="scenario-title">Відкрився тікет</div>
+            <div class="scenario-body">
+              <div class="scenario-row">
+                <div class="scenario-label">Поведінка</div>
+                <div>
+                  Перевіряє, чи канал підключений до агента, чи це не «Спам», і
+                  чи виконується одна з увімкнених умов запуску.
+                </div>
+              </div>
+              <div class="scenario-row">
+                <div class="scenario-label">Результат</div>
+                <div class="scenario-result">
+                  Агент або активується для тікету, або не підключається.
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario">
+            <div class="scenario-title">Запит входить у межі ролі</div>
+            <div class="scenario-body">
+              <div class="scenario-row">
+                <div class="scenario-label">Поведінка</div>
+                <div>
+                  Читає підтверджені дані, відповідає або продовжує налаштований
+                  сценарій.
+                </div>
+              </div>
+              <div class="scenario-row">
+                <div class="scenario-label">Результат</div>
+                <div class="scenario-result">
+                  Діалог рухається до цільового результату.
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario">
+            <div class="scenario-title">
+              Даних недостатньо або є неоднозначність
+            </div>
+            <div class="scenario-body">
+              <div class="scenario-row">
+                <div class="scenario-label">Поведінка</div>
+                <div>
+                  Ставить уточнювальне питання. Уже надані клієнтом дані
+                  повторно не запитує.
+                </div>
+              </div>
+              <div class="scenario-row">
+                <div class="scenario-label">Результат</div>
+                <div class="scenario-result">
+                  Уточнення не є причиною для передачі оператору.
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario">
+            <div class="scenario-title">Потрібний результат не знайдено</div>
+            <div class="scenario-body">
+              <div class="scenario-row">
+                <div class="scenario-label">Поведінка</div>
+                <div>
+                  Не вигадує. Якщо інструкціями передбачена релевантна
+                  альтернатива — пропонує її; інакше викликає тул передачі чату
+                  оператору.
+                </div>
+              </div>
+              <div class="scenario-row">
+                <div class="scenario-label">Результат</div>
+                <div class="scenario-result">
+                  Альтернатива або передача людині.
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario">
+            <div class="scenario-title">Потрібна дія в CRM</div>
+            <div class="scenario-body">
+              <div class="scenario-row">
+                <div class="scenario-label">Поведінка</div>
+                <div>
+                  Використовує тільки той тул, який доступний за правами агента,
+                  і збирає відсутні обов’язкові дані.
+                </div>
+              </div>
+              <div class="scenario-row">
+                <div class="scenario-label">Результат</div>
+                <div class="scenario-result">
+                  CRM змінюється; у чаті залишається замітка з фактичним
+                  результатом.
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario">
+            <div class="scenario-title">
+              Запит поза межами ролі або можливості немає
+            </div>
+            <div class="scenario-body">
+              <div class="scenario-row">
+                <div class="scenario-label">Поведінка</div>
+                <div>
+                  Не імпровізує по суті запиту й викликає тул передачі чату
+                  оператору. Цей тул доступний агенту завжди.
+                </div>
+              </div>
+              <div class="scenario-row">
+                <div class="scenario-label">Результат</div>
+                <div class="scenario-result">
+                  Агент припиняє обробку поточного тікету, діалог переходить
+                  людині.
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario">
+            <div class="scenario-title">Користувач keyCRM пише в чат</div>
+            <div class="scenario-body">
+              <div class="scenario-row">
+                <div class="scenario-label">Поведінка</div>
+                <div>
+                  Агент одразу припиняє обробку поточного тікету незалежно від
+                  того, чи змінився призначений оператор. Невідправлена
+                  відповідь агента скасовується.
+                </div>
+              </div>
+              <div class="scenario-row">
+                <div class="scenario-label">Результат</div>
+                <div class="scenario-result">
+                  Агент більше не працює з поточним тікетом.
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario">
+            <div class="scenario-title">
+              Сценарій завершено або клієнт повернувся пізніше
+            </div>
+            <div class="scenario-body">
+              <div class="scenario-row">
+                <div class="scenario-label">Поведінка</div>
+                <div>
+                  Логічне завершення означає, що ціль сценарію досягнута, тікет
+                  закривається й агент припиняє роботу з ним. Якщо тікет ще
+                  відкритий і агент залишається активним для нього, пауза
+                  клієнта сама по собі нічого не змінює.
+                </div>
+              </div>
+              <div class="scenario-row">
+                <div class="scenario-label">Результат</div>
+                <div class="scenario-result">
+                  Наступне повідомлення клієнта в закритий чат відкриє новий
+                  тікет і знову запустить перевірку умов старту агента.
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="diagrams">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">04 · Візуальна модель</div>
+            <h2>П’ять базових схем поведінки та системних меж</h2>
+          </div>
+          <div class="section-note">
+            Ще дві системні схеми нижче окремо показують виконання ходу, ліміти,
+            помилки та резервні сценарії.
+          </div>
+        </div>
+
+        <figure class="diagram-card">
+          <div class="diagram-head">
+            <div>
+              <h3>Загальна картина системи</h3>
+              <p>
+                Налаштування визначають роль, доступи та запуск. LLM приймає
+                рішення, але працює з CRM тільки через оркестратор і доступні
+                тули.
+              </p>
+            </div>
+            <div class="diagram-no">1</div>
+          </div>
+          <div class="diagram-wrap">
+            <svg
+              viewBox="0 0 1600 850"
+              role="img"
+              aria-label="Загальна схема AI-агента у CRM"
+            >
+              <defs>
+                <marker
+                  id="d1a"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#71839a" />
+                </marker>
+                <marker
+                  id="d1r"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#dc2626" />
+                </marker>
+              </defs>
+
+              <!-- connections: drawn first so boxes and labels stay clean -->
+              <path
+                d="M950 200 V235"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d1a)"
+              />
+              <path
+                d="M280 342 H350"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d1a)"
+              />
+              <path
+                d="M350 402 H280"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d1a)"
+              />
+              <path
+                d="M280 608 H315 V462 H350"
+                stroke="#dc2626"
+                stroke-width="3"
+                marker-end="url(#d1r)"
+              />
+              <path
+                d="M650 330 H780"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d1a)"
+              />
+              <path
+                d="M780 452 H650"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d1a)"
+              />
+              <path
+                d="M1120 305 H1220"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d1a)"
+              />
+              <path
+                d="M1220 357 H1120"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d1a)"
+              />
+              <path
+                d="M1120 475 H1220"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d1a)"
+              />
+              <path
+                d="M1220 555 H1120"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d1a)"
+              />
+              <path
+                d="M1355 635 V710"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d1a)"
+              />
+              <path
+                d="M1415 710 V635"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d1a)"
+              />
+
+              <!-- configuration -->
+              <rect
+                x="780"
+                y="55"
+                rx="22"
+                width="340"
+                height="145"
+                fill="#f3edff"
+                stroke="#b99df7"
+                stroke-width="2.3"
+              />
+              <text x="950" y="95" text-anchor="middle" class="svg-title">
+                Налаштування агента
+              </text>
+              <text x="820" y="132" class="svg-small">
+                • роль та інструкції · бази знань
+              </text>
+              <text x="820" y="160" class="svg-small">
+                • права доступу → доступні тули
+              </text>
+              <text x="820" y="188" class="svg-small">
+                • канали · запуск · оператори ескалації
+              </text>
+
+              <!-- people and chat -->
+              <rect
+                x="60"
+                y="285"
+                rx="22"
+                width="220"
+                height="125"
+                fill="#eaf1ff"
+                stroke="#8aaaf6"
+                stroke-width="2.3"
+              />
+              <text x="170" y="328" text-anchor="middle" class="svg-title">
+                Клієнт
+              </text>
+              <text x="170" y="365" text-anchor="middle" class="svg-text">
+                канал комунікації
+              </text>
+              <text x="170" y="393" text-anchor="middle" class="svg-small">
+                повідомлення ↔ відповідь
+              </text>
+
+              <rect
+                x="60"
+                y="540"
+                rx="22"
+                width="220"
+                height="135"
+                fill="#fff0f0"
+                stroke="#efaaaa"
+                stroke-width="2.3"
+              />
+              <text x="170" y="582" text-anchor="middle" class="svg-title">
+                Користувач keyCRM
+              </text>
+              <text x="170" y="620" text-anchor="middle" class="svg-text">
+                повідомлення в чат
+              </text>
+              <text x="170" y="648" text-anchor="middle" class="svg-small">
+                припиняє роботу агента з тікетом
+              </text>
+
+              <rect
+                x="350"
+                y="275"
+                rx="24"
+                width="300"
+                height="220"
+                fill="#fff"
+                stroke="#cfd9e5"
+                stroke-width="2.3"
+              />
+              <text x="500" y="318" text-anchor="middle" class="svg-title">
+                CRM-чат / тікет
+              </text>
+              <text x="397" y="360" class="svg-small">
+                • повідомлення та історія
+              </text>
+              <text x="397" y="392" class="svg-small">• стан тікету</text>
+              <text x="397" y="424" class="svg-small">
+                • призначений оператор
+              </text>
+              <text x="397" y="456" class="svg-small">• замітки в чаті</text>
+
+              <!-- runtime -->
+              <rect
+                x="780"
+                y="235"
+                rx="26"
+                width="340"
+                height="320"
+                fill="#eef4ff"
+                stroke="#8aaaf6"
+                stroke-width="2.6"
+              />
+              <text x="950" y="282" text-anchor="middle" class="svg-title">
+                Оркестратор
+              </text>
+              <text x="825" y="330" class="svg-small">
+                • перевіряє запуск і активність агента для тікету
+              </text>
+              <text x="825" y="366" class="svg-small">
+                • формує контекст і доступний набір тулів
+              </text>
+              <text x="825" y="402" class="svg-small">
+                • додає службові CRM-прив’язки
+              </text>
+              <text x="825" y="438" class="svg-small">
+                • виконує та перевіряє виклики
+              </text>
+              <text x="825" y="510" class="svg-small">
+                • публікує відповідь або замітку в чаті
+              </text>
+
+              <rect
+                x="1220"
+                y="245"
+                rx="24"
+                width="300"
+                height="150"
+                fill="#f3edff"
+                stroke="#b99df7"
+                stroke-width="2.3"
+              />
+              <text x="1370" y="287" text-anchor="middle" class="svg-title">
+                LLM
+              </text>
+              <text x="1370" y="326" text-anchor="middle" class="svg-text">
+                розуміє намір і контекст
+              </text>
+              <text x="1370" y="355" text-anchor="middle" class="svg-text">
+                обирає наступний крок
+              </text>
+              <text x="1370" y="382" text-anchor="middle" class="svg-small">
+                бачить тільки дозволені тули
+              </text>
+
+              <rect
+                x="1220"
+                y="455"
+                rx="24"
+                width="300"
+                height="180"
+                fill="#eaf8f2"
+                stroke="#86d2b4"
+                stroke-width="2.3"
+              />
+              <text x="1370" y="497" text-anchor="middle" class="svg-title">
+                Тули
+              </text>
+              <text x="1370" y="537" text-anchor="middle" class="svg-small">
+                читання даних · зміни в CRM
+              </text>
+              <text x="1370" y="567" text-anchor="middle" class="svg-small">
+                передача чату оператору
+              </text>
+              <text x="1370" y="597" text-anchor="middle" class="svg-small">
+                вузькі контрольовані контракти
+              </text>
+
+              <rect
+                x="1220"
+                y="710"
+                rx="22"
+                width="300"
+                height="100"
+                fill="#fff6df"
+                stroke="#efc16a"
+                stroke-width="2.3"
+              />
+              <text x="1370" y="752" text-anchor="middle" class="svg-title">
+                keyCRM
+              </text>
+              <text x="1370" y="784" text-anchor="middle" class="svg-text">
+                дані · бізнес-логіка · зміни
+              </text>
+
+              <!-- labels on separate white chips -->
+              <g>
+                <rect
+                  x="666"
+                  y="306"
+                  width="98"
+                  height="29"
+                  rx="10"
+                  fill="#fff"
+                  stroke="#dfe6ee"
+                />
+                <text
+                  x="715"
+                  y="326"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                >
+                  подія + контекст
+                </text>
+              </g>
+              <g>
+                <rect
+                  x="660"
+                  y="431"
+                  width="110"
+                  height="29"
+                  rx="10"
+                  fill="#fff"
+                  stroke="#dfe6ee"
+                />
+                <text
+                  x="715"
+                  y="451"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                >
+                  відповідь / замітка
+                </text>
+              </g>
+              <g>
+                <rect
+                  x="1138"
+                  y="282"
+                  width="66"
+                  height="29"
+                  rx="10"
+                  fill="#fff"
+                  stroke="#dfe6ee"
+                />
+                <text
+                  x="1171"
+                  y="302"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                >
+                  контекст
+                </text>
+              </g>
+              <g>
+                <rect
+                  x="1138"
+                  y="337"
+                  width="66"
+                  height="29"
+                  rx="10"
+                  fill="#fff"
+                  stroke="#dfe6ee"
+                />
+                <text
+                  x="1171"
+                  y="357"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                >
+                  рішення
+                </text>
+              </g>
+              <g>
+                <rect
+                  x="1135"
+                  y="452"
+                  width="72"
+                  height="29"
+                  rx="10"
+                  fill="#fff"
+                  stroke="#dfe6ee"
+                />
+                <text
+                  x="1171"
+                  y="472"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                >
+                  виклик
+                </text>
+              </g>
+              <g>
+                <rect
+                  x="1133"
+                  y="535"
+                  width="76"
+                  height="29"
+                  rx="10"
+                  fill="#fff"
+                  stroke="#dfe6ee"
+                />
+                <text
+                  x="1171"
+                  y="555"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                >
+                  результат
+                </text>
+              </g>
+            </svg>
+          </div>
+          <div class="caption">
+            <strong>Головне:</strong> LLM не має прямого доступу до CRM.
+            Передача чату оператору — такий самий контрольований тул, але його
+            доступність не залежить від прав до розділів.
+          </div>
+        </figure>
+
+        <figure class="diagram-card">
+          <div class="diagram-head">
+            <div>
+              <h3>Коли агент бере тікет у роботу</h3>
+              <p>
+                Запуск перевіряється тільки в момент відкриття тікету. Є дві
+                незалежні умови; неробочі години — параметр цих умов, а не
+                окремий третій тригер.
+              </p>
+            </div>
+            <div class="diagram-no">2</div>
+          </div>
+          <div class="diagram-wrap">
+            <svg
+              viewBox="0 0 1400 980"
+              role="img"
+              aria-label="Схема запуску AI-агента"
+            >
+              <defs>
+                <marker
+                  id="d2a"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#71839a" />
+                </marker>
+                <marker
+                  id="d2g"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#059669" />
+                </marker>
+              </defs>
+
+              <path
+                d="M760 130 V215"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d2a)"
+              />
+              <path
+                d="M760 345 V435"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d2a)"
+              />
+              <path
+                d="M760 555 V630 H470 V690"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d2a)"
+              />
+              <path
+                d="M760 555 V630 H1050 V690"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d2a)"
+              />
+              <path d="M470 825 V870 H760" stroke="#059669" stroke-width="3" />
+              <path d="M1050 825 V870 H760" stroke="#059669" stroke-width="3" />
+              <path
+                d="M760 870 V885"
+                stroke="#059669"
+                stroke-width="3"
+                marker-end="url(#d2g)"
+              />
+
+              <rect
+                x="560"
+                y="40"
+                rx="22"
+                width="400"
+                height="90"
+                fill="#eaf1ff"
+                stroke="#8aaaf6"
+                stroke-width="2.3"
+              />
+              <text x="760" y="78" text-anchor="middle" class="svg-title">
+                Відкрився тікет
+              </text>
+              <text x="760" y="108" text-anchor="middle" class="svg-small">
+                новий чат або повідомлення клієнта в «Закриті»
+              </text>
+
+              <rect
+                x="535"
+                y="215"
+                rx="22"
+                width="450"
+                height="130"
+                fill="#fff"
+                stroke="#cfd9e5"
+                stroke-width="2.3"
+              />
+              <text x="760" y="257" text-anchor="middle" class="svg-title">
+                Базові перевірки
+              </text>
+              <text x="760" y="294" text-anchor="middle" class="svg-small">
+                тікет не у «Спамі» · канал підключений до цього агента
+              </text>
+              <text x="760" y="322" text-anchor="middle" class="svg-small">
+                якщо будь-яка перевірка не пройдена — агент не запускається
+              </text>
+
+              <rect
+                x="560"
+                y="435"
+                rx="22"
+                width="400"
+                height="120"
+                fill="#fff"
+                stroke="#cfd9e5"
+                stroke-width="2.3"
+              />
+              <text x="760" y="477" text-anchor="middle" class="svg-title">
+                Є призначений оператор?
+              </text>
+              <text x="760" y="512" text-anchor="middle" class="svg-small">
+                визначає, яку з двох умов запуску перевіряти
+              </text>
+
+              <g>
+                <rect
+                  x="505"
+                  y="605"
+                  width="70"
+                  height="30"
+                  rx="10"
+                  fill="#fff"
+                  stroke="#dfe6ee"
+                />
+                <text
+                  x="540"
+                  y="625"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                >
+                  Немає
+                </text>
+              </g>
+              <g>
+                <rect
+                  x="962"
+                  y="605"
+                  width="48"
+                  height="30"
+                  rx="10"
+                  fill="#fff"
+                  stroke="#dfe6ee"
+                />
+                <text
+                  x="986"
+                  y="625"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                >
+                  Є
+                </text>
+              </g>
+
+              <rect
+                x="225"
+                y="690"
+                rx="22"
+                width="490"
+                height="135"
+                fill="#eef4ff"
+                stroke="#8aaaf6"
+                stroke-width="2.3"
+              />
+              <text x="470" y="732" text-anchor="middle" class="svg-title">
+                «Чат без призначеного оператора»
+              </text>
+              <text x="470" y="770" text-anchor="middle" class="svg-small">
+                умова ввімкнена + період дозволяє запуск
+              </text>
+              <text x="470" y="800" text-anchor="middle" class="svg-small">
+                «Завжди» або «Тільки в неробочі години»
+              </text>
+
+              <rect
+                x="805"
+                y="690"
+                rx="22"
+                width="490"
+                height="135"
+                fill="#f3edff"
+                stroke="#b99df7"
+                stroke-width="2.3"
+              />
+              <text x="1050" y="732" text-anchor="middle" class="svg-title">
+                «Призначений оператор офлайн»
+              </text>
+              <text x="1050" y="770" text-anchor="middle" class="svg-small">
+                умова ввімкнена + період дозволяє запуск
+              </text>
+              <text x="1050" y="800" text-anchor="middle" class="svg-small">
+                у неробочі години статус можна ігнорувати, якщо це ввімкнено
+              </text>
+
+              <rect
+                x="560"
+                y="885"
+                rx="22"
+                width="400"
+                height="70"
+                fill="#eaf8f2"
+                stroke="#86d2b4"
+                stroke-width="2.4"
+              />
+              <text x="760" y="928" text-anchor="middle" class="svg-title">
+                Агент активується для тікету
+              </text>
+
+              <rect
+                x="45"
+                y="215"
+                rx="22"
+                width="350"
+                height="375"
+                fill="#fff0f0"
+                stroke="#efaaaa"
+                stroke-width="2.2"
+              />
+              <text x="220" y="258" text-anchor="middle" class="svg-title">
+                Не запускати, якщо
+              </text>
+              <text x="85" y="305" class="svg-small">• тікет у «Спамі»</text>
+              <text x="85" y="342" class="svg-small">
+                • канал не підключений до агента
+              </text>
+              <text x="85" y="379" class="svg-small">
+                • потрібна умова запуску вимкнена
+              </text>
+              <text x="85" y="416" class="svg-small">
+                • обраний період не дозволяє запуск
+              </text>
+              <text x="85" y="453" class="svg-small">
+                • у робочі години оператор «Онлайн»
+              </text>
+              <text x="85" y="490" class="svg-small">
+                (для гілки «оператор офлайн»)
+              </text>
+              <text x="85" y="532" class="svg-small">
+                Повідомлення у вже відкритий тікет
+              </text>
+              <text x="85" y="558" class="svg-small">
+                також не є новим тригером запуску
+              </text>
+            </svg>
+          </div>
+          <div class="caption">
+            Щонайменше одна з двох умов запуску має бути ввімкнена. Повідомлення
+            клієнта у вже відкритий тікет не є новим тригером запуску.
+          </div>
+        </figure>
+
+        <figure class="diagram-card">
+          <div class="diagram-head">
+            <div>
+              <h3>Що відбувається з повідомленням у тікеті агента</h3>
+              <p>
+                Після запуску агент веде діалог, поки не завершить сценарій, не
+                передасть чат оператору або не отримає втручання користувача
+                keyCRM.
+              </p>
+            </div>
+            <div class="diagram-no">3</div>
+          </div>
+          <div class="diagram-wrap">
+            <svg
+              viewBox="0 0 1400 1500"
+              role="img"
+              aria-label="Схема обробки повідомлення AI-агентом"
+            >
+              <defs>
+                <marker
+                  id="d3a"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#71839a" />
+                </marker>
+                <marker
+                  id="d3g"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#059669" />
+                </marker>
+                <marker
+                  id="d3r"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#dc2626" />
+                </marker>
+              </defs>
+
+              <path
+                d="M700 130 V215"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d3a)"
+              />
+              <path
+                d="M700 335 V430"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d3a)"
+              />
+              <path
+                d="M530 490 H250 V615"
+                stroke="#dc2626"
+                stroke-width="3"
+                marker-end="url(#d3r)"
+              />
+              <path
+                d="M700 550 V655"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d3a)"
+              />
+              <path
+                d="M700 805 V900"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d3a)"
+              />
+              <path
+                d="M530 960 H235 V1055"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d3a)"
+              />
+              <path
+                d="M870 960 H1165 V1055"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d3a)"
+              />
+              <path
+                d="M235 1175 V1210 H700"
+                stroke="#71839a"
+                stroke-width="3"
+              />
+              <path
+                d="M1165 1175 V1210 H700"
+                stroke="#71839a"
+                stroke-width="3"
+              />
+              <path
+                d="M700 1210 V1235"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d3a)"
+              />
+              <path
+                d="M530 1300 H250 V1390"
+                stroke="#dc2626"
+                stroke-width="3"
+                marker-end="url(#d3r)"
+              />
+              <path
+                d="M870 1300 H1150 V1390"
+                stroke="#059669"
+                stroke-width="3"
+                marker-end="url(#d3g)"
+              />
+
+              <rect
+                x="500"
+                y="40"
+                rx="22"
+                width="400"
+                height="90"
+                fill="#eaf1ff"
+                stroke="#8aaaf6"
+                stroke-width="2.3"
+              />
+              <text x="700" y="78" text-anchor="middle" class="svg-title">
+                Нове повідомлення клієнта
+              </text>
+              <text x="700" y="108" text-anchor="middle" class="svg-small">
+                у тікеті, для якого агент уже активний
+              </text>
+
+              <rect
+                x="500"
+                y="215"
+                rx="22"
+                width="400"
+                height="120"
+                fill="#fff"
+                stroke="#cfd9e5"
+                stroke-width="2.3"
+              />
+              <text x="700" y="257" text-anchor="middle" class="svg-title">
+                Визначити намір
+              </text>
+              <text x="700" y="292" text-anchor="middle" class="svg-small">
+                інструкції · історія · доступні можливості
+              </text>
+
+              <rect
+                x="530"
+                y="430"
+                rx="22"
+                width="340"
+                height="120"
+                fill="#fff"
+                stroke="#cfd9e5"
+                stroke-width="2.3"
+              />
+              <text x="700" y="472" text-anchor="middle" class="svg-title">
+                Можна обробити запит?
+              </text>
+              <text x="700" y="507" text-anchor="middle" class="svg-small">
+                у межах ролі та доступних тулів
+              </text>
+
+              <g>
+                <rect
+                  x="455"
+                  y="458"
+                  width="48"
+                  height="30"
+                  rx="10"
+                  fill="#fff"
+                  stroke="#f3caca"
+                />
+                <text
+                  x="479"
+                  y="478"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                  fill="#b91c1c"
+                >
+                  Ні
+                </text>
+              </g>
+              <g>
+                <rect
+                  x="718"
+                  y="582"
+                  width="48"
+                  height="30"
+                  rx="10"
+                  fill="#fff"
+                  stroke="#dfe6ee"
+                />
+                <text
+                  x="742"
+                  y="602"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                >
+                  Так
+                </text>
+              </g>
+
+              <rect
+                x="45"
+                y="615"
+                rx="22"
+                width="410"
+                height="125"
+                fill="#fff0f0"
+                stroke="#efaaaa"
+                stroke-width="2.3"
+              />
+              <text x="250" y="657" text-anchor="middle" class="svg-title">
+                Викликати тул передачі оператору
+              </text>
+              <text x="250" y="692" text-anchor="middle" class="svg-small">
+                агент не імпровізує недоступну дію
+              </text>
+              <text x="250" y="720" text-anchor="middle" class="svg-small">
+                після успішної передачі агент припиняє обробку тікету
+              </text>
+
+              <rect
+                x="465"
+                y="655"
+                rx="22"
+                width="470"
+                height="150"
+                fill="#eef4ff"
+                stroke="#8aaaf6"
+                stroke-width="2.3"
+              />
+              <text x="700" y="699" text-anchor="middle" class="svg-title">
+                Отримати дані або уточнити
+              </text>
+              <text x="700" y="738" text-anchor="middle" class="svg-small">
+                read-only тули · база знань · доступні CRM-дані
+              </text>
+              <text x="700" y="768" text-anchor="middle" class="svg-small">
+                неоднозначність → уточнення, а не вгадування
+              </text>
+
+              <rect
+                x="530"
+                y="900"
+                rx="22"
+                width="340"
+                height="120"
+                fill="#fff"
+                stroke="#cfd9e5"
+                stroke-width="2.3"
+              />
+              <text x="700" y="942" text-anchor="middle" class="svg-title">
+                Потрібна зміна в CRM?
+              </text>
+              <text x="700" y="977" text-anchor="middle" class="svg-small">
+                створення або оновлення сутності
+              </text>
+
+              <g>
+                <rect
+                  x="440"
+                  y="925"
+                  width="48"
+                  height="30"
+                  rx="10"
+                  fill="#fff"
+                  stroke="#dfe6ee"
+                />
+                <text
+                  x="464"
+                  y="945"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                >
+                  Так
+                </text>
+              </g>
+              <g>
+                <rect
+                  x="914"
+                  y="925"
+                  width="48"
+                  height="30"
+                  rx="10"
+                  fill="#fff"
+                  stroke="#dfe6ee"
+                />
+                <text
+                  x="938"
+                  y="945"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                >
+                  Ні
+                </text>
+              </g>
+
+              <rect
+                x="45"
+                y="1055"
+                rx="22"
+                width="380"
+                height="120"
+                fill="#eaf8f2"
+                stroke="#86d2b4"
+                stroke-width="2.3"
+              />
+              <text x="235" y="1095" text-anchor="middle" class="svg-title">
+                Викликати тул зміни
+              </text>
+              <text x="235" y="1130" text-anchor="middle" class="svg-small">
+                виконати CRM-дію
+              </text>
+              <text x="235" y="1158" text-anchor="middle" class="svg-small">
+                + залишити замітку в чаті
+              </text>
+
+              <rect
+                x="975"
+                y="1055"
+                rx="22"
+                width="380"
+                height="120"
+                fill="#fff"
+                stroke="#cfd9e5"
+                stroke-width="2.3"
+              />
+              <text x="1165" y="1095" text-anchor="middle" class="svg-title">
+                Без зміни в CRM
+              </text>
+              <text x="1165" y="1130" text-anchor="middle" class="svg-small">
+                консультація / уточнення
+              </text>
+              <text x="1165" y="1158" text-anchor="middle" class="svg-small">
+                замітка про CRM-зміну не потрібна
+              </text>
+
+              <rect
+                x="500"
+                y="1235"
+                rx="22"
+                width="400"
+                height="130"
+                fill="#fff6df"
+                stroke="#efc16a"
+                stroke-width="2.3"
+              />
+              <text x="700" y="1278" text-anchor="middle" class="svg-title">
+                Перед відправленням відповіді
+              </text>
+              <text x="700" y="1314" text-anchor="middle" class="svg-small">
+                чи написав у чат користувач keyCRM?
+              </text>
+              <text x="700" y="1342" text-anchor="middle" class="svg-small">
+                якщо так — агент припиняє обробку тікету
+              </text>
+
+              <rect
+                x="60"
+                y="1390"
+                rx="22"
+                width="380"
+                height="80"
+                fill="#fff0f0"
+                stroke="#efaaaa"
+                stroke-width="2.3"
+              />
+              <text x="250" y="1438" text-anchor="middle" class="svg-title">
+                Не відправляти відповідь
+              </text>
+
+              <rect
+                x="960"
+                y="1390"
+                rx="22"
+                width="380"
+                height="80"
+                fill="#eaf8f2"
+                stroke="#86d2b4"
+                stroke-width="2.3"
+              />
+              <text x="1150" y="1438" text-anchor="middle" class="svg-title">
+                Надіслати клієнту
+              </text>
+            </svg>
+          </div>
+          <div class="caption">
+            Якщо користувач keyCRM втрутився після успішної CRM-дії, вже
+            виконана зміна лишається, замітка про неї лишається, а невідправлена
+            відповідь агента скасовується.
+          </div>
+        </figure>
+
+        <figure class="diagram-card">
+          <div class="diagram-head">
+            <div>
+              <h3>Життєвий цикл роботи агента з тікетом</h3>
+              <p>
+                Агент не володіє тікетом і не змінює його призначеного
+                оператора. Після припинення роботи з поточним тікетом повторна
+                активація можлива тільки через новий тригер — нове відкриття
+                тікету.
+              </p>
+            </div>
+            <div class="diagram-no">4</div>
+          </div>
+          <div class="diagram-wrap">
+            <svg
+              viewBox="0 0 1400 880"
+              role="img"
+              aria-label="Схема роботи AI-агента з тікетом"
+            >
+              <defs>
+                <marker
+                  id="d4a"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#71839a" />
+                </marker>
+                <marker
+                  id="d4r"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#dc2626" />
+                </marker>
+                <marker
+                  id="d4b"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#2563eb" />
+                </marker>
+              </defs>
+
+              <path
+                d="M700 130 V205"
+                stroke="#2563eb"
+                stroke-width="3"
+                marker-end="url(#d4b)"
+              />
+              <path
+                d="M700 365 V430 H250 V490"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d4a)"
+              />
+              <path
+                d="M700 365 V490"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d4a)"
+              />
+              <path
+                d="M700 365 V430 H1150 V490"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d4a)"
+              />
+              <path d="M250 610 V640 H700" stroke="#dc2626" stroke-width="3" />
+              <path d="M700 610 V640" stroke="#dc2626" stroke-width="3" />
+              <path d="M1150 610 V640 H700" stroke="#dc2626" stroke-width="3" />
+              <path
+                d="M700 640 V675"
+                stroke="#dc2626"
+                stroke-width="3"
+                marker-end="url(#d4r)"
+              />
+              <path
+                d="M700 785 V830"
+                stroke="#2563eb"
+                stroke-width="3"
+                marker-end="url(#d4b)"
+              />
+
+              <rect
+                x="470"
+                y="40"
+                rx="22"
+                width="460"
+                height="90"
+                fill="#eaf1ff"
+                stroke="#8aaaf6"
+                stroke-width="2.3"
+              />
+              <text x="700" y="78" text-anchor="middle" class="svg-title">
+                Відкриття тікету + умови запуску виконані
+              </text>
+              <text x="700" y="108" text-anchor="middle" class="svg-small">
+                це єдиний спосіб активувати агента для тікету
+              </text>
+
+              <rect
+                x="465"
+                y="205"
+                rx="24"
+                width="470"
+                height="160"
+                fill="#eaf8f2"
+                stroke="#86d2b4"
+                stroke-width="2.5"
+              />
+              <text x="700" y="250" text-anchor="middle" class="svg-title">
+                Агент активний для тікету
+              </text>
+              <text x="700" y="292" text-anchor="middle" class="svg-small">
+                отримує повідомлення клієнта · може відповідати
+              </text>
+              <text x="700" y="322" text-anchor="middle" class="svg-small">
+                може викликати доступні тули
+              </text>
+
+              <rect
+                x="65"
+                y="490"
+                rx="22"
+                width="370"
+                height="120"
+                fill="#fff6df"
+                stroke="#efc16a"
+                stroke-width="2.3"
+              />
+              <text x="250" y="532" text-anchor="middle" class="svg-title">
+                Логічне завершення
+              </text>
+              <text x="250" y="568" text-anchor="middle" class="svg-small">
+                ціль сценарію досягнуто · тікет закрито
+              </text>
+
+              <rect
+                x="515"
+                y="490"
+                rx="22"
+                width="370"
+                height="120"
+                fill="#f3edff"
+                stroke="#b99df7"
+                stroke-width="2.3"
+              />
+              <text x="700" y="532" text-anchor="middle" class="svg-title">
+                Тул передачі оператору
+              </text>
+              <text x="700" y="568" text-anchor="middle" class="svg-small">
+                агент сам ініціює ескалацію
+              </text>
+
+              <rect
+                x="965"
+                y="490"
+                rx="22"
+                width="370"
+                height="120"
+                fill="#fff0f0"
+                stroke="#efaaaa"
+                stroke-width="2.3"
+              />
+              <text x="1150" y="532" text-anchor="middle" class="svg-title">
+                Повідомлення користувача keyCRM
+              </text>
+              <text x="1150" y="568" text-anchor="middle" class="svg-small">
+                незалежно від зміни відповідального
+              </text>
+
+              <rect
+                x="470"
+                y="675"
+                rx="24"
+                width="460"
+                height="110"
+                fill="#fff"
+                stroke="#cfd9e5"
+                stroke-width="2.3"
+              />
+              <text x="700" y="718" text-anchor="middle" class="svg-title">
+                Агент не працює з поточним тікетом
+              </text>
+              <text x="700" y="752" text-anchor="middle" class="svg-small">
+                нові повідомлення самі по собі не запускають його повторно
+              </text>
+
+              <rect
+                x="510"
+                y="830"
+                rx="20"
+                width="380"
+                height="45"
+                fill="#eef4ff"
+                stroke="#8aaaf6"
+                stroke-width="2"
+              />
+              <text x="700" y="859" text-anchor="middle" class="svg-small">
+                Наступне відкриття тікету → знову перевірити запуск
+              </text>
+            </svg>
+          </div>
+          <div class="caption">
+            Активація агента — окремий стан автоматичної обробки, а не ownership
+            тікету: призначений оператор може залишатися незмінним. Після
+            припинення роботи з поточним тікетом агент може знову підключитися
+            тільки на новому відкритті тікету.
+          </div>
+        </figure>
+
+        <figure class="diagram-card">
+          <div class="diagram-head">
+            <div>
+              <h3>Права доступу → набір тулів для LLM</h3>
+              <p>
+                Модель не отримує «всі можливості CRM». Оркестратор формує набір
+                тулів відповідно до прав конкретного агента; службові прив’язки
+                лишаються прихованими.
+              </p>
+            </div>
+            <div class="diagram-no">5</div>
+          </div>
+          <div class="diagram-wrap">
+            <svg
+              viewBox="0 0 1500 820"
+              role="img"
+              aria-label="Схема прав доступу та доступних тулів AI-агента"
+            >
+              <defs>
+                <marker
+                  id="d5a"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#71839a" />
+                </marker>
+                <marker
+                  id="d5p"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#7c3aed" />
+                </marker>
+              </defs>
+
+              <path
+                d="M315 245 H410"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d5a)"
+              />
+              <path
+                d="M760 245 H855"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d5a)"
+              />
+              <path
+                d="M1125 245 H1210"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d5a)"
+              />
+              <path
+                d="M1370 360 V455"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d5a)"
+              />
+              <path
+                d="M1330 455 V360"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d5a)"
+              />
+              <path
+                d="M585 650 V445"
+                stroke="#7c3aed"
+                stroke-width="3"
+                marker-end="url(#d5p)"
+              />
+
+              <rect
+                x="45"
+                y="90"
+                rx="24"
+                width="270"
+                height="315"
+                fill="#f3edff"
+                stroke="#b99df7"
+                stroke-width="2.3"
+              />
+              <text x="180" y="135" text-anchor="middle" class="svg-title">
+                Права доступу
+              </text>
+              <text x="85" y="180" class="svg-small">Покупці</text>
+              <text x="85" y="212" class="svg-small">Замовлення</text>
+              <text x="85" y="244" class="svg-small">Товари</text>
+              <text x="85" y="288" class="svg-text">
+                Немає · Перегляд · Редагування
+              </text>
+              <text x="85" y="326" class="svg-small">
+                для «Товарів» — без «Редагування»
+              </text>
+              <text x="85" y="365" class="svg-small">
+                недоступна дія не потрапляє
+              </text>
+              <text x="85" y="392" class="svg-small">в контекст моделі</text>
+
+              <rect
+                x="410"
+                y="70"
+                rx="24"
+                width="350"
+                height="375"
+                fill="#eef4ff"
+                stroke="#8aaaf6"
+                stroke-width="2.3"
+              />
+              <text x="585" y="115" text-anchor="middle" class="svg-title">
+                Оркестратор
+              </text>
+              <text x="450" y="165" class="svg-small">
+                1. читає права агента
+              </text>
+              <text x="450" y="197" class="svg-small">
+                2. формує список доступних тулів
+              </text>
+              <text x="450" y="229" class="svg-small">
+                3. передає тільки їхні схеми в LLM
+              </text>
+              <text x="450" y="285" class="svg-small">
+                при реальному виклику:
+              </text>
+              <text x="450" y="317" class="svg-small">
+                • додає client_id / contact_id
+              </text>
+              <text x="450" y="349" class="svg-small">
+                • пов’язує дію з поточним чатом
+              </text>
+              <text x="450" y="381" class="svg-small">
+                • фільтрує службові поля у відповіді
+              </text>
+              <text x="450" y="418" class="svg-small" fill="#b91c1c">
+                LLM службові ID не бачить
+              </text>
+
+              <rect
+                x="855"
+                y="100"
+                rx="24"
+                width="270"
+                height="290"
+                fill="#f3edff"
+                stroke="#b99df7"
+                stroke-width="2.3"
+              />
+              <text x="990" y="145" text-anchor="middle" class="svg-title">
+                LLM
+              </text>
+              <text x="990" y="194" text-anchor="middle" class="svg-text">
+                бачить тільки дозволені
+              </text>
+              <text x="990" y="222" text-anchor="middle" class="svg-text">
+                схеми тулів
+              </text>
+              <text x="990" y="278" text-anchor="middle" class="svg-small">
+                обирає потрібну дію
+              </text>
+              <text x="990" y="308" text-anchor="middle" class="svg-small">
+                та формує бізнес-параметри
+              </text>
+              <text x="990" y="352" text-anchor="middle" class="svg-small">
+                без прямого доступу до CRM
+              </text>
+
+              <rect
+                x="1210"
+                y="115"
+                rx="24"
+                width="240"
+                height="245"
+                fill="#eaf8f2"
+                stroke="#86d2b4"
+                stroke-width="2.3"
+              />
+              <text x="1330" y="158" text-anchor="middle" class="svg-title">
+                Тул
+              </text>
+              <text x="1330" y="202" text-anchor="middle" class="svg-small">
+                конкретна дозволена дія
+              </text>
+              <text x="1330" y="246" text-anchor="middle" class="svg-small">
+                read-only
+              </text>
+              <text x="1330" y="276" text-anchor="middle" class="svg-small">
+                або зміна в CRM
+              </text>
+              <text x="1330" y="322" text-anchor="middle" class="svg-small">
+                вузький контракт
+              </text>
+
+              <rect
+                x="1210"
+                y="455"
+                rx="22"
+                width="240"
+                height="155"
+                fill="#fff"
+                stroke="#cfd9e5"
+                stroke-width="2.3"
+              />
+              <text x="1330" y="500" text-anchor="middle" class="svg-title">
+                keyCRM
+              </text>
+              <text x="1330" y="545" text-anchor="middle" class="svg-small">
+                виконує бізнес-логіку
+              </text>
+              <text x="1330" y="575" text-anchor="middle" class="svg-small">
+                і повертає фактичний результат
+              </text>
+
+              <rect
+                x="330"
+                y="650"
+                rx="22"
+                width="510"
+                height="135"
+                fill="#fff6df"
+                stroke="#efc16a"
+                stroke-width="2.3"
+              />
+              <text x="585" y="692" text-anchor="middle" class="svg-title">
+                Два правила поза таблицею прав
+              </text>
+              <text x="375" y="735" class="svg-small">
+                • база знань — якщо підключена, незалежно від прав до розділів
+              </text>
+              <text x="375" y="766" class="svg-small">
+                • тул передачі чату оператору — доступний агенту завжди
+              </text>
+            </svg>
+          </div>
+          <div class="caption">
+            Принцип простий: «Інструкції» визначають, що агент має робити; права
+            визначають, що він реально може зробити. Недоступного тула модель не
+            бачить.
+          </div>
+        </figure>
+      </section>
+
+      <section id="data">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">05 · Дані та дії</div>
+            <h2>Як агент працює з даними, тулами та замітками</h2>
+          </div>
+          <div class="section-note">
+            Там, де потрібна детермінована CRM-логіка, агент працює через вузькі
+            контрольовані дії.
+          </div>
+        </div>
+        <div class="grid-4">
+          <article class="card">
+            <span class="pill">read-only</span>
+            <h3 style="margin-top: 10px">Читання</h3>
+            <p>
+              Каталог, база знань, замовлення покупця та інші дозволені дані.
+              Такі виклики самі по собі не створюють замітку про CRM-зміну.
+            </p>
+          </article>
+          <article class="card">
+            <span class="pill">зміна в CRM</span>
+            <h3 style="margin-top: 10px">Створення / оновлення</h3>
+            <p>
+              Покупець, адреса, замовлення, оплата чи рахунок — лише через
+              відповідний тул, доступний за правами агента.
+            </p>
+          </article>
+          <article class="card">
+            <span class="pill">робота з чатом</span>
+            <h3 style="margin-top: 10px">Передача оператору</h3>
+            <p>
+              Передача чату — окремий тул агента. Він доступний завжди й не
+              залежить від прав до «Покупців», «Замовлень» або «Товарів».
+            </p>
+          </article>
+          <article class="card">
+            <span class="pill">замітка в чаті</span>
+            <h3 style="margin-top: 10px">Фактичний результат</h3>
+            <p>
+              Якщо CRM-сутність створена або змінена, у чаті залишається одна
+              зрозуміла замітка про те, що реально відбулося.
+            </p>
+          </article>
+        </div>
+        <div class="callout" style="margin-top: 16px">
+          <div class="callout-icon">✓</div>
+          <div>
+            <strong>Факти й підтвердження</strong>Бізнес-факти беруться тільки з
+            доступних джерел і результатів тулів. Універсального обов’язкового
+            підтвердження перед кожною CRM-дією немає — воно потрібне лише там,
+            де це визначено конкретною дією або сценарієм.
+          </div>
+        </div>
+      </section>
+
+      <section id="config">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">06 · Налаштування агента</div>
+            <h2>Що задає бізнес і що система контролює сама</h2>
+          </div>
+          <div class="section-note">
+            Основні налаштування визначають поведінку агента; «Доступи та
+            запуск» — його реальні можливості та момент підключення.
+          </div>
+        </div>
+        <div class="compare">
+          <div class="compare-col compare-config">
+            <h3>Налаштовується для конкретного агента</h3>
+            <ul>
+              <li>
+                назва та канали комунікацій; один канал може бути підключений
+                лише до одного AI-агента, а вже використані іншим агентом канали
+                недоступні для вибору;
+              </li>
+              <li>бази знань;</li>
+              <li>«Інструкції»: роль, межі відповідальності й тон;</li>
+              <li>оператори для ескалації та додаткові ситуації передачі;</li>
+              <li>права «Покупці / Замовлення / Товари»;</li>
+              <li>дві умови запуску та їхній період дії.</li>
+            </ul>
+          </div>
+          <div class="compare-col compare-core">
+            <h3>Незмінна системна логіка</h3>
+            <ul>
+              <li>інструкції не розширюють права доступу;</li>
+              <li>недоступна дія взагалі не передається в контекст моделі;</li>
+              <li>база знань не залежить від прав до розділів;</li>
+              <li>тул передачі оператору доступний завжди;</li>
+              <li>запуск перевіряється тільки при відкритті тікету;</li>
+              <li>
+                ручне повідомлення користувача keyCRM припиняє роботу агента з
+                поточним тікетом.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="grid-3" style="margin-top: 16px">
+          <article class="card tone-blue">
+            <h3>Товари · Перегляд</h3>
+            <p>
+              Дає агенту пошук по каталогу. Рівня «Редагування» для товарів у
+              цій версії немає.
+            </p>
+          </article>
+          <article class="card tone-purple">
+            <h3>Замовлення</h3>
+            <p>
+              «Перегляд» — перегляд замовлень покупця. «Редагування» — створення
+              замовлення, платежу та рахунку.
+            </p>
+          </article>
+          <article class="card tone-green">
+            <h3>Покупці · Редагування</h3>
+            <p>
+              Створення й оновлення покупця, пошук відділення та створення
+              адреси доставки.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="reliability">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">
+              07 · Надійність і резервні сценарії
+            </div>
+            <h2>Що відбувається поза основним сценарієм</h2>
+          </div>
+          <div class="section-note">
+            Цей контур потрібен, щоб агент не витрачав AI-баланс безконтрольно,
+            не дублював CRM-дії, не зависав у циклі та передбачувано віддавав
+            тікет людині при відмовах.
+          </div>
+        </div>
+
+        <div class="callout">
+          <div class="callout-icon">$</div>
+          <div>
+            <strong
+              >Перед кожним викликом LLM — окрема системна перевірка</strong
+            >Оркестратор повторно перевіряє, що агент усе ще активний для
+            тікету, конфігурація та права актуальні, а для нового виклику LLM є
+            доступний AI-баланс. Баланс потрібно не просто читати, а атомарно
+            резервувати/списувати, щоб паралельні чати не перевищували доступний
+            ліміт. Якщо виклик не дозволений — LLM взагалі не запускається.
+          </div>
+        </div>
+
+        <figure class="diagram-card" style="margin-top: 18px">
+          <div class="diagram-head">
+            <div>
+              <h3>Контур безпечного виконання одного ходу</h3>
+              <p>
+                Один хід — це окремий <code>execution</code>: подія фіксується,
+                кожен LLM-виклик проходить системний gate, tool call
+                перевіряється сервером, а фактичний результат тула записується
+                перед наступним кроком.
+              </p>
+            </div>
+            <div class="diagram-no">6</div>
+          </div>
+          <div class="diagram-wrap">
+            <svg
+              viewBox="0 0 1500 1600"
+              role="img"
+              aria-label="Контур безпечного виконання одного ходу AI-агента"
+            >
+              <defs>
+                <marker
+                  id="d6a"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#71839a" />
+                </marker>
+                <marker
+                  id="d6g"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#059669" />
+                </marker>
+                <marker
+                  id="d6r"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#dc2626" />
+                </marker>
+                <marker
+                  id="d6b"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#2563eb" />
+                </marker>
+              </defs>
+
+              <!-- main flow -->
+              <path
+                d="M750 120 V165"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d6a)"
+              />
+              <path
+                d="M750 285 V335"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d6a)"
+              />
+              <path
+                d="M750 495 V555"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d6a)"
+              />
+              <path
+                d="M750 655 V710"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d6a)"
+              />
+
+              <!-- final response branch -->
+              <path
+                d="M555 765 H340 V875"
+                stroke="#059669"
+                stroke-width="3"
+                marker-end="url(#d6g)"
+              />
+              <path
+                d="M340 985 V1040"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d6a)"
+              />
+              <path
+                d="M340 1170 V1205"
+                stroke="#059669"
+                stroke-width="3"
+                marker-end="url(#d6g)"
+              />
+              <path
+                d="M340 1315 V1375 H185 V1435"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d6a)"
+              />
+              <path
+                d="M340 1315 V1375 H495 V1435"
+                stroke="#059669"
+                stroke-width="3"
+                marker-end="url(#d6g)"
+              />
+
+              <!-- tool branch -->
+              <path
+                d="M945 765 H1155 V875"
+                stroke="#2563eb"
+                stroke-width="3"
+                marker-end="url(#d6b)"
+              />
+              <path
+                d="M1155 995 V1045"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d6a)"
+              />
+              <path
+                d="M1155 1165 V1215"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d6a)"
+              />
+
+              <!-- loop after tool -->
+              <path
+                d="M1155 1335 V1390 H1460 V535 H1000 V495"
+                stroke="#2563eb"
+                stroke-width="3"
+                marker-end="url(#d6b)"
+              />
+
+              <!-- preflight fallback -->
+              <path
+                d="M1070 415 H1115"
+                stroke="#dc2626"
+                stroke-width="3"
+                marker-end="url(#d6r)"
+              />
+
+              <!-- nodes -->
+              <rect
+                x="550"
+                y="40"
+                rx="22"
+                width="400"
+                height="80"
+                fill="#eaf1ff"
+                stroke="#8aaaf6"
+                stroke-width="2.3"
+              />
+              <text x="750" y="74" text-anchor="middle" class="svg-title">
+                Нова репліка клієнта
+              </text>
+              <text x="750" y="101" text-anchor="middle" class="svg-small">
+                або перший хід після успішного запуску агента
+              </text>
+
+              <rect
+                x="500"
+                y="165"
+                rx="22"
+                width="500"
+                height="120"
+                fill="#fff"
+                stroke="#cfd9e5"
+                stroke-width="2.3"
+              />
+              <text x="750" y="202" text-anchor="middle" class="svg-title">
+                Створити execution для ходу
+              </text>
+              <text x="750" y="235" text-anchor="middle" class="svg-small">
+                один активний execution на тікет · дедуплікація події
+              </text>
+              <text x="750" y="263" text-anchor="middle" class="svg-small">
+                зафіксувати версії prompt / config / tool schema та лічильники
+              </text>
+
+              <rect
+                x="430"
+                y="335"
+                rx="24"
+                width="640"
+                height="160"
+                fill="#fff6df"
+                stroke="#efc16a"
+                stroke-width="2.4"
+              />
+              <text x="750" y="376" text-anchor="middle" class="svg-title">
+                Gate перед кожним викликом LLM
+              </text>
+              <text x="750" y="410" text-anchor="middle" class="svg-small">
+                обробку тікету агентом не припинено · агент активний · права й
+                конфігурація актуальні
+              </text>
+              <text x="750" y="440" text-anchor="middle" class="svg-small">
+                не вичерпано ліміт кроків / токенів / часу · контекст
+                вкладається в бюджет
+              </text>
+              <text x="750" y="470" text-anchor="middle" class="svg-small">
+                є право на AI-функцію → атомарно зарезервувати баланс на цей
+                LLM-виклик
+              </text>
+
+              <rect
+                x="1115"
+                y="335"
+                rx="22"
+                width="315"
+                height="175"
+                fill="#fff0f0"
+                stroke="#efaaaa"
+                stroke-width="2.3"
+              />
+              <text x="1272" y="374" text-anchor="middle" class="svg-title">
+                Gate не пройдений
+              </text>
+              <text x="1272" y="408" text-anchor="middle" class="svg-small">
+                LLM не викликається
+              </text>
+              <text x="1272" y="438" text-anchor="middle" class="svg-small">
+                якщо агент ще активний для тікету → handoff
+              </text>
+              <text x="1272" y="466" text-anchor="middle" class="svg-small">
+                якщо роботу вже припинено через людину → stop
+              </text>
+              <text x="1272" y="494" text-anchor="middle" class="svg-small">
+                причина → замітка / технічний лог
+              </text>
+
+              <rect
+                x="550"
+                y="555"
+                rx="22"
+                width="400"
+                height="100"
+                fill="#f3edff"
+                stroke="#b99df7"
+                stroke-width="2.3"
+              />
+              <text x="750" y="594" text-anchor="middle" class="svg-title">
+                Виклик LLM
+              </text>
+              <text x="750" y="626" text-anchor="middle" class="svg-small">
+                історія · інструкції · актуальні тули · факти попередніх кроків
+              </text>
+
+              <rect
+                x="555"
+                y="710"
+                rx="22"
+                width="390"
+                height="110"
+                fill="#fff"
+                stroke="#cfd9e5"
+                stroke-width="2.3"
+              />
+              <text x="750" y="750" text-anchor="middle" class="svg-title">
+                Що повернула LLM?
+              </text>
+              <text x="750" y="784" text-anchor="middle" class="svg-small">
+                фінальна відповідь або виклик дозволеного тула
+              </text>
+
+              <!-- final response path -->
+              <rect
+                x="130"
+                y="875"
+                rx="22"
+                width="420"
+                height="110"
+                fill="#eef4ff"
+                stroke="#8aaaf6"
+                stroke-width="2.3"
+              />
+              <text x="340" y="914" text-anchor="middle" class="svg-title">
+                Фінальна відповідь
+              </text>
+              <text x="340" y="946" text-anchor="middle" class="svg-small">
+                client_message + ознака логічного завершення
+              </text>
+              <text x="340" y="972" text-anchor="middle" class="svg-small">
+                без нового виклику тула
+              </text>
+
+              <rect
+                x="130"
+                y="1040"
+                rx="22"
+                width="420"
+                height="130"
+                fill="#fff6df"
+                stroke="#efc16a"
+                stroke-width="2.3"
+              />
+              <text x="340" y="1076" text-anchor="middle" class="svg-title">
+                Фінальна перевірка актуальності
+              </text>
+              <text x="340" y="1108" text-anchor="middle" class="svg-small">
+                ручного втручання користувача keyCRM немає
+              </text>
+              <text x="340" y="1136" text-anchor="middle" class="svg-small">
+                вхідна репліка execution досі остання від клієнта
+              </text>
+              <text x="340" y="1162" text-anchor="middle" class="svg-small">
+                людина → stop · новіша репліка → новий execution
+              </text>
+
+              <rect
+                x="130"
+                y="1205"
+                rx="22"
+                width="420"
+                height="110"
+                fill="#eaf8f2"
+                stroke="#86d2b4"
+                stroke-width="2.3"
+              />
+              <text x="340" y="1244" text-anchor="middle" class="svg-title">
+                Опублікувати фактичний результат
+              </text>
+              <text x="340" y="1276" text-anchor="middle" class="svg-small">
+                відповідь клієнту + замітка про вже виконані CRM-зміни
+              </text>
+              <text x="340" y="1303" text-anchor="middle" class="svg-small">
+                після успішної публікації завершити execution
+              </text>
+
+              <rect
+                x="55"
+                y="1435"
+                rx="18"
+                width="260"
+                height="70"
+                fill="#eef4ff"
+                stroke="#8aaaf6"
+                stroke-width="2"
+              />
+              <text x="185" y="1477" text-anchor="middle" class="svg-small">
+                Сценарій не завершено → чекати репліку
+              </text>
+
+              <rect
+                x="365"
+                y="1435"
+                rx="18"
+                width="260"
+                height="70"
+                fill="#eaf8f2"
+                stroke="#86d2b4"
+                stroke-width="2"
+              />
+              <text x="495" y="1464" text-anchor="middle" class="svg-small">
+                Логічно завершено
+              </text>
+              <text x="495" y="1490" text-anchor="middle" class="svg-small">
+                → закрити тікет і припинити роботу агента
+              </text>
+
+              <!-- tool path -->
+              <rect
+                x="955"
+                y="875"
+                rx="22"
+                width="400"
+                height="120"
+                fill="#eef4ff"
+                stroke="#8aaaf6"
+                stroke-width="2.3"
+              />
+              <text x="1155" y="914" text-anchor="middle" class="svg-title">
+                Серверна перевірка tool call
+              </text>
+              <text x="1155" y="946" text-anchor="middle" class="svg-small">
+                тул доступний · права · агент активний для тікету · актуальна
+                схема / довідники
+              </text>
+              <text x="1155" y="974" text-anchor="middle" class="svg-small">
+                валідація параметрів і бізнесових інваріантів
+              </text>
+
+              <rect
+                x="955"
+                y="1045"
+                rx="22"
+                width="400"
+                height="120"
+                fill="#eaf8f2"
+                stroke="#86d2b4"
+                stroke-width="2.3"
+              />
+              <text x="1155" y="1084" text-anchor="middle" class="svg-title">
+                Виконати тул ідемпотентно
+              </text>
+              <text x="1155" y="1116" text-anchor="middle" class="svg-small">
+                CRM / зовнішній провайдер · той самий idempotency key для retry
+              </text>
+              <text x="1155" y="1144" text-anchor="middle" class="svg-small">
+                мутацію не повторювати як нову бізнесову дію
+              </text>
+
+              <rect
+                x="955"
+                y="1215"
+                rx="22"
+                width="400"
+                height="120"
+                fill="#fff"
+                stroke="#cfd9e5"
+                stroke-width="2.3"
+              />
+              <text x="1155" y="1254" text-anchor="middle" class="svg-title">
+                Зафіксувати фактичний результат
+              </text>
+              <text x="1155" y="1286" text-anchor="middle" class="svg-small">
+                зберегти tool result / мутацію в execution · оновити лічильники
+              </text>
+              <text x="1155" y="1314" text-anchor="middle" class="svg-small">
+                потрібен наступний крок → знову пройти Gate перед LLM
+              </text>
+
+              <!-- labels -->
+              <g>
+                <rect
+                  x="388"
+                  y="738"
+                  width="128"
+                  height="30"
+                  rx="10"
+                  fill="#fff"
+                  stroke="#d5eadf"
+                />
+                <text
+                  x="452"
+                  y="758"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                  fill="#047857"
+                >
+                  фінальна відповідь
+                </text>
+              </g>
+              <g>
+                <rect
+                  x="981"
+                  y="738"
+                  width="82"
+                  height="30"
+                  rx="10"
+                  fill="#fff"
+                  stroke="#d9e2ec"
+                />
+                <text
+                  x="1022"
+                  y="758"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                >
+                  tool call
+                </text>
+              </g>
+              <g>
+                <rect
+                  x="1074"
+                  y="394"
+                  width="36"
+                  height="28"
+                  rx="9"
+                  fill="#fff"
+                  stroke="#f3caca"
+                />
+                <text
+                  x="1092"
+                  y="413"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                  fill="#b91c1c"
+                >
+                  ні
+                </text>
+              </g>
+              <g>
+                <rect
+                  x="1260"
+                  y="610"
+                  width="190"
+                  height="30"
+                  rx="10"
+                  fill="#eef4ff"
+                  stroke="#8aaaf6"
+                />
+                <text
+                  x="1355"
+                  y="630"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                  fill="#1d4ed8"
+                >
+                  наступний крок → знову Gate
+                </text>
+              </g>
+            </svg>
+          </div>
+          <div class="caption">
+            Ключова різниця: цикл — не «LLM і шість незалежних блоків», а
+            послідовність <strong>Gate → LLM → відповідь або tool call</strong>.
+            Після успішного тула його факт зберігається в execution, і лише тоді
+            система може зробити наступний LLM-виклик через той самий Gate.
+            Перед публікацією фінальної відповіді система також перевіряє, чи не
+            з’явилася репліка клієнта, новіша за вхідну репліку execution. Якщо
+            з’явилася — підготовлена відповідь не відправляється, поточний
+            execution завершується як superseded, а новий execution стартує з
+            актуальною історією та фактами вже виконаних тулів. Помилки та
+            ретраї деталізовані в наступній схемі.
+          </div>
+        </figure>
+
+        <figure class="diagram-card">
+          <div class="diagram-head">
+            <div>
+              <h3>Як система обробляє відмову</h3>
+              <p>
+                Не всі помилки однакові. Безпечний повтор дозволений тільки там,
+                де він не створить дубль або нову незворотну дію. В інших
+                випадках система спочатку з’ясовує фактичний стан, а потім або
+                продовжує, або передає тікет людині.
+              </p>
+            </div>
+            <div class="diagram-no">7</div>
+          </div>
+          <div class="diagram-wrap">
+            <svg
+              viewBox="0 0 1500 1020"
+              role="img"
+              aria-label="Схема обробки помилок і резервних сценаріїв AI-агента"
+            >
+              <defs>
+                <marker
+                  id="d7a"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#71839a" />
+                </marker>
+                <marker
+                  id="d7g"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#059669" />
+                </marker>
+                <marker
+                  id="d7r"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path d="M0 0L10 5L0 10z" fill="#dc2626" />
+                </marker>
+              </defs>
+
+              <path
+                d="M750 120 V190"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d7a)"
+              />
+              <path
+                d="M750 300 V355 H270 V420"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d7a)"
+              />
+              <path
+                d="M750 300 V420"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d7a)"
+              />
+              <path
+                d="M750 300 V355 H1230 V420"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d7a)"
+              />
+              <path d="M270 590 V655 H750" stroke="#059669" stroke-width="3" />
+              <path d="M750 590 V655" stroke="#71839a" stroke-width="3" />
+              <path d="M1230 590 V655 H750" stroke="#dc2626" stroke-width="3" />
+              <path
+                d="M750 655 V700"
+                stroke="#71839a"
+                stroke-width="3"
+                marker-end="url(#d7a)"
+              />
+              <path
+                d="M600 765 H360 V845"
+                stroke="#059669"
+                stroke-width="3"
+                marker-end="url(#d7g)"
+              />
+              <path
+                d="M900 765 H1140 V845"
+                stroke="#dc2626"
+                stroke-width="3"
+                marker-end="url(#d7r)"
+              />
+
+              <rect
+                x="545"
+                y="40"
+                rx="22"
+                width="410"
+                height="80"
+                fill="#fff0f0"
+                stroke="#efaaaa"
+                stroke-width="2.3"
+              />
+              <text x="750" y="74" text-anchor="middle" class="svg-title">
+                Помилка / таймаут / ліміт / конфлікт
+              </text>
+              <text x="750" y="101" text-anchor="middle" class="svg-small">
+                класифікуємо причину до будь-якого повтору
+              </text>
+
+              <rect
+                x="555"
+                y="190"
+                rx="22"
+                width="390"
+                height="110"
+                fill="#fff"
+                stroke="#cfd9e5"
+                stroke-width="2.3"
+              />
+              <text x="750" y="231" text-anchor="middle" class="svg-title">
+                Який тип відмови?
+              </text>
+              <text x="750" y="265" text-anchor="middle" class="svg-small">
+                transient · невідомий результат мутації · невідновна / системна
+              </text>
+
+              <rect
+                x="65"
+                y="420"
+                rx="22"
+                width="410"
+                height="170"
+                fill="#eaf8f2"
+                stroke="#86d2b4"
+                stroke-width="2.3"
+              />
+              <text x="270" y="460" text-anchor="middle" class="svg-title">
+                Безпечний обмежений повтор
+              </text>
+              <text x="270" y="496" text-anchor="middle" class="svg-small">
+                LLM 5xx / rate limit · read-only тул · тимчасова мережева
+                помилка
+              </text>
+              <text x="270" y="529" text-anchor="middle" class="svg-small">
+                повтор тільки в дозволених випадках і в межах ліміту повторів
+              </text>
+              <text x="270" y="562" text-anchor="middle" class="svg-small">
+                успіх → продовжити виконання
+              </text>
+
+              <rect
+                x="545"
+                y="420"
+                rx="22"
+                width="410"
+                height="170"
+                fill="#fff6df"
+                stroke="#efc16a"
+                stroke-width="2.3"
+              />
+              <text x="750" y="460" text-anchor="middle" class="svg-title">
+                Мутація: результат невідомий
+              </text>
+              <text x="750" y="496" text-anchor="middle" class="svg-small">
+                timeout після create/update не означає, що дія не виконалась
+              </text>
+              <text x="750" y="529" text-anchor="middle" class="svg-small">
+                idempotency key / correlation ID → перевірити фактичний стан
+              </text>
+              <text x="750" y="562" text-anchor="middle" class="svg-small">
+                ніколи не робити «сліпий» дублюючий повтор
+              </text>
+
+              <rect
+                x="1025"
+                y="420"
+                rx="22"
+                width="410"
+                height="170"
+                fill="#fff0f0"
+                stroke="#efaaaa"
+                stroke-width="2.3"
+              />
+              <text x="1230" y="460" text-anchor="middle" class="svg-title">
+                Невідновна / системна відмова
+              </text>
+              <text x="1230" y="496" text-anchor="middle" class="svg-small">
+                немає балансу · перевищено ліміт · права/схема змінилися
+              </text>
+              <text x="1230" y="529" text-anchor="middle" class="svg-small">
+                бізнес-валидація · агент вимкнений · обробку тікету припинено
+              </text>
+              <text x="1230" y="562" text-anchor="middle" class="svg-small">
+                новий виклик LLM не робимо
+              </text>
+
+              <rect
+                x="525"
+                y="700"
+                rx="22"
+                width="450"
+                height="130"
+                fill="#fff"
+                stroke="#cfd9e5"
+                stroke-width="2.3"
+              />
+              <text x="750" y="741" text-anchor="middle" class="svg-title">
+                Можна безпечно продовжити?
+              </text>
+              <text x="750" y="776" text-anchor="middle" class="svg-small">
+                враховуємо вже виконані CRM-зміни та чи агент ще активний для
+                тікету
+              </text>
+              <text x="750" y="804" text-anchor="middle" class="svg-small">
+                частковий успіх не відкочується мовчки
+              </text>
+
+              <rect
+                x="125"
+                y="845"
+                rx="22"
+                width="470"
+                height="130"
+                fill="#eaf8f2"
+                stroke="#86d2b4"
+                stroke-width="2.3"
+              />
+              <text x="360" y="887" text-anchor="middle" class="svg-title">
+                Так → продовжити з фактичного стану
+              </text>
+              <text x="360" y="924" text-anchor="middle" class="svg-small">
+                виконані кроки збережені · результат повертається в контекст
+              </text>
+              <text x="360" y="952" text-anchor="middle" class="svg-small">
+                замітка описує тільки те, що реально відбулося
+              </text>
+
+              <rect
+                x="905"
+                y="845"
+                rx="22"
+                width="470"
+                height="130"
+                fill="#fff0f0"
+                stroke="#efaaaa"
+                stroke-width="2.3"
+              />
+              <text x="1140" y="887" text-anchor="middle" class="svg-title">
+                Ні → системна передача людині
+              </text>
+              <text x="1140" y="924" text-anchor="middle" class="svg-small">
+                без нового LLM: останній доступний оператор → список ескалації
+              </text>
+              <text x="1140" y="952" text-anchor="middle" class="svg-small">
+                якщо призначити нікого — агент припиняє обробку · лог /
+                системний сигнал
+              </text>
+
+              <g>
+                <rect
+                  x="419"
+                  y="338"
+                  width="92"
+                  height="28"
+                  rx="9"
+                  fill="#fff"
+                  stroke="#d5eadf"
+                />
+                <text
+                  x="465"
+                  y="357"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                >
+                  transient
+                </text>
+              </g>
+              <g>
+                <rect
+                  x="704"
+                  y="338"
+                  width="92"
+                  height="28"
+                  rx="9"
+                  fill="#fff"
+                  stroke="#eadfbf"
+                />
+                <text
+                  x="750"
+                  y="357"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                >
+                  мутація
+                </text>
+              </g>
+              <g>
+                <rect
+                  x="989"
+                  y="338"
+                  width="105"
+                  height="28"
+                  rx="9"
+                  fill="#fff"
+                  stroke="#f3caca"
+                />
+                <text
+                  x="1041"
+                  y="357"
+                  text-anchor="middle"
+                  class="svg-arrow-label"
+                >
+                  невідновна
+                </text>
+              </g>
+            </svg>
+          </div>
+          <div class="caption">
+            Системний резервний сценарій не залежить від LLM. Якщо модель або
+            AI-баланс недоступні, система все одно повинна завершити виконання у
+            визначений стан і віддати тікет людині або залишити його відкритим
+            без подальшої обробки AI-агентом.
+          </div>
+        </figure>
+
+        <div class="rule-grid">
+          <article class="rule-card">
+            <span class="pill">стан виконання</span
+            ><strong>Одне активне виконання на тікет</strong>
+            <p>
+              Вхідні події дедуплікуються. Execution фіксує репліку клієнта, з
+              якої почався хід; перед відправленням відповіді система перевіряє,
+              чи не з’явилася новіша репліка. Якщо з’явилася — застаріла
+              відповідь не відправляється, поточний execution завершується як
+              <code>superseded</code>, а новий стартує з актуальною історією та
+              фактами вже виконаних тулів. Для ходу зберігаються
+              <code>execution_id</code>, вхідна подія, версія конфігурації, уже
+              виконані тули, витрачений AI-баланс і фінальний статус.
+            </p>
+          </article>
+          <article class="rule-card">
+            <span class="pill">валідація</span
+            ><strong>Параметрам LLM не довіряємо</strong>
+            <p>
+              LLM може обрати ціну, знижку, суму передплати чи ID сервісу, але
+              backend повторно перевіряє права, формат, активність довідників,
+              актуальний стан сутності й бізнесові інваріанти.
+            </p>
+          </article>
+          <article class="rule-card">
+            <span class="pill">частковий успіх</span
+            ><strong>Успішні зміни не губляться</strong>
+            <p>
+              Якщо створили покупця й адресу, але впала оплата, попередні зміни
+              залишаються. Повторюється тільки невдалий крок, якщо це безпечно;
+              замітка показує фактичний стан.
+            </p>
+          </article>
+          <article class="rule-card">
+            <span class="pill">зовнішні сервіси</span
+            ><strong>Платіжні дії потребують reconciliation</strong>
+            <p>
+              Для рахунків потрібні idempotency/correlation ID і перевірка факту
+              у провайдера: можливий стан, коли рахунок уже створився зовні, а
+              CRM ще не отримала відповідь.
+            </p>
+          </article>
+          <article class="rule-card">
+            <span class="pill">безпека</span
+            ><strong>Контент клієнта — це дані, не інструкції</strong>
+            <p>
+              Повідомлення, база знань, описи товарів і результати тулів не
+              можуть змінювати системні правила. Потрібні захист від prompt
+              injection, ізоляція кабінетів і окремі правила для чутливих
+              клієнтських даних.
+            </p>
+          </article>
+          <article class="rule-card">
+            <span class="pill">спостережуваність</span
+            ><strong>Кожен хід можна відтворити</strong>
+            <p>
+              Логуємо версію prompt/config/tool schema, токени й вартість,
+              затримку, виклики тулів, повтори, мутації, причину передачі,
+              результат публікації та закриття тікету.
+            </p>
+          </article>
+          <article class="rule-card">
+            <span class="pill">контекст</span
+            ><strong>Повний контекст теж має ліміт</strong>
+            <p>
+              Історія чату, повні тіла сутностей і динамічні схеми не можуть
+              рости безмежно. Потрібен token budget, правила
+              скорочення/резюмування та ліміти результатів пошукових тулів без
+              втрати критичних фактів.
+            </p>
+          </article>
+        </div>
+
+        <h3 style="margin: 28px 0 12px">Коротка матриця відмов</h3>
+        <div class="failure-table-wrap">
+          <table class="failure-table">
+            <thead>
+              <tr>
+                <th>Ситуація</th>
+                <th>Що не робимо</th>
+                <th>Системна поведінка</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Немає AI-балансу / права на AI</td>
+                <td>Не викликаємо LLM «ще раз, щоб вирішити що робити».</td>
+                <td>
+                  Завершуємо виконання системно, передаємо тікет оператору; у
+                  чаті/логах фіксуємо технічну причину.
+                </td>
+              </tr>
+              <tr>
+                <td>LLM timeout / 5xx / rate limit</td>
+                <td>Не повторюємо безкінечно.</td>
+                <td>
+                  Обмежений повтор для тимчасової помилки; після вичерпання
+                  ліміту повторів — системна передача людині.
+                </td>
+              </tr>
+              <tr>
+                <td>Невалідна відповідь LLM</td>
+                <td>Не виконуємо неперевірені параметри.</td>
+                <td>
+                  Допустимий обмежений repair/retry; далі — зупинка виконання і
+                  передача.
+                </td>
+              </tr>
+              <tr>
+                <td>Read-only тул недоступний</td>
+                <td>Не вигадуємо відсутні дані.</td>
+                <td>
+                  Безпечний повтор, якщо помилка тимчасова; інакше
+                  повідомлення/передача залежно від можливості продовжити
+                  сценарій.
+                </td>
+              </tr>
+              <tr>
+                <td>Мутація повернула timeout</td>
+                <td>Не запускаємо create/update повторно «наосліп».</td>
+                <td>
+                  Перевіряємо результат за idempotency/correlation ID,
+                  відновлюємо фактичний стан і тільки після цього вирішуємо
+                  наступний крок.
+                </td>
+              </tr>
+              <tr>
+                <td>Business validation</td>
+                <td>Не обходимо серверні правила промптом.</td>
+                <td>
+                  Повертаємо нормалізовану помилку; LLM може виправити параметри
+                  лише якщо це безпечно й ліміт не вичерпано.
+                </td>
+              </tr>
+              <tr>
+                <td>Частковий успіх ланцюжка</td>
+                <td>Не відкочуємо вже успішні CRM-зміни мовчки.</td>
+                <td>
+                  Зберігаємо фактичний стан, консолідуємо замітку, повторюємо
+                  тільки невдалий крок або передаємо людині.
+                </td>
+              </tr>
+              <tr>
+                <td>Користувач keyCRM втрутився</td>
+                <td>
+                  Не відправляємо підготовлену відповідь і не стартуємо нову
+                  мутацію.
+                </td>
+                <td>
+                  Агент припиняє обробку поточного тікету; уже завершені мутації
+                  лишаються й фіксуються заміткою.
+                </td>
+              </tr>
+              <tr>
+                <td>Перевищено кроки / токени / час</td>
+                <td>Не продовжуємо цикл LLM ↔ тули.</td>
+                <td>
+                  Зупиняємо виконання у контрольованому стані та передаємо тікет
+                  людині без нового виклику LLM.
+                </td>
+              </tr>
+              <tr>
+                <td>Не відправилась відповідь клієнту</td>
+                <td>Не запускаємо LLM повторно для того самого тексту.</td>
+                <td>
+                  Зберігаємо підготовлену відповідь і статус публікації; робимо
+                  обмежений технічний повтор відправлення, далі — системний
+                  сигнал / передача.
+                </td>
+              </tr>
+              <tr>
+                <td>Не створилась замітка після мутації</td>
+                <td>
+                  Не вважаємо, що CRM-зміни «не було», і не повторюємо її.
+                </td>
+                <td>
+                  Факт мутації лишається в execution-log; окремо повторюємо
+                  публікацію замітки. Якщо не вдалося — операційний сигнал, але
+                  вже виконана CRM-дія зберігається.
+                </td>
+              </tr>
+              <tr>
+                <td>Не вдалося закрити тікет</td>
+                <td>
+                  Не позначаємо сценарій завершеним лише тому, що фінальна
+                  відповідь уже пішла.
+                </td>
+                <td>
+                  Закриття повторюється ідемпотентно без LLM; після ліміту —
+                  тікет лишається відкритим, помилка видима операційно.
+                </td>
+              </tr>
+              <tr>
+                <td>Агента вимкнули / права або схема змінилися</td>
+                <td>Не продовжуємо роботу за старими дозволами.</td>
+                <td>
+                  Execution зберігає snapshot для відтворення, але перед
+                  реальною дією система перевіряє актуальний стан і працює за
+                  принципом fail closed.
+                </td>
+              </tr>
+              <tr>
+                <td>Немає доступного оператора</td>
+                <td>Не залишаємо виконання «вічно в передачі».</td>
+                <td>
+                  AI припиняє обробку тікету; тікет залишається відкритим для
+                  людини, помилка фіксується та має бути видимою операційно.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout" style="margin-top: 16px">
+          <div class="callout-icon">#</div>
+          <div>
+            <strong>Числові ліміти не треба зашивати в бізнес-логіку</strong
+            >Максимальна кількість LLM-кроків, викликів тулів, технічних
+            повторів, токенів і час одного ходу мають бути явними системними
+            параметрами. У цій схемі фіксується сам принцип жорсткої межі;
+            конкретні значення можна калібрувати окремо.
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top: 16px">
+          <div class="callout-icon">✓</div>
+          <div>
+            <strong>Логічне завершення теж є системною дією</strong>LLM має явно
+            сигналізувати, що сценарій завершено; оркестратор закриває тікет
+            тільки після успішної публікації фінальної відповіді та всіх
+            потрібних заміток. Закриття має бути ідемпотентним, а його помилка —
+            окремо видимою, а не маскуватися під «усе завершено».
+          </div>
+        </div>
+      </section>
+
+      <section id="v1">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">08 · Межі поточної логіки</div>
+            <h2>Важливі межі, щоб не плутати запуск і роботу агента</h2>
+          </div>
+          <div class="section-note">
+            Це не окремі сценарії, а правила, які визначають коли агент стартує,
+            продовжує діалог або не повертається в тікет.
+          </div>
+        </div>
+        <div class="v1-grid">
+          <div class="v1-item">
+            <strong>Один канал → один AI-агент</strong
+            ><span
+              >У v1 канал, уже підключений до одного AI-агента, недоступний для
+              вибору в іншому агенті.</span
+            >
+          </div>
+          <div class="v1-item">
+            <strong>Немає запуску за таймером</strong
+            ><span
+              >Якщо оператор онлайн, але довго не відповідає, це саме по собі не
+              запускає агента.</span
+            >
+          </div>
+          <div class="v1-item">
+            <strong>Запуск ≠ кожна нова репліка</strong
+            ><span
+              >Якщо агент уже активний для відкритого тікету, нове повідомлення
+              клієнта — це наступний хід того самого діалогу з попередньою
+              історією. Якщо агент уже припинив роботу з поточним тікетом, така
+              репліка сама по собі його не активує повторно.</span
+            >
+          </div>
+          <div class="v1-item">
+            <strong>Немає «всіх сценаріїв CRM»</strong
+            ><span
+              >Фактичні можливості залежать від інструкцій, прав, доступних
+              тулів і підключених джерел.</span
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,1876 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<title>AI-гайд 2-ї лінії</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600&family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky left index + one reading column. Each section: plain explanation → everyday comparison → terms → guided demo → "що робити" box. Scenarios live in grouped tabs. */
+:root{
+  --bg:#F2F4F7; --surface:#FFFFFF; --sunken:#E8ECF2; --ink:#141A24; --muted:#556074; --line:#D3DAE4;
+  --accent:#2C43C4; --accent-soft:#E2E7FF; --on-accent:#FFFFFF;
+  --ok:#1C7F53; --ok-soft:#DCF2E6; --warn:#9A5B00; --warn-soft:#FFEFD3; --bad:#B9322B; --bad-soft:#FADFDC;
+  --code-bg:#121824; --code-fg:#DCE3EE; --code-dim:#8A96AB; --code-ph:#9DB0FF; --code-err:#FF8A80;
+  --shadow:0 6px 24px rgba(20,26,36,.12);
+  --f-display:"Unbounded","Onest",system-ui,sans-serif;
+  --f-body:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D1118; --surface:#141A24; --sunken:#1A2130; --ink:#E5E9F1; --muted:#9AA5B8; --line:#273143;
+    --accent:#8D9CFF; --accent-soft:#222A50; --on-accent:#0D1118;
+    --ok:#52C78F; --ok-soft:#14301F; --warn:#F2AE45; --warn-soft:#35270F; --bad:#FF7F75; --bad-soft:#3A1917;
+    --code-bg:#090C12; --code-fg:#DCE3EE; --code-dim:#7D889C; --code-ph:#A9B6FF; --code-err:#FF8A80;
+    --shadow:0 6px 24px rgba(0,0,0,.45);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D1118; --surface:#141A24; --sunken:#1A2130; --ink:#E5E9F1; --muted:#9AA5B8; --line:#273143;
+  --accent:#8D9CFF; --accent-soft:#222A50; --on-accent:#0D1118;
+  --ok:#52C78F; --ok-soft:#14301F; --warn:#F2AE45; --warn-soft:#35270F; --bad:#FF7F75; --bad-soft:#3A1917;
+  --code-bg:#090C12; --code-fg:#DCE3EE; --code-dim:#7D889C; --code-ph:#A9B6FF; --code-err:#FF8A80;
+  --shadow:0 6px 24px rgba(0,0,0,.45);
+  color-scheme:dark;
+}
+/* Manual choice from the page switch: wins over the system setting and the viewer's own theme */
+html:root[data-ui="light"]{
+  --bg:#F2F4F7; --surface:#FFFFFF; --sunken:#E8ECF2; --ink:#141A24; --muted:#556074; --line:#D3DAE4;
+  --accent:#2C43C4; --accent-soft:#E2E7FF; --on-accent:#FFFFFF;
+  --ok:#1C7F53; --ok-soft:#DCF2E6; --warn:#9A5B00; --warn-soft:#FFEFD3; --bad:#B9322B; --bad-soft:#FADFDC;
+  --code-bg:#121824; --code-fg:#DCE3EE; --code-dim:#8A96AB; --code-ph:#9DB0FF; --code-err:#FF8A80;
+  --shadow:0 6px 24px rgba(20,26,36,.12);
+  color-scheme:light;
+}
+html:root[data-ui="dark"]{
+  --bg:#0D1118; --surface:#141A24; --sunken:#1A2130; --ink:#E5E9F1; --muted:#9AA5B8; --line:#273143;
+  --accent:#8D9CFF; --accent-soft:#222A50; --on-accent:#0D1118;
+  --ok:#52C78F; --ok-soft:#14301F; --warn:#F2AE45; --warn-soft:#35270F; --bad:#FF7F75; --bad-soft:#3A1917;
+  --code-bg:#090C12; --code-fg:#DCE3EE; --code-dim:#7D889C; --code-ph:#A9B6FF; --code-err:#FF8A80;
+  --shadow:0 6px 24px rgba(0,0,0,.45);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px)}
+@media (min-width:900px){html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 24px)}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{text-wrap:balance;margin:0}
+p{margin:0}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--sunken);padding:.08em .35em;border-radius:5px}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+
+.shell{max-width:1200px;margin:0 auto;padding-inline:20px;display:grid;grid-template-columns:minmax(0,1fr)}
+.nav,.widget > *,.topic > *{min-width:0}
+@media (min-width:900px){.shell{grid-template-columns:230px minmax(0,1fr);gap:56px;padding-inline:32px}}
+
+/* ---------- Nav ---------- */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);margin-inline:-20px;padding:10px 20px;border-bottom:1px solid var(--line)}
+.nav-inner{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-group{display:contents}
+.nav-label{display:none}
+.nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:14px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.nav a.active{color:var(--on-accent);background:var(--accent);border-color:var(--accent)}
+.nav a .n{display:none}
+@media (min-width:900px){
+  .nav{top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start;margin:40px 0 0;padding:0;border:0;background:transparent}
+  .nav-inner{flex-direction:column;gap:2px;overflow:visible}
+  .nav-group{display:flex;flex-direction:column;gap:2px;margin-bottom:18px}
+  .nav-label{display:block;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 6px 10px}
+  .nav a{border:0;background:transparent;border-radius:7px;padding:6px 10px;display:flex;gap:8px;align-items:baseline;white-space:normal}
+  .nav a:hover{background:var(--sunken);color:var(--ink)}
+  .nav a.active{background:var(--accent-soft);color:var(--accent)}
+  .nav a .n{display:inline;font-family:var(--f-mono);font-size:11px;opacity:.7;min-width:14px}
+}
+
+main{min-width:0;padding-block:28px 96px}
+@media (min-width:900px){main{padding-block:40px 120px}}
+
+/* ---------- Theme toggle ---------- */
+.theme-switch{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;gap:2px;padding:4px;border-radius:999px;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow)}
+.theme-switch button{display:inline-flex;align-items:center;gap:6px;border:0;background:transparent;border-radius:999px;padding:7px 12px;font-size:14px;font-weight:500;cursor:pointer;color:var(--muted)}
+.theme-switch button:hover{color:var(--ink)}
+.theme-switch button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.theme-switch svg{width:16px;height:16px}
+
+/* ---------- Hero ---------- */
+.hero{display:grid;gap:16px;padding-bottom:32px;border-bottom:1px solid var(--line);margin-bottom:44px}
+.eyebrow{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.hero h1{font-family:var(--f-display);font-weight:600;font-size:clamp(27px,4.4vw,42px);line-height:1.12;letter-spacing:-.01em}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .lead{font-size:18px;color:var(--muted);max-width:62ch}
+.hero-map{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));max-width:760px}
+.hero-map div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:2px}
+.hero-map b{font-size:15px}
+.hero-map span{font-size:14px;color:var(--muted)}
+.hint{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--muted);max-width:66ch}
+.hint i{flex:0 0 auto;width:22px;height:16px;border:1.5px solid var(--accent);border-radius:4px;margin-top:3px;background:var(--surface)}
+
+/* ---------- Parts / topics ---------- */
+.part{margin-bottom:56px}
+.part-head{display:grid;gap:8px;margin-bottom:24px}
+.part-head h2{font-family:var(--f-display);font-weight:600;font-size:clamp(22px,3vw,30px);letter-spacing:-.01em}
+.part-head p{color:var(--muted);max-width:64ch}
+.topic{display:grid;gap:16px;padding-block:32px;border-top:1px solid var(--line)}
+.topic-first{border-top:0;padding-top:0}
+.topic-head{display:flex;gap:12px;align-items:center}
+.num{flex:0 0 auto;width:34px;height:34px;border-radius:9px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-family:var(--f-display);font-weight:600;font-size:15px}
+.topic h3{font-family:var(--f-display);font-weight:500;font-size:clamp(19px,2.4vw,23px);letter-spacing:-.005em}
+.lede{max-width:66ch}
+.analogy{max-width:66ch;background:var(--accent-soft);border-radius:10px;padding:12px 14px;display:grid;gap:2px}
+.analogy b{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.terms{margin:0;display:grid;gap:6px;max-width:70ch;font-size:14px}
+.terms div{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr);gap:4px 14px;padding:8px 12px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+@media (max-width:560px){.terms div{grid-template-columns:1fr}}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--muted)}
+.takeaway{border:1px solid var(--line);border-left:4px solid var(--accent);background:var(--surface);border-radius:0 10px 10px 0;padding:14px 16px;display:grid;gap:8px;max-width:72ch}
+.takeaway .tk-rule{font-weight:700;font-size:17px}
+.takeaway ul{margin:0;padding-left:18px;display:grid;gap:5px;font-size:15px}
+.tk-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+
+/* ---------- Widget ---------- */
+.widget{background:var(--surface);border:1.5px solid var(--accent);border-radius:12px;padding:16px;display:grid;gap:14px;min-width:0}
+@media (min-width:640px){.widget{padding:20px}}
+.widget-title{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.howto{display:grid;gap:6px;font-size:14px;background:var(--sunken);border-radius:8px;padding:10px 12px}
+.howto p{max-width:none}
+.howto b{color:var(--ink)}
+.note{font-size:13px;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:9px 14px;font-size:15px;font-weight:500;cursor:pointer;color:var(--ink)}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.small{padding:6px 11px;font-size:14px}
+.row-btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 12px;font-size:14px;cursor:pointer;text-align:left;display:grid;gap:1px}
+.seg button small{font-size:12px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.seg button[aria-pressed="true"] small{color:var(--bg);opacity:.75}
+.verdict{display:grid;gap:4px;padding:11px 13px;border-radius:8px;font-size:14px}
+.verdict b{font-weight:700}
+.verdict.ok{background:var(--ok-soft);color:var(--ok)}
+.verdict.bad{background:var(--bad-soft);color:var(--bad)}
+.verdict.warn{background:var(--warn-soft);color:var(--warn)}
+.verdict.neutral{background:var(--sunken);color:var(--ink)}
+.verdict ul{margin:2px 0 0;padding-left:18px;display:grid;gap:3px}
+
+/* s1 */
+.sentence{font-size:clamp(16px,2.2vw,19px);line-height:1.6;background:var(--sunken);padding:14px 16px;border-radius:8px}
+.blank{display:inline-block;min-width:3.2em;text-align:center;border-bottom:2px solid var(--accent);font-family:var(--f-mono);font-weight:500;color:var(--accent);padding:0 4px}
+.blank.bad{color:var(--bad);border-color:var(--bad)}
+.blank.ok{color:var(--ok);border-color:var(--ok)}
+.opts{display:grid;gap:6px}
+.opt{display:grid;grid-template-columns:54px minmax(0,1fr) 46px;gap:10px;align-items:center;padding:6px 8px;border-radius:8px;font-size:14px}
+.opt.picked{background:var(--accent-soft)}
+.opt .v{font-family:var(--f-mono);font-weight:500;font-size:15px}
+.opt .why{grid-column:2 / 4;font-size:12.5px;color:var(--muted);margin-top:-4px}
+.bar{height:10px;background:var(--sunken);border-radius:4px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--accent);border-radius:4px}
+.pct{font-family:var(--f-mono);font-size:13px;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.tally{display:flex;flex-wrap:wrap;gap:8px}
+.tally span{font-size:13px;background:var(--sunken);border-radius:999px;padding:4px 10px;font-variant-numeric:tabular-nums}
+
+/* s2 */
+.mem-grid{display:grid;gap:14px}
+@media (min-width:760px){.mem-grid{grid-template-columns:minmax(0,1fr) 40px minmax(0,1.15fr);align-items:start}}
+.mem-col{display:grid;gap:8px;align-content:start;min-width:0}
+.col-h{font-size:13px;font-weight:600;color:var(--muted)}
+.chatbox{display:grid;gap:8px;background:var(--sunken);border-radius:10px;padding:10px;min-height:140px;align-content:start}
+.bubble{font-size:14px;padding:9px 12px;border-radius:10px;max-width:92%;line-height:1.45;background:var(--surface)}
+.bubble.u{background:var(--accent);color:var(--on-accent);justify-self:end;border-bottom-right-radius:3px}
+.bubble.a{justify-self:start;border-bottom-left-radius:3px;border:1px solid var(--line)}
+.bubble.a.mixed{background:var(--bad-soft);color:var(--bad);border-color:transparent}
+.bubble.new{animation:pop .35s ease-out}
+@keyframes pop{from{transform:translateY(6px);opacity:.3}to{transform:none;opacity:1}}
+.mem-arrow{display:none}
+@media (min-width:760px){.mem-arrow{display:grid;place-items:center;color:var(--accent);padding-top:60px}}
+.payload{background:var(--code-bg);color:var(--code-fg);border-radius:10px;padding:12px;display:grid;gap:8px;font-size:13px}
+.payload .req{font-family:var(--f-mono);font-size:12px;color:var(--code-ph)}
+.prow{display:grid;gap:3px;padding:8px 10px;border-radius:7px;background:rgba(255,255,255,.04);white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.45}
+.prow .who{font-family:var(--f-mono);font-size:11px;color:var(--code-dim);display:flex;gap:8px;flex-wrap:wrap}
+.prow .tag{border-radius:4px;padding:0 5px;font-size:10.5px}
+.prow .tag.again{background:rgba(242,174,69,.18);color:#F5B65A}
+.prow .tag.fresh{background:rgba(141,156,255,.22);color:#B3BEFF}
+.prow.sys{color:var(--code-dim);font-style:italic}
+.prow.flash{animation:flash 1s ease-out}
+@keyframes flash{from{background:rgba(141,156,255,.32)}to{background:rgba(255,255,255,.04)}}
+
+/* s3 */
+.ctx-bar{display:flex;height:36px;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.ctx-bar span{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;min-width:0;transition:flex-grow .5s}
+.seg-sys{background:var(--line);color:var(--ink)}
+.seg-log{background:var(--warn-soft);color:var(--warn)}
+.seg-q{background:var(--accent);color:var(--on-accent);flex:0 0 auto!important;min-width:6px!important;padding:0 2px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.stats{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))}
+.stat{background:var(--sunken);border-radius:8px;padding:9px 12px;display:grid;gap:1px}
+.stat span{font-size:12.5px;color:var(--muted)}
+.stat b{font-size:18px;font-variant-numeric:tabular-nums}
+.logbox{background:var(--code-bg);color:var(--code-dim);border-radius:8px;font-family:var(--f-mono);font-size:11.5px;line-height:1.6;max-height:210px;overflow:auto;padding:8px 10px}
+.logbox div{white-space:pre}
+.logbox .err{color:var(--code-err);background:rgba(255,138,128,.12);font-weight:500}
+.logbox .more{color:var(--code-ph);white-space:normal;padding-top:6px}
+.tip{display:grid;gap:8px;background:var(--sunken);border-radius:10px;padding:12px 14px}
+.tip > b{font-size:14px}
+
+/* s4 */
+.svg-wrap{overflow-x:auto}
+.svg-wrap svg{display:block;width:100%;min-width:560px;height:auto;color:var(--ink)}
+.tl-ev{fill:var(--surface);stroke:var(--muted);stroke-width:2;stroke-dasharray:3 3;transition:fill .3s,stroke .3s}
+.tl-on .tl-ev{fill:var(--ok);stroke:var(--ok);stroke-dasharray:none}
+.tl-evt{fill:var(--muted)}
+.tl-on .tl-evt{fill:var(--ink)}
+.tl-br{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 4}
+.tl-on .tl-br{stroke:var(--ok);stroke-dasharray:none}
+.tl-brt{fill:var(--muted)}
+.tl-on .tl-brt{fill:var(--ok);font-weight:600}
+.toggle{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;font-weight:600;user-select:none;position:relative}
+.toggle input{position:absolute;opacity:0;pointer-events:none}
+.toggle .sw{flex:0 0 auto;width:42px;height:24px;border-radius:999px;background:var(--line);position:relative;transition:background .2s}
+.toggle .sw::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:var(--surface);transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.toggle input:checked + .sw{background:var(--ok)}
+.toggle input:checked + .sw::after{transform:translateX(18px)}
+.toggle input:focus-visible + .sw{outline:2px solid var(--accent);outline-offset:2px}
+figure{margin:0}
+figcaption{font-size:14px;margin-top:8px}
+
+/* s5 */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.chip[aria-pressed="false"]{text-decoration:line-through;color:var(--muted)}
+.chip .k{font-family:var(--f-mono);font-size:11px;opacity:.8}
+.pre{font-family:var(--f-mono);font-size:13px;line-height:1.65;background:var(--code-bg);color:var(--code-fg);border-radius:8px;padding:14px 16px;white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
+.pre .ph{color:var(--code-ph)}
+.pre .lbl{color:var(--code-dim)}
+.parts{width:100%;border-collapse:collapse;font-size:14px}
+.parts th,.parts td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.parts th{font-weight:600;white-space:nowrap;width:1%}
+.parts td{color:var(--muted)}
+.table-wrap{overflow-x:auto}
+.hygiene{border:2px solid var(--bad);background:var(--bad-soft);border-radius:12px;padding:16px;display:grid;gap:12px}
+.hygiene h4{font-family:var(--f-display);font-weight:600;font-size:18px;color:var(--bad);display:flex;gap:10px;align-items:center}
+.hygiene h4 svg{width:22px;height:22px;flex:0 0 auto}
+.hy-list{display:flex;flex-wrap:wrap;gap:8px}
+.hy-list span{background:var(--surface);border:1px solid var(--bad);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:14px;font-weight:500}
+.hy-ex{display:grid;gap:6px;font-family:var(--f-mono);font-size:12.5px}
+.hy-ex div{display:grid;grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr);gap:8px;align-items:center}
+.hy-ex code{background:var(--surface);padding:6px 8px;border-radius:6px;overflow-wrap:anywhere}
+.hy-ex .arrow{color:var(--bad);text-align:center}
+@media (max-width:560px){.hy-ex div{grid-template-columns:1fr}.hy-ex .arrow{transform:rotate(90deg)}}
+.tips2{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.tips2 div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:4px;font-size:14px}
+.tips2 b{font-size:15px}
+
+/* s6 */
+.ask{width:100%;border-collapse:collapse;font-size:14px}
+.ask th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+.ask td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+.ask td:first-child{font-weight:500}
+.ask td:first-child q{font-family:var(--f-mono);font-size:12.5px;background:var(--sunken);padding:2px 6px;border-radius:5px;quotes:none}
+.stack{display:grid;gap:6px}
+.sheet{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;align-items:start;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);font-size:14px}
+.sheet svg{width:20px;height:20px;color:var(--muted);margin-top:1px}
+.sheet small{display:block;color:var(--muted);font-size:12.5px}
+.sheet.proj{border-color:var(--accent);background:var(--accent-soft)}
+.sheet.proj svg{color:var(--accent)}
+.sheet.msg{border-color:var(--ink)}
+.sheet.in{animation:pop .35s ease-out}
+.cards2{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:6px;align-content:start;font-size:14px}
+.card h4{font-size:16px}
+.card .meta{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:6px}
+
+/* s7 */
+.cmp{display:grid;gap:10px}
+.cmp-msg{display:grid;gap:4px}
+.cmp-msg .who{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.cmp-msg .txt{padding:11px 13px;border-radius:10px;font-size:14px;white-space:pre-wrap}
+.cmp-msg.u .txt{background:var(--accent);color:var(--on-accent)}
+.cmp-msg.a .txt{background:var(--sunken)}
+.cmp-msg .add{background:rgba(255,255,255,.18);border-radius:4px;padding:0 3px}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;border-radius:999px;padding:3px 10px;justify-self:start}
+.badge.bad{background:var(--bad-soft);color:var(--bad)}
+.badge.ok{background:var(--ok-soft);color:var(--ok)}
+.phrases{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}
+.phrase{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:8px;align-content:start}
+.phrase b{font-size:14px}
+.phrase q{quotes:none;font-family:var(--f-mono);font-size:12.5px;line-height:1.55;background:var(--sunken);padding:8px 10px;border-radius:6px;display:block}
+.phrase .copy-s{justify-self:start}
+.checks{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.checks label{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:start;font-size:15px;cursor:pointer;padding:8px 10px;border-radius:8px;background:var(--surface);border:1px solid var(--line)}
+.checks input{margin-top:4px;accent-color:var(--ok)}
+.checks input:checked + span{color:var(--muted)}
+.checks small{display:block;color:var(--muted);font-size:13px}
+
+/* part 2 */
+.files{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
+.file{display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:12px}
+.file svg{width:26px;height:30px;color:var(--accent)}
+.file b{font-size:15px}
+.file p{font-size:13px;color:var(--muted)}
+.sec-label{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:8px}
+.codeblock{position:relative}
+.copy{position:absolute;top:8px;right:8px;background:#232B3B;color:#DCE3EE;border:1px solid #3A4458;border-radius:6px;font-size:12px;padding:4px 9px;cursor:pointer}
+.copy:hover{background:#2E3850}
+.codeblock .pre{padding-top:40px}
+@media (min-width:640px){.codeblock .pre{padding-top:14px;padding-right:104px}}
+.copy-s{border:1px solid var(--line);background:var(--surface);border-radius:6px;font-size:12.5px;padding:4px 10px;cursor:pointer;color:var(--ink)}
+.copy-s:hover{border-color:var(--accent);color:var(--accent)}
+.callout{border-left:3px solid var(--warn);background:var(--warn-soft);color:var(--ink);padding:10px 14px;border-radius:0 8px 8px 0;font-size:14px;max-width:72ch}
+.callout b{color:var(--warn)}
+
+.phases{display:grid;gap:12px}
+@media (min-width:860px){.phases{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.phase{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:10px;align-content:start;position:relative}
+.phase-h{display:flex;gap:8px;align-items:center;font-weight:700;font-size:15px}
+.phase-h i{width:10px;height:10px;border-radius:3px}
+.phase ol{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.phase li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;font-size:14px;color:var(--muted)}
+.phase li b{display:block;color:var(--ink);font-size:14.5px}
+.phase li .n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-mono);font-size:12px;font-weight:500}
+.ph-1 .phase-h i,.ph-1 li .n{background:var(--warn-soft);color:var(--warn)}
+.ph-1 .phase-h i{background:var(--warn)}
+.ph-2 .phase-h i{background:var(--accent)}
+.ph-2 li .n{background:var(--accent-soft);color:var(--accent)}
+.ph-3 .phase-h i{background:var(--ok)}
+.ph-3 li .n{background:var(--ok-soft);color:var(--ok)}
+@media (min-width:860px){.phase:not(:last-child)::after{content:"→";position:absolute;right:-12px;top:14px;color:var(--muted);font-family:var(--f-mono);background:var(--bg);width:12px;text-align:center}}
+
+/* scenarios */
+.tabgroups{display:grid;gap:10px;margin-bottom:16px}
+.tabgroup{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tabgroup-l{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600;min-width:100%;}
+@media (min-width:640px){.tabgroup-l{min-width:96px}}
+.tab{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 11px;font-size:14px;cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+.tab svg{width:16px;height:16px;color:var(--muted)}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tab[aria-selected="true"] svg{color:var(--bg)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:22px;min-width:0}
+@media (min-width:640px){.panel{padding:26px}}
+.panel-head{display:grid;gap:8px}
+.panel-head h3{font-family:var(--f-display);font-weight:500;font-size:clamp(19px,2.6vw,24px)}
+.when{font-size:15px;color:var(--muted);max-width:68ch}
+.when b{color:var(--ink)}
+.p-grid{display:grid;gap:22px}
+@media (min-width:860px){.p-grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}}
+.collect{display:grid;gap:4px;margin:0;padding:0;list-style:none}
+.collect label{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;align-items:start;font-size:14px;cursor:pointer;padding:6px 8px;border-radius:6px}
+.collect label:hover{background:var(--sunken)}
+.collect input{margin-top:3px;accent-color:var(--ok)}
+.collect input:checked + span{color:var(--muted);text-decoration:line-through}
+.steps{display:grid;margin:0;padding:0;list-style:none;counter-reset:st}
+.steps li{counter-increment:st;display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding-bottom:12px;position:relative;font-size:14px}
+.steps li::before{content:counter(st);width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-family:var(--f-mono);font-size:12px;display:grid;place-items:center;font-weight:500;position:relative;z-index:1}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:11.5px;top:24px;bottom:0;width:1px;background:var(--line)}
+.verify{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:flex-start;background:var(--ok-soft);color:var(--ink);padding:12px 14px;border-radius:8px;font-size:14px}
+.verify b{color:var(--ok)}
+.traps{display:grid;gap:8px}
+.trap{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;font-size:14px;background:var(--bad-soft);border-radius:8px;padding:10px 12px}
+.trap svg{width:18px;height:18px;color:var(--bad);margin-top:2px}
+.facts{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))}
+.fact{background:var(--sunken);border-radius:8px;padding:10px 12px;font-size:14px}
+.fact b{display:block;font-size:13px;color:var(--muted);font-weight:600;margin-bottom:2px}
+
+/* skills */
+.skill-cards{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.skill-card{text-align:left;border:1.5px solid var(--accent);background:var(--surface);border-radius:12px;padding:14px 16px;cursor:pointer;display:grid;grid-template-columns:38px minmax(0,1fr);gap:6px 12px;align-items:start;color:var(--ink)}
+.skill-card:hover{box-shadow:var(--shadow)}
+.skill-card[aria-expanded="true"]{background:var(--accent-soft)}
+.sk-ico{grid-row:1 / 3;width:38px;height:38px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.skill-card[aria-expanded="true"] .sk-ico{background:var(--accent);color:var(--on-accent)}
+.sk-ico svg{width:20px;height:20px}
+.sk-body{display:grid;gap:6px;font-size:14px;color:var(--muted);min-width:0}
+.sk-body b{color:var(--ink);font-size:16px}
+.sk-body code{justify-self:start;color:var(--ink)}
+.sk-more{grid-column:2;font-size:13px;font-weight:600;color:var(--accent)}
+.skill-panel{display:grid;gap:10px}
+.sp-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:15px}
+.sp-pre{max-height:460px;overflow:auto}
+.howadd{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.ha{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:8px;align-content:start}
+.ha h4{font-size:16px}
+.ha ol{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14.5px}
+
+/* cheat */
+.cheat-table{width:100%;border-collapse:collapse;font-size:15px;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.cheat-table th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--sunken)}
+.cheat-table td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.cheat-table td:first-child{width:38px}
+.cheat-table td:first-child a{display:grid;place-items:center;width:26px;height:26px;border-radius:7px;background:var(--accent-soft);color:var(--accent);font-family:var(--f-mono);font-size:12px;text-decoration:none;font-weight:500}
+.cheat-table td:last-child{font-weight:600}
+.cheat-cols{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.cheat-box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:8px;align-content:start}
+.cheat-box h4{font-size:16px}
+.cheat-box ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14.5px}
+.sc-index{width:100%;border-collapse:collapse;font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.sc-index td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.sc-index td:first-child{font-weight:600;white-space:nowrap}
+.sc-index a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--muted)}
+.sc-index a:hover{color:var(--accent)}
+.cheat-sub{font-family:var(--f-display);font-weight:500;font-size:18px;margin:28px 0 12px}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="theme-switch" id="themeSwitch" role="group" aria-label="Тема сторінки">
+  <button type="button" data-ui="light" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>Світла</button>
+  <button type="button" data-ui="dark" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg>Темна</button>
+</div>
+
+<div class="shell">
+  <nav class="nav" aria-label="Розділи">
+    <div class="nav-inner" id="navInner">
+      <div class="nav-group">
+        <span class="nav-label">Як працює AI</span>
+        <a href="#s1"><span class="n">1</span>Як AI пише відповідь</a>
+        <a href="#s2"><span class="n">2</span>Чому AI не пам'ятає</a>
+        <a href="#s3"><span class="n">3</span>Скільки інформації давати</a>
+        <a href="#s4"><span class="n">4</span>Свіжі зміни</a>
+        <a href="#s5"><span class="n">5</span>Як написати запит</a>
+        <a href="#s6"><span class="n">6</span>Можливості й проєкти</a>
+        <a href="#s7"><span class="n">7</span>Коли не знаєте теми</a>
+      </div>
+      <div class="nav-group">
+        <span class="nav-label">Робота з запитами</span>
+        <a href="#setup"><span class="n">→</span>Проєкт 2-ї лінії</a>
+        <a href="#skills"><span class="n">→</span>Скіли команди</a>
+        <a href="#flow"><span class="n">→</span>Як працювати з запитом</a>
+        <a href="#scenarios"><span class="n">→</span>Сценарії</a>
+      </div>
+      <div class="nav-group">
+        <span class="nav-label">Повторити</span>
+        <a href="#cheat"><span class="n">✓</span>Шпаргалка</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <span class="eyebrow">keyCRM · 2-га лінія підтримки</span>
+      <h1>Як працювати з AI <em>і ловити, коли він вигадує</em></h1>
+      <p class="lead">Гайд для тих, хто тільки починає працювати з AI-асистентами на кшталт Claude чи ChatGPT. Без теорії заради теорії: лише те, що потрібно, щоб розбиратися з запитами клієнтів.</p>
+      <div class="hero-map">
+        <div><b>Частина 1. Як працює AI</b><span>7 коротких розділів: чому AI помиляється і як цього уникнути</span></div>
+        <div><b>Частина 2. Робота з запитами</b><span>Налаштування, скіли для багів і фіча-реквестів, порядок дій і 12 сценаріїв з готовими промптами</span></div>
+      </div>
+      <p class="hint"><i aria-hidden="true"></i><span>Блоки в синій рамці інтерактивні. У кожному написано, що натиснути і на що дивитися.</span></p>
+    </header>
+
+    <!-- ================= PART 1 ================= -->
+    <section class="part" aria-labelledby="p1">
+      <div class="part-head">
+        <span class="eyebrow">Частина 1</span>
+        <h2 id="p1">Як працює AI</h2>
+        <p>Розділи йдуть по черзі: кожен спирається на попередній.</p>
+      </div>
+
+      <!-- 1 -->
+      <article class="topic topic-first" id="s1">
+        <div class="topic-head"><span class="num">1</span><h3>Як AI пише відповідь</h3></div>
+        <p class="lede">AI-асистент працює на великій мовній моделі. Вона навчилась на величезній кількості текстів: сайтах, книжках, документаціях. Але коли ви ставите питання, модель не відкриває жодного документа і не шукає відповідь у базі. Вона пише відповідь «з голови», слово за словом, щоразу підбираючи те продовження, яке найчастіше траплялося їй у схожих текстах.</p>
+        <div class="analogy"><b>Простіше кажучи</b><span>Це як підказки слів на клавіатурі телефона: ви пишете «Доброго», а клавіатура пропонує «дня». Модель робить те саме, тільки набагато розумніше і цілими абзацами.</span></div>
+        <dl class="terms">
+          <div><dt>LLM</dt><dd>Велика мовна модель, «двигун» AI-асистента. Claude і ChatGPT — це застосунки, які працюють на таких моделях.</dd></div>
+          <div><dt>Токен</dt><dd>Шматочок тексту (слово або частина слова). Модель пише відповідь токен за токеном.</dd></div>
+          <div><dt>Галюцинація</dt><dd>Відповідь, яка звучить упевнено і правдоподібно, але вигадана: неіснуюче налаштування, неправильне число, хибна причина помилки.</dd></div>
+        </dl>
+
+        <div class="widget">
+          <span class="widget-title">Демо: модель дописує речення</span>
+          <div class="howto">
+            <p><b>Що тут:</b> модель має закінчити речення про keyCRM. Під ним — варіанти, які вона розглядає, і шанс кожного (шанси умовні, для прикладу). Правильна відповідь — 20: так написано в документації keyCRM.</p>
+            <p><b>Що зробити:</b> натисніть «Дописати речення» 5–6 разів і подивіться, як часто модель пише правильне число.</p>
+          </div>
+          <div class="sentence">Ліміт API keyCRM — до <span class="blank" id="s1Blank">&nbsp;?&nbsp;</span> запитів на хвилину на один API-ключ.</div>
+          <div class="opts" id="s1Opts"></div>
+          <div class="row-btns">
+            <button class="btn primary" id="s1Go" type="button">Дописати речення</button>
+            <div class="tally" id="s1Tally"></div>
+          </div>
+          <div class="verdict neutral" id="s1Verdict"><span>Натисніть кнопку. Модель вибере одне з чисел з урахуванням шансів, як це відбувається при кожній відповіді.</span></div>
+        </div>
+
+        <div class="takeaway">
+          <span class="tk-label">Що робити</span>
+          <span class="tk-rule">Впевнений тон нічого не гарантує</span>
+          <ul>
+            <li>Неправильна відповідь виглядає так само, як правильна: без «мабуть» і «не впевнений».</li>
+            <li>Чим рідкісніша тема (наш API, конкретна помилка конкретного сервісу), тим частіше модель вигадує.</li>
+            <li>Числа, назви полів, налаштування і причини помилок завжди перевіряйте. Як це робити, коли ви самі не знаєте теми, — у розділі 7.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 2 -->
+      <article class="topic" id="s2">
+        <div class="topic-head"><span class="num">2</span><h3>Чому AI нічого не пам'ятає</h3></div>
+        <p class="lede">Між повідомленнями модель нічого не пам'ятає. Чат виглядає як розмова тільки тому, що застосунок щоразу відправляє моделі <b>всю переписку з самого початку</b> разом з вашим новим повідомленням. Модель читає її заново, ніби вперше, і відповідає.</p>
+        <div class="analogy"><b>Простіше кажучи</b><span>Уявіть колегу, який після кожного листа все забуває. Щоб він відповів по суті, ви щоразу пересилаєте йому всю гілку листування. Саме так працює чат з AI.</span></div>
+
+        <div class="widget">
+          <span class="widget-title">Демо: що насправді отримує модель</span>
+          <div class="howto">
+            <p><b>Що тут:</b> ліворуч — чат, як ви його бачите. Праворуч — повний текст, який застосунок відправляє моделі, коли ви натискаєте «Надіслати».</p>
+            <p><b>Що зробити:</b> натискайте кнопку під демо і щоразу дивіться на праву частину. Позначка <span style="color:var(--warn);font-weight:600">«повторно»</span> означає, що це повідомлення вже відправлялось раніше і пішло ще раз.</p>
+          </div>
+          <div class="mem-grid">
+            <div class="mem-col">
+              <span class="col-h">Ви бачите в чаті</span>
+              <div class="chatbox" id="s2Chat"></div>
+            </div>
+            <div class="mem-arrow" aria-hidden="true"><svg width="36" height="24" viewBox="0 0 36 24"><path d="M2 12h28" stroke="currentColor" stroke-width="2" fill="none"/><path d="M24 5l8 7-8 7" stroke="currentColor" stroke-width="2" fill="none"/></svg></div>
+            <div class="mem-col">
+              <span class="col-h">Модель отримує</span>
+              <div class="payload" id="s2Payload"></div>
+            </div>
+          </div>
+          <div class="row-btns"><button class="btn primary" id="s2Next" type="button"></button><span class="note" id="s2Step"></span></div>
+          <div class="verdict" id="s2Verdict"></div>
+        </div>
+
+        <div class="takeaway">
+          <span class="tk-label">Що робити</span>
+          <span class="tk-rule">Нове звернення — новий чат</span>
+          <ul>
+            <li>Модель знає лише те, що є в цьому чаті. Хто клієнт, яка інтеграція, що ви вже перевірили — треба написати.</li>
+            <li>Одне звернення — один чат. Інакше деталі різних клієнтів змішуються.</li>
+            <li>У дуже довгих чатах застосунок може скорочувати старі повідомлення, і деталі з початку губляться.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 3 -->
+      <article class="topic" id="s3">
+        <div class="topic-head"><span class="num">3</span><h3>Скільки інформації давати AI</h3></div>
+        <p class="lede">Усе, що модель бачить перед відповіддю, називається <b>контекстом</b>. Це інструкції застосунку, файли, які ви прикріпили, вся історія чату і ваше питання. Модель відповідає, спираючись тільки на це. Здається, що більше даних — краще. Насправді навпаки: зайвий текст заважає.</p>
+        <div class="analogy"><b>Простіше кажучи</b><span>Уявіть, що перед моделлю стіл з паперами. Якщо на столі 20 аркушів, потрібний знайти легко. Якщо 5000 майже однакових, і людина, і модель його пропустять або візьмуть не той.</span></div>
+        <dl class="terms">
+          <div><dt>Контекстне вікно</dt><dd>Максимальний обсяг тексту, який модель може прийняти за раз. Те, що не влізло, вона просто не побачить.</dd></div>
+          <div><dt>Лог</dt><dd>Журнал, куди система записує кожну дію: який запит прийшов, що відповіли, чи була помилка. Один рядок — одна подія.</dd></div>
+          <div><dt>Context rot</dt><dd>«Гниття контексту»: що більше тексту, то гірше модель знаходить у ньому потрібне. Особливо серед схожих рядків, як у логах.</dd></div>
+        </dl>
+
+        <div class="widget">
+          <span class="widget-title">Демо: вставляємо лог у чат</span>
+          <div class="howto">
+            <p><b>Що тут:</b> у клієнта не створилось замовлення. У лозі тисячі рядків, і лише один — про цю помилку (у демо він червоний; у справжньому лозі нічим не виділений). Смуга показує, з чого складається текст, який отримає модель.</p>
+            <p><b>Що зробити:</b> перемикайте варіанти і дивіться на три речі: скільки місця займає ваше питання (синій шматочок смуги), чи видно рядок з помилкою, і що пише внизу.</p>
+          </div>
+          <div class="seg" id="s3Seg" role="group" aria-label="Скільки рядків логу вставити"></div>
+          <div>
+            <div class="ctx-bar" aria-hidden="true">
+              <span class="seg-sys" id="s3Sys">інструкції</span>
+              <span class="seg-log" id="s3Log">лог</span>
+              <span class="seg-q" title="ваше питання"></span>
+            </div>
+            <div class="legend" style="margin-top:6px">
+              <span><i style="background:var(--line)"></i>інструкції застосунку</span>
+              <span><i style="background:var(--warn-soft);outline:1px solid var(--warn)"></i>лог</span>
+              <span><i style="background:var(--accent)"></i>ваше питання</span>
+            </div>
+          </div>
+          <div class="stats" id="s3Stats"></div>
+          <div class="logbox" id="s3Box" tabindex="0" aria-label="Приклад логу"></div>
+          <div class="verdict" id="s3Verdict"></div>
+        </div>
+
+        <div class="tip">
+          <b>Не знаєте, як відфільтрувати лог? Спитайте AI</b>
+          <div class="codeblock"><pre class="pre">Я працюю з логами в <span class="ph">[назва інструмента]</span>. Як відібрати лише рядки із замовленням <span class="ph">[ID]</span> за час з <span class="ph">[10:00]</span> до <span class="ph">[10:15]</span>? Поясни по кроках, я роблю це вперше.</pre><button class="copy" type="button">Копіювати</button></div>
+        </div>
+
+        <div class="takeaway">
+          <span class="tk-label">Що робити</span>
+          <span class="tk-rule">Давайте менше, але тільки те, що стосується справи</span>
+          <ul>
+            <li>Логи фільтруйте до вставки: за ID замовлення чи запиту, за часом (кілька хвилин навколо проблеми), за назвою інтеграції.</li>
+            <li>Не вставляйте все «про всяк випадок»: зайве заважає.</li>
+            <li>Довгий чат почав плутатись? Напишіть «Коротко підсумуй, що ми з'ясували», відкрийте новий чат і вставте підсумок.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 4 -->
+      <article class="topic" id="s4">
+        <div class="topic-head"><span class="num">4</span><h3>Чому AI не знає свіжих змін</h3></div>
+        <p class="lede">Модель навчалась на текстах, зібраних до певної дати. Після неї її знання застигли. Модель не знає, що Meta минулого місяця змінила правила API, а служба доставки додала нове обов'язкове поле. Гірше того, вона не знає, що чогось не знає, і відповідає про стару версію так само впевнено.</p>
+        <div class="analogy"><b>Простіше кажучи</b><span>Як досвідчений фахівець, який рік прожив без інтернету: знає багато, але про останні зміни не чув і навіть не підозрює про них.</span></div>
+        <dl class="terms">
+          <div><dt>Дата зрізу знань</dt><dd>Дата, до якої зібрані тексти для навчання моделі. Англійською — knowledge cutoff.</dd></div>
+          <div><dt>Вебпошук</dt><dd>Можливість AI-асистента знайти свіжі сторінки в інтернеті і прочитати їх перед відповіддю.</dd></div>
+          <div><dt>Документація API</dt><dd>Опис, як працювати з API сервісу: які є запити, які поля передавати, які бувають помилки. Для keyCRM вона є окремим файлом.</dd></div>
+        </dl>
+
+        <div class="widget">
+          <span class="widget-title">Демо: що модель бачить на шкалі часу</span>
+          <div class="howto">
+            <p><b>Що тут:</b> лінія — це час, зліва направо, до сьогодні. Пунктир — дата зрізу знань. Точки — зміни в API якогось сервісу. Те, що ліворуч від пунктиру, модель знає. Те, що праворуч, — ні.</p>
+            <p><b>Що зробити:</b> увімкніть перемикач і подивіться, що змінюється, коли модель отримує актуальне джерело.</p>
+          </div>
+          <label class="toggle"><input type="checkbox" id="s4Toggle"><span class="sw" aria-hidden="true"></span>Дати моделі актуальне джерело: вебпошук або документацію</label>
+          <figure>
+            <div class="svg-wrap">
+              <svg viewBox="0 0 700 160" role="img" aria-label="Шкала часу: зміни до дати зрізу знань модель знає, зміни після неї бачить лише з вебпошуком або документацією" id="s4Svg">
+                <defs><marker id="arr4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+                <line x1="430" y1="30" x2="430" y2="146" style="stroke:var(--accent)" stroke-width="2" stroke-dasharray="5 4"/>
+                <text x="430" y="20" font-size="12.5" text-anchor="middle" style="fill:var(--accent)" font-weight="700">Дата зрізу знань</text>
+                <line x1="20" y1="76" x2="684" y2="76" stroke="currentColor" stroke-width="1.6" marker-end="url(#arr4)"/>
+                <text x="690" y="100" font-size="12" text-anchor="end" style="fill:var(--muted)">сьогодні</text>
+                <g style="fill:currentColor">
+                  <circle cx="100" cy="76" r="6"/><text x="100" y="58" font-size="12" text-anchor="middle">API версії 1</text>
+                  <circle cx="215" cy="76" r="6"/><text x="215" y="58" font-size="12" text-anchor="middle">старі ліміти</text>
+                  <circle cx="330" cy="76" r="6"/><text x="330" y="58" font-size="12" text-anchor="middle">API версії 2</text>
+                </g>
+                <circle class="tl-ev" cx="488" cy="76" r="7"/><text class="tl-evt" x="488" y="58" font-size="12" text-anchor="middle">нове поле</text>
+                <circle class="tl-ev" cx="580" cy="76" r="7"/><text class="tl-evt" x="580" y="58" font-size="12" text-anchor="middle">нова авторизація</text>
+                <circle class="tl-ev" cx="650" cy="76" r="7"/><text class="tl-evt" x="650" y="40" font-size="12" text-anchor="middle">нові ліміти</text>
+                <path d="M24 110 v8 h398 v-8" fill="none" style="stroke:var(--accent)" stroke-width="1.5"/>
+                <text x="223" y="140" font-size="12.5" text-anchor="middle" style="fill:var(--accent)" font-weight="600">Модель знає: тексти до цієї дати</text>
+                <path class="tl-br" d="M438 110 v8 h240 v-8"/>
+                <text class="tl-brt" id="s4Label" x="558" y="140" font-size="12.5" text-anchor="middle">Модель не знає</text>
+              </svg>
+            </div>
+            <figcaption id="s4Cap"></figcaption>
+          </figure>
+        </div>
+
+        <div class="takeaway">
+          <span class="tk-label">Що робити</span>
+          <span class="tk-rule">Про зовнішні сервіси — тільки з актуальним джерелом</span>
+          <ul>
+            <li>Попросіть: «Знайди в інтернеті актуальну інформацію про…». У деяких інструментах пошук треба увімкнути в налаштуваннях.</li>
+            <li>Або вставте в чат сторінку документації чи прикріпіть файл.</li>
+            <li>Документація API keyCRM уже лежить у проєкті 2-ї лінії (частина 2).</li>
+            <li>Немає посилань у відповіді — модель відповідала з пам'яті.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 5 -->
+      <article class="topic" id="s5">
+        <div class="topic-head"><span class="num">5</span><h3>Як написати запит до AI</h3></div>
+        <p class="lede"><b>Промпт</b> — це повідомлення, яке ви пишете AI. Пишіть його так, ніби ставите задачу новому колезі. Він розумний, але нічого не знає про keyCRM, про клієнта і про те, що ви вже перевірили. Все, чого ви не написали, модель домислить сама, і часто не так.</p>
+        <dl class="terms">
+          <div><dt>Postman</dt><dd>Програма, щоб вручну надіслати запит до API і побачити відповідь.</dd></div>
+          <div><dt>Тіло запиту</dt><dd>Дані, які ви надсилаєте разом із запитом, наприклад дані нового замовлення.</dd></div>
+          <div><dt>JSON</dt><dd>Формат, у якому передаються дані в API: пари «назва поля: значення» у фігурних дужках.</dd></div>
+        </dl>
+
+        <div class="table-wrap">
+          <table class="parts">
+            <tr><th>1. Контекст</th><td>Що за ситуація, що сталось, що ви вже перевірили і чого хочете досягти</td></tr>
+            <tr><th>2. Дані</th><td>Текст помилки, запит, відповідь, фрагмент логу, скріншот</td></tr>
+            <tr><th>3. Задача</th><td>Що конкретно зробити: знайти причину, пояснити, порівняти</td></tr>
+            <tr><th>4. Формат</th><td>Як віддати результат: по кроках, таблицею, готовим JSON для Postman</td></tr>
+            <tr><th>5. Обмеження</th><td>Чого не робити: не вгадувати, не виходити за межі документації</td></tr>
+          </table>
+        </div>
+
+        <div class="widget">
+          <span class="widget-title">Демо: збираємо промпт</span>
+          <div class="howto">
+            <p><b>Що тут:</b> промпт для типової ситуації: у клієнта не створюються замовлення через API, і ви хочете повторити його запит у Postman. Промпт зібраний з п'яти частин.</p>
+            <p><b>Що зробити:</b> натискайте на назви частин, щоб прибрати або повернути їх. Читайте внизу, що модель втратить без кожної з них.</p>
+          </div>
+          <div class="chips" id="s5Chips"></div>
+          <pre class="pre" id="s5Out" aria-live="polite"></pre>
+          <div class="verdict" id="s5Verdict"></div>
+        </div>
+
+        <div class="hygiene" id="hygiene">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg>Ніколи не вставляйте в AI</h4>
+          <div class="hy-list">
+            <span>API-ключі й токени</span><span>паролі та коди доступу</span><span>телефони й email клієнтів</span><span>ПІБ і адреси</span><span>номери карток і платіжні дані</span>
+          </div>
+          <p>Замінюйте їх позначками: [КЛЮЧ], [ТЕЛЕФОН], [EMAIL], [ПІБ]. Щоб знайти помилку, моделі не потрібні справжні значення. Працюйте тільки в AI-інструменті, який погодила компанія.</p>
+          <div class="hy-ex" aria-label="Приклади заміни">
+            <div><code>Authorization: Bearer 7f3a9c1e5b2d4f6a</code><span class="arrow">→</span><code>Authorization: Bearer [КЛЮЧ]</code></div>
+            <div><code>"phone": "+380671234567"</code><span class="arrow">→</span><code>"phone": "[ТЕЛЕФОН]"</code></div>
+            <div><code>"full_name": "Іван Петренко"</code><span class="arrow">→</span><code>"full_name": "[ПІБ]"</code></div>
+          </div>
+        </div>
+
+        <div class="tips2">
+          <div><b>Це розмова, а не один постріл</b><span>Відповідь не влучила — уточніть, додайте даних, попросіть пояснити простіше.</span></div>
+          <div><b>Нехай AI спершу спитає</b><span>Допишіть: «Перш ніж відповідати, задай мені уточнювальні питання».</span></div>
+        </div>
+      </article>
+
+      <!-- 6 -->
+      <article class="topic" id="s6">
+        <div class="topic-head"><span class="num">6</span><h3>Що AI вміє, крім тексту, і де тримати постійну інформацію</h3></div>
+        <p class="lede">Сучасний AI-асистент вміє не лише писати. Він може знайти щось в інтернеті, прочитати файл чи скріншот, порахувати дані. Нічого встановлювати чи вибирати не треба: просто напишіть, що потрібно, і модель сама вирішить, як це зробити.</p>
+
+        <div class="table-wrap">
+          <table class="ask">
+            <tr><th>Що написати</th><th>Що зробить AI</th><th>Як зрозуміти, що спрацювало</th></tr>
+            <tr><td><q>Знайди в інтернеті актуальну інформацію про…</q></td><td>Знайде і прочитає свіжі сторінки</td><td>У відповіді є посилання</td></tr>
+            <tr><td>Прикріпіть скріншот, PDF чи файл і напишіть <q>Що тут написано? Поясни помилку</q></td><td>Прочитає текст із зображення чи файлу</td><td>Цитує текст з вашого файлу</td></tr>
+            <tr><td><q>Порахуй (відфільтруй) кодом, а не на око</q> + файл</td><td>Напише і запустить невелику програму над файлом</td><td>Видно код або таблицю з результатом</td></tr>
+            <tr><td><q>Перш ніж відповісти, задай мені питання</q></td><td>Уточнить задачу</td><td>Ви отримуєте питання замість відповіді</td></tr>
+          </table>
+        </div>
+        <p class="note">Якщо щось не спрацьовує (наприклад, немає посилань), можливо, ця можливість вимкнена в налаштуваннях інструмента.</p>
+
+        <div class="widget">
+          <span class="widget-title">Демо: звичайний чат проти чату в проєкті</span>
+          <div class="howto">
+            <p><b>Що тут:</b> ви пишете одне й те саме коротке повідомлення. Нижче — що модель отримує разом з ним (згадайте «стіл з паперами» з розділу 3).</p>
+            <p><b>Що зробити:</b> перемикайте між двома варіантами і порівнюйте, що лежить на «столі» моделі.</p>
+          </div>
+          <div class="seg" id="s6Seg" role="group" aria-label="Тип чату">
+            <button type="button" data-v="plain" aria-pressed="false">Звичайний чат</button>
+            <button type="button" data-v="proj" aria-pressed="true">Чат у проєкті 2-ї лінії</button>
+          </div>
+          <div class="stack" id="s6Stack"></div>
+          <div class="verdict" id="s6Verdict"></div>
+        </div>
+
+        <div class="cards2">
+          <div class="card">
+            <h4>Проєкт</h4>
+            <p>Робоча папка в AI-інструменті з постійними файлами й інструкцією. Кожен новий чат у ній одразу має до них доступ.</p>
+            <p>Великі файли модель не читає повністю, а шукає в них потрібні шматки. Тому просіть називати розділ, на який вона спирається.</p>
+            <span class="meta">Налаштовується один раз для команди. Ваш — у частині 2.</span>
+          </div>
+          <div class="card">
+            <h4>Скіл</h4>
+            <p>Збережена покрокова інструкція для повторюваної задачі, наприклад «як оформити баг-репорт для розробки». AI сам підтягує її, коли задача підходить.</p>
+            <span class="meta">Так це працює в Claude. У ChatGPT замість скіла надійніше завантажити інструкцію файлом у проєкт. Готові скіли 2-ї лінії — у частині 2, розділ <a href="#skills">«Скіли команди»</a>.</span>
+          </div>
+        </div>
+
+        <div class="takeaway">
+          <span class="tk-label">Що робити</span>
+          <span class="tk-rule">Пишіть у чаті, що потрібно, — решту AI зробить сам</span>
+          <ul>
+            <li>Працюйте в проєкті 2-ї лінії: документація вже там.</li>
+            <li>Для свіжої інформації просіть шукати в інтернеті, для файлів — прикріплюйте їх.</li>
+            <li>Для підрахунків просіть рахувати кодом: «на око» модель помиляється в числах.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 7 -->
+      <article class="topic" id="s7">
+        <div class="topic-head"><span class="num">7</span><h3>Коли ви не знаєте теми</h3></div>
+        <p class="lede">Найчастіше ви звертаєтеся до AI саме тоді, коли не знаєте відповіді: як працює API Instagram, що означає помилка служби доставки, чи можна щось налаштувати в keyCRM. Це нормально, саме для цього AI і потрібен. Але в незнайомій темі ви не помітите, якщо модель вигадує. Тому завдання — змусити її спиратися на джерела, які ви можете відкрити і перевірити самі.</p>
+
+        <div class="widget">
+          <span class="widget-title">Демо: одне питання, два способи</span>
+          <div class="howto">
+            <p><b>Що тут:</b> питання з практики: чи можна в keyCRM передати номер замовлення прямо в адресу вебхука. Ліворуч — питання як є, праворуч — те саме питання з правилами.</p>
+            <p><b>Що зробити:</b> перемикайте і порівнюйте відповіді. Зверніть увагу, яку з них можна перевірити, а яку доводиться приймати на віру.</p>
+          </div>
+          <div class="seg" id="s7Seg" role="group" aria-label="Варіант питання">
+            <button type="button" data-v="a" aria-pressed="true">Просто питання</button>
+            <button type="button" data-v="b" aria-pressed="false">Питання з правилами</button>
+          </div>
+          <div class="cmp" id="s7Cmp" aria-live="polite"></div>
+        </div>
+
+        <div>
+          <div class="sec-label">Фрази, які варто додавати, коли тема незнайома</div>
+          <div class="phrases" id="s7Phrases"></div>
+        </div>
+
+        <div>
+          <div class="sec-label">Готовий шаблон: усі правила разом</div>
+          <div class="codeblock"><pre class="pre">Я спеціаліст підтримки keyCRM і погано знаю <span class="ph">[тема або сервіс]</span>. Клієнт питає: <span class="ph">[питання клієнта або текст помилки]</span>.
+
+Сьогодні <span class="ph">[дата]</span>. Знайди відповідь в інтернеті, спираючись на офіційну документацію <span class="ph">[сервіс]</span>. Для кожного твердження дай посилання і дату джерела.
+Окремо познач, що підтверджено джерелами, а що — твоє припущення. Якщо не знайшов підтвердження — так і скажи, не вгадуй.
+Поясни простими словами і підкажи, як я можу сам перевірити відповідь: що відкрити, куди натиснути, який запит зробити.</pre><button class="copy" type="button">Копіювати</button></div>
+        </div>
+
+        <div>
+          <div class="sec-label">Як перевірити відповідь, навіть не знаючи теми</div>
+          <ul class="checks">
+            <li><label for="v1"><input type="checkbox" id="v1"><span>Відкрийте 1–2 посилання з відповіді<small>Це офіційний сайт сервісу? Там справді написано те, що каже AI?</small></span></label></li>
+            <li><label for="v2"><input type="checkbox" id="v2"><span>Подивіться на дату джерела<small>Інструкція трирічної давності могла застаріти.</small></span></label></li>
+            <li><label for="v3"><input type="checkbox" id="v3"><span>Перевірте на практиці<small>Запит у Postman, налаштування в тестовому акаунті, тестове замовлення.</small></span></label></li>
+            <li><label for="v4"><input type="checkbox" id="v4"><span>Перевірити не вдається?<small>Напишіть клієнту, що уточнюєте, і спитайте колегу або розробку. Неперевірене клієнту не відправляйте.</small></span></label></li>
+          </ul>
+        </div>
+
+        <div class="takeaway">
+          <span class="tk-label">Що робити</span>
+          <span class="tk-rule">Не знаєте теми — вимагайте джерела і перевіряйте за ними</span>
+          <ul>
+            <li>Просіть посилання, офіційну документацію і дату.</li>
+            <li>Дозвольте моделі сказати «не знайшов». Це краще за вигадку.</li>
+            <li>Відповідь, яку не вдалося перевірити, — це версія, а не факт.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <!-- ================= PART 2 ================= -->
+    <section class="part" aria-labelledby="p2">
+      <div class="part-head">
+        <span class="eyebrow">Частина 2</span>
+        <h2 id="p2">Робота з запитами клієнтів</h2>
+        <p>Друга лінія працює в чатах з клієнтами. Тут — що налаштувати один раз, у якому порядку працювати з кожним запитом і готові сценарії для типових ситуацій.</p>
+      </div>
+
+      <article class="topic topic-first" id="setup">
+        <div class="topic-head"><span class="num">→</span><h3>Проєкт 2-ї лінії</h3></div>
+        <p class="lede">Налаштовується один раз для всієї команди. Після цього кожен новий чат у проєкті вже має документацію keyCRM і знає, як вам відповідати.</p>
+        <div class="files">
+          <div class="file"><svg viewBox="0 0 26 30" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 2h15l7 7v19H2z"/><path d="M17 2v7h7"/></svg><div><b>База знань keyCRM</b><p>Як працюють модулі, інтеграції, тригери, вебхуки, шаблони, типові помилки.</p></div></div>
+          <div class="file"><svg viewBox="0 0 26 30" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 2h15l7 7v19H2z"/><path d="M17 2v7h7"/></svg><div><b>Документація API keyCRM</b><p>Файл open-api.yml: усі запити, поля та помилки API.</p></div></div>
+        </div>
+        <div>
+          <div class="sec-label">Інструкція проєкту</div>
+          <div class="codeblock"><pre class="pre">Ти помічник спеціаліста 2-ї лінії підтримки keyCRM (українська CRM для e-commerce і сервісного бізнесу). Спеціаліст спілкується з клієнтами в чатах і розбирається з інтеграціями, API, телефонією та помилками.
+- Про keyCRM та її API спирайся на базу знань і документацію API, додані до проєкту. Називай розділ, на який спираєшся. Якщо там цього немає — скажи прямо, не вгадуй.
+- Про зовнішні сервіси (Meta, служби доставки, маркетплейси, пРРО, телефонія) шукай актуальну інформацію в інтернеті. Пріоритет — офіційна документація. Для кожного твердження давай посилання і дату джерела.
+- Розділяй факти (з документації чи даних, які я дав) і припущення. Припущення позначай.
+- Якщо даних не вистачає — спитай, чого саме бракує.
+- Пояснюй простими словами. Коли йдеться про запит до API — давай покрокове налаштування в Postman і готове тіло запиту в JSON.
+- Відповідай коротко, по кроках.</pre><button class="copy" type="button">Копіювати</button></div>
+        </div>
+      </article>
+
+      <article class="topic" id="skills">
+        <div class="topic-head"><span class="num">→</span><h3>Скіли команди</h3></div>
+        <p class="lede">Скіл — збережена інструкція для задачі, яку ви повторюєте (розділ 6). Для 2-ї лінії є два готові. Додайте їх один раз, і далі досить написати «Оформи баг» або «Оформи фіча-реквест» і вставити все, що є від клієнта: переписку, скріншоти, посилання, свої нотатки. Самим нічого писати не треба. Що саме передати скілу — у сценаріях <a href="#sc-bug">«Баг-репорт»</a> і <a href="#sc-feature">«Фіча-реквест»</a>.</p>
+
+        <div class="skill-cards" id="skillCards" role="group" aria-label="Скіли команди">
+          <button class="skill-card" type="button" data-skill="bug" aria-expanded="false" aria-controls="skillPanel">
+            <span class="sk-ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4.5" y="5" width="7" height="8" rx="3.5"/><path d="M8 5V3M2 8h2.5M11.5 8H14M2.5 12l2-1M13.5 12l-2-1"/></svg></span>
+            <span class="sk-body"><b>Баг-репорт</b><span>Перетворює переписку, скріншоти й нотатки на опис бага з полями трекера: Назва, Опис, Кроки відтворення, Фактична і Очікувана поведінка. Якщо чогось бракує — каже, що уточнити в клієнта.</span><code>Оформи баг</code></span>
+            <span class="sk-more">Показати скіл</span>
+          </button>
+          <button class="skill-card" type="button" data-skill="feature" aria-expanded="false" aria-controls="skillPanel">
+            <span class="sk-ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5a4.5 4.5 0 0 0-2.5 8.2V11h5V9.7A4.5 4.5 0 0 0 8 1.5z"/><path d="M6 13h4M6.8 14.8h2.4"/></svg></span>
+            <span class="sk-body"><b>Фіча-реквест</b><span>Описує проблему клієнта, як він обходиться зараз і наскільки це болить. Якщо даних бракує — дає готове повідомлення з питаннями для клієнта і пояснює, навіщо кожне.</span><code>Оформи фіча-реквест</code></span>
+            <span class="sk-more">Показати скіл</span>
+          </button>
+        </div>
+
+        <div class="skill-panel" id="skillPanel" hidden>
+          <div class="sp-head">
+            <span><b id="spTitle"></b> · <code id="spFile"></code></span>
+            <button class="btn small" id="spClose" type="button">Згорнути</button>
+          </div>
+          <div class="codeblock"><pre class="pre sp-pre" id="spText" tabindex="0"></pre><button class="copy" type="button">Копіювати скіл</button></div>
+        </div>
+
+        <div>
+          <div class="sec-label">Як додати скіл</div>
+          <div class="howadd">
+            <div class="ha">
+              <h4>Claude</h4>
+              <ol>
+                <li>Відкрийте скіл вище і натисніть «Копіювати скіл».</li>
+                <li>У новому чаті напишіть «Створи скіл з цього опису» і вставте скопійований текст.</li>
+                <li>Claude створить скіл і запропонує його зберегти — погодьтесь.</li>
+                <li>Далі просто пишіть «Оформи баг» або «Оформи фіча-реквест» і додавайте дані від клієнта.</li>
+              </ol>
+            </div>
+            <div class="ha">
+              <h4>ChatGPT</h4>
+              <ol>
+                <li>Відкрийте скіл вище і натисніть «Копіювати скіл».</li>
+                <li>Створіть текстовий файл, вставте текст і збережіть з назвою, яка показана над текстом скіла (наприклад, <code>bug-report-writer.md</code>).</li>
+                <li>Завантажте файл у файли проєкту в ChatGPT.</li>
+                <li>У чаті проєкту пишіть: «Оформи баг за інструкцією з файлу bug-report-writer.md» і додавайте дані від клієнта.</li>
+              </ol>
+              <p class="note">ChatGPT працює зі скілами менш передбачувано, тому інструкцію надійніше дати файлом і прямо згадувати її в запиті.</p>
+            </div>
+          </div>
+        </div>
+<script type="text/plain" id="skill-bug">
+---
+name: "bug-report-writer"
+description: "Оформлює баг-репорт keyCRM у Markdown (Назва, Опис, Кроки відтворення, Фактична і Очікувана поведінка) з сирої інформації від саппорту: переписки, скріншотів, посилань, нотаток."
+---
+
+# Баг-репорт keyCRM
+
+Саппорт дає все, що має: переписку з клієнтом, скріншоти, відео, посилання, логи, свої нотатки. Ти перетворюєш це на акуратний лаконічний баг-репорт, який розробник і тестувальник зрозуміють без додаткових питань. Саппорт нічого не пише руками.
+
+Тригери: «оформи баг», «заведи баг», «баг-репорт», «опиши баг для розробки» + опис проблеми.
+
+## Як працювати
+
+1. **Прочитай усе, що дали.** Витягни факти: що сталось, де, коли, що робили перед цим, що мало бути. Зі скріншотів перепиши текст помилок дослівно.
+2. **Перевір, чи це буде зрозуміло.** Уяви розробника, який бачить цей випадок вперше. Чи зрозуміє він, що саме зламалось, де дивитись і чим фактичний результат відрізняється від очікуваного?
+   - **Не зрозуміє** (незрозуміло, що саме не так, або немає жодної прив'язки до місця в системі) — спершу постав питання, потім пиши.
+   - **Зрозуміє, але дечого бракує** (посилання, скріншота, точного часу) — напиши репорт і додай у чаті список уточнень.
+3. **Напиши репорт** за шаблоном.
+4. **Віддай файл** `bug-<коротка-назва-латиницею>.md`. У чаті — лише те, що треба зробити саппорту: які файли прикріпити в трекері і що варто уточнити.
+
+Питання формулюй так, щоб саппорт міг переслати їх клієнту як є: коротко, по одному питанню на рядок, без технічного жаргону. Наприклад: «Надішліть, будь ласка, посилання на замовлення, де це сталось», «Що ви зробили перед тим, як з'явилась помилка?».
+
+Невідтворюваний або випадковий баг — нормальний баг. Оформлюй його з тим, що відомо, і прямо пиши, що стабільно відтворити не вдалося.
+
+## Шаблон
+
+П'ять заголовків `##` — це поля трекера. Вони є завжди, у цьому порядку і з цими назвами. Рядки всередині «Опису» додавай лише тоді, коли є дані; порожні прибирай.
+
+```markdown
+## Назва
+[Модуль] Що зламалось — за якої умови
+
+## Опис
+1–3 речення: що не так, де, з якого часу і до чого це призводить.
+
+- **CRM клієнта:** домен.keycrm.app
+- **Посилання:** прямі посилання на замовлення, картки, товари, налаштування
+- **Вкладення:** скріншоти, відео, документи — і що на кожному
+- **Де:** веб / мобільний додаток / API / інтеграція [назва]; роль користувача, якщо важливо
+- **Частота:** завжди / іноді / один раз
+- **Вплив:** що блокує або псує, чи є обхідний шлях
+
+## Кроки відтворення
+1. Перейти в «Розділ» → «Підрозділ».
+2. …
+3. …
+
+## Фактична поведінка
+Що відбувається насправді.
+
+## Очікувана поведінка
+Що мало відбутися.
+```
+
+## Правила
+
+- **Назва** конкретна і коротка: не «Не працюють замовлення», а «[Замовлення] Сума не перераховується після зміни кількості товару». Без імені клієнта й емоцій.
+- **Один репорт — одна проблема.** Якщо в переписці кілька різних проблем, зроби кілька файлів.
+- **Кроки** — одна дія на крок, назви елементів інтерфейсу в «лапках», конкретні значення (`кількість 2 → 3`). Якщо кроки відомі лише зі слів клієнта або баг не відтворюється, напиши це першим рядком цього поля і опиши, що робив користувач перед проблемою.
+- **Фактична і очікувана поведінка** — конкретно і дзеркально: «сума залишилась 500 грн» / «сума стала 750 грн». Тексти помилок і відповіді API — дослівно, в блоці коду.
+- **Не вигадуй** посилання, ID, дати, тексти помилок і кроки, яких не було у вхідних даних. Чого немає — спитай або пропусти.
+- Не плутай **замовлення** (товари, e-commerce) і **картки воронки** (ліди, послуги).
+- Без персональних даних покупців (ПІБ, телефони, email) і без ключів — замість них ID, посилання або `[КЛЮЧ]`.
+- Коротко. Жодного тексту, який не допомагає зрозуміти або відтворити проблему.
+
+## Приклад
+
+Вхід: «клієнт shop-demo, замовлення 10482, поміняв кількість з 2 на 3 а сума не змінилась, ціна 250. каже з минулого тижня. скрін додаю»
+
+```markdown
+## Назва
+[Замовлення] Сума до сплати не перераховується після зміни кількості товару
+
+## Опис
+Після зміни кількості товару в замовленні сума до сплати не змінюється. За словами клієнта, так з минулого тижня, раніше перераховувалось.
+
+- **CRM клієнта:** shop-demo.keycrm.app
+- **Посилання:** замовлення №10482
+- **Вкладення:** скріншот замовлення — кількість 3, ціна 250 грн, сума до сплати 500 грн
+- **Вплив:** неправильна сума до сплати в замовленні
+
+## Кроки відтворення
+Зі слів клієнта, на тестовому акаунті не перевірено.
+1. Відкрити замовлення з одним товаром: ціна 250 грн, кількість 2.
+2. Змінити кількість на `3`.
+3. Зберегти замовлення.
+
+## Фактична поведінка
+Сума до сплати залишається 500 грн.
+
+## Очікувана поведінка
+Сума до сплати перераховується: 3 × 250 = 750 грн.
+```
+
+Чат: «Прикріпіть скріншот до задачі. Варто уточнити в клієнта: пряме посилання на замовлення; чи повторюється це в інших замовленнях.»
+</script>
+<script type="text/plain" id="skill-feature">
+---
+name: "feature-request-writer"
+description: "Оформлює фіча-реквест клієнта keyCRM у Markdown і вчить саппорт ставити клієнту правильні питання: якщо чогось бракує, дає готове повідомлення з питаннями і пояснює, навіщо кожне."
+---
+
+# Фіча-реквест keyCRM
+
+Клієнт пише в чат «додайте кнопку», «зробіть, щоб автоматично…», «чому не можна…». Саппорт дає переписку, скріншоти, посилання і нотатки. Ти робиш дві речі:
+
+1. **Оформлюєш запит**, який зрозуміє будь-хто в компанії: продакт, аналітик, керівник, інший саппорт.
+2. **Вчиш саппорт ставити питання.** Якщо даних бракує — даєш одне готове повідомлення клієнту з усіма потрібними питаннями і коротко пояснюєш, навіщо кожне. Мета — одне коло уточнень замість п'яти, і щоб з часом саппорт сам питав це ще в чаті з клієнтом.
+
+Тригери: «оформи фіча-реквест», «запит на доопрацювання», «клієнт хоче фічу», «заведи побажання клієнта» + переписка або опис.
+
+## Що потрібно, щоб запит прийняли
+
+Клієнт зазвичай просить **рішення** («додайте кнопку»). Продакту потрібна його **проблема**: лише тоді він зможе оцінити, чи варто робити і як саме. Для цього потрібні чотири блоки:
+
+| Блок | Що це | Навіщо продакту |
+|---|---|---|
+| **Суть** | Яку задачу клієнт хоче вирішити і де в його роботі вона виникає | Кнопка, яку просить клієнт, — лише один варіант. Знаючи задачу, можна знайти краще рішення або побачити, що воно вже є |
+| **Приклад** | Конкретний випадок, коли це знадобилось (посилання, скріншот) | Реальний випадок показує, що це не гіпотеза, і дає аналітику дані, щоб розібратись |
+| **Як зараз** | Як клієнт обходиться сьогодні — у keyCRM або поза нею, і чого це коштує | Якщо є нормальний обхідний шлях, пріоритет нижчий. Якщо клієнт годинами робить це вручну — вищий |
+| **Цінність** | Як часто, скільки це стосується, що буде, якщо не зробити | Без цього запит неможливо порівняти з сотнями інших |
+
+## Як працювати
+
+1. **Прочитай усе, що дали**, і для кожного з чотирьох блоків виріши: є / частково / немає.
+2. **Пошукай у базі знань keyCRM**, якщо вона доступна: можливо, це вже можна зробити (тригером, налаштуванням, через API).
+   - Повне рішення — скажи саппорту з назвою розділу. Хай спершу запропонує його клієнту.
+   - Часткове — це обхідний шлях у keyCRM, запиши його в запит.
+3. **Результат:**
+   - **Усе є** — файл, без питань.
+   - **Суть зрозуміла, решти бракує** — файл з тим, що відомо, + питання для клієнта.
+   - **Суть незрозуміла** — файл не створюй, бо це було б вгадування. Тільки питання для клієнта.
+4. Коли саппорт повертається з відповідями клієнта, онови файл. Нових питань став лише тоді, коли відповіді відкрили щось справді нове.
+
+## Як ставити питання
+
+- **Усі питання за один раз**, 2–5 штук, тільки про блоки, яких бракує. Спершу про суть.
+- **Відкриті**, щоб клієнт розповів, а не відповів «так».
+- **Про реальний досвід, а не гіпотези:** «Розкажіть про останній раз, коли…» краще за «Чи користувалися б ви…».
+- **Простою мовою**, без технічних слів.
+- **Без нав'язаних рішень**, поки не зрозуміла проблема.
+
+Добрі питання за блоками:
+- **Суть:** «Розкажіть, для чого вам це потрібно: яку задачу ви хочете вирішити?», «Хто у вас це робить і на якому етапі роботи?»
+- **Приклад:** «Розкажіть про останній випадок, коли це знадобилось. Можете надіслати посилання на замовлення або скріншот?»
+- **Як зараз:** «Як ви робите це зараз?», «Скільки часу це займає?», «Використовуєте для цього таблиці чи інші сервіси?»
+- **Цінність:** «Як часто це трапляється: щодня, щотижня?», «Скількох замовлень чи менеджерів це стосується?», «Що буде, якщо цього не з'явиться найближчим часом?»
+
+Погані питання — не пропонуй їх:
+- «Вам потрібна ця функція?» — на це завжди відповідають «так».
+- «А якщо ми зробимо таку кнопку, підійде?» — пропонує рішення до того, як зрозуміли проблему.
+- Технічні питання, яких клієнт не зрозуміє.
+
+## Видача
+
+У чаті — у такому порядку, лише потрібні частини:
+
+1. **Що вже зрозуміло і чого бракує** — одне-два речення.
+2. **Повідомлення клієнту** — в блоці для копіювання: короткий вступ і нумеровані питання, готові до відправки як є.
+3. **Чому саме ці питання** — для кожного одне речення: який блок воно закриває і що це дасть продакту. Пиши просто, як досвідчений колега, а не як підручник.
+4. **Файл** `feature-<коротка-назва-латиницею>.md`, якщо суть зрозуміла.
+
+Якщо все є — пункти 1–3 пропускай, віддай лише файл.
+
+## Шаблон файлу
+
+«Проблема», «Що просить клієнт» і «Цінність» є завжди. Інші розділи без даних прибирай.
+
+```markdown
+## Назва
+[Модуль] Що клієнт хоче мати можливість зробити
+
+## Опис
+
+### Проблема
+Яку задачу клієнт вирішує і що йому зараз заважає. 2–4 речення.
+
+### Що просить клієнт
+Його варіант рішення, своїми словами.
+
+### Приклад
+Конкретний випадок, посилання, скріншоти (і що на них).
+
+### Як обходиться зараз
+- **У keyCRM:** обхідний шлях (з назвою розділу бази знань) або «немає»
+- **Поза keyCRM:** таблиці, інші сервіси, ручна робота
+- **Чого це коштує:** час, помилки, гроші
+
+### Цінність
+**Оцінка:** справжній біль / помірно важливо / побажання / не уточнено — і чому, одним реченням.
+- Як часто і скільки стосується
+- Що буде, якщо не зробити
+
+### Контекст
+- **CRM клієнта:** домен.keycrm.app
+- **Бізнес клієнта:** якщо важливо для розуміння
+```
+
+## Правила
+
+- **Назва — про можливість, а не про кнопку.** Не «Додати кнопку експорту», а «[Замовлення] Вивантажити відправлені замовлення за тиждень для бухгалтерії».
+- **Проблему і рішення клієнта пиши окремо.** Власних рішень не придумуй.
+- **Цінність оцінюй чесно.** Справжній біль — це часто, дорого або блокує роботу. Побажання — «було б зручно», рідко, є нормальний обхідний шлях. Даних немає — «не уточнено».
+- **Не вигадуй** частоту, об'єми, гроші, наслідки.
+- **Один запит — одна потреба.** Кілька різних — кілька файлів.
+- Не плутай **замовлення** (товари, e-commerce) і **картки воронки** (ліди, послуги).
+- Без персональних даних покупців і ключів.
+- Коротко: людина має зрозуміти суть за хвилину.
+
+## Приклад (дані вигадані, лише формат)
+
+Вхід: «клієнт shop-demo просить додати кнопку, щоб вивантажувати відправлені замовлення з датою відправки»
+
+Суть частково зрозуміла (що хоче), але незрозуміло навіщо. Прикладу, поточного способу і цінності немає. Файл не створюється, видача в чаті:
+
+> **Що зрозуміло:** клієнт хоче вивантажувати відправлені замовлення. **Чого бракує:** навіщо йому це, як він робить це зараз і наскільки це важливо.
+>
+> **Повідомлення клієнту:**
+> ```
+> Дякуємо за ідею! Щоб передати її команді продукту, уточніть, будь ласка:
+> 1. Для чого вам цей список? Хто й для якої задачі його використовує?
+> 2. Як ви робите це зараз і скільки часу це займає?
+> 3. Як часто потрібен такий список і приблизно скільки в ньому замовлень?
+> 4. Які дані, крім дати відправки, у ньому мають бути?
+> ```
+>
+> **Чому саме ці питання:**
+> 1. Суть. Вивантаження — це засіб, а не мета. Якщо це для бухгалтерії, можливо, краще підійде звіт, а не кнопка.
+> 2. Як зараз. Показує, чи це справжній біль: дві години ручної роботи щотижня — це зовсім не «було б зручно».
+> 3. Цінність. Частота і об'єм — головне, за чим продакт порівнює запити між собою.
+> 4. Приклад. Конкретний набір даних дасть аналітику зрозуміти, чи вистачить нинішнього вивантаження.
+</script>
+      </article>
+
+      <article class="topic" id="flow">
+        <div class="topic-head"><span class="num">→</span><h3>Як працювати з запитом клієнта</h3></div>
+        <p class="lede">Один і той самий порядок для будь-якої ситуації. Конкретні промпти — у сценаріях нижче.</p>
+        <div class="phases">
+          <div class="phase ph-1">
+            <div class="phase-h"><i></i>Перед тим як писати AI</div>
+            <ol>
+              <li><span class="n">1</span><span><b>Сформулюйте питання</b>Одним реченням: що саме треба з'ясувати.</span></li>
+              <li><span class="n">2</span><span><b>Зберіть дані від клієнта</b>Текст помилки, ID замовлення, запит, скріншот.</span></li>
+              <li><span class="n">3</span><span><b>Приберіть секрети</b>Ключі, паролі, телефони, email, ПІБ.</span></li>
+            </ol>
+          </div>
+          <div class="phase ph-2">
+            <div class="phase-h"><i></i>Разом з AI</div>
+            <ol>
+              <li><span class="n">4</span><span><b>Новий чат у проєкті</b>Одне звернення — один чат.</span></li>
+              <li><span class="n">5</span><span><b>Промпт з п'яти частин</b>Тема незнайома — додайте фрази з розділу 7.</span></li>
+              <li><span class="n">6</span><span><b>Уточнюйте</b>Додавайте дані, просіть пояснити простіше.</span></li>
+            </ol>
+          </div>
+          <div class="phase ph-3">
+            <div class="phase-h"><i></i>Перед відповіддю клієнту</div>
+            <ol>
+              <li><span class="n">7</span><span><b>Перевірте</b>Посилання, Postman, рядок у лозі, тестовий акаунт.</span></li>
+              <li><span class="n">8</span><span><b>Відповідайте самі</b>AI може допомогти сформулювати, але відповідальність ваша.</span></li>
+            </ol>
+          </div>
+        </div>
+      </article>
+
+      <article class="topic" id="scenarios">
+        <div class="topic-head"><span class="num">→</span><h3>Сценарії</h3></div>
+        <p class="lede">Оберіть ситуацію. У кожній: що зібрати, кроки, готовий промпт, як перевірити і де найчастіше помиляються. У промптах замініть <code>[поля]</code> своїми даними.</p>
+        <div class="tabgroups" id="tabs" role="tablist" aria-label="Сценарії"></div>
+        <div class="panel" role="tabpanel" id="panel" aria-live="polite"></div>
+      </article>
+    </section>
+
+    <!-- ================= CHEAT ================= -->
+    <section class="part" id="cheat" aria-labelledby="p3">
+      <div class="part-head">
+        <span class="eyebrow">Повторити</span>
+        <h2 id="p3">Шпаргалка</h2>
+        <p>Щоб швидко згадати головне. Номер веде до розділу з поясненням.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="cheat-table">
+          <tr><th></th><th>Як працює AI</th><th>Що з цим робити</th></tr>
+          <tr><td><a href="#s1">1</a></td><td>Пише правдоподібне, а не перевірене</td><td>Числа, поля, налаштування — перевіряти</td></tr>
+          <tr><td><a href="#s2">2</a></td><td>Нічого не пам'ятає між повідомленнями</td><td>Нове звернення — новий чат</td></tr>
+          <tr><td><a href="#s3">3</a></td><td>Губиться у великому обсязі тексту</td><td>Давати тільки потрібне, логи фільтрувати</td></tr>
+          <tr><td><a href="#s4">4</a></td><td>Не знає свіжих змін</td><td>Зовнішні сервіси — з вебпошуком або документацією</td></tr>
+          <tr><td><a href="#s5">5</a></td><td>Домислює все, чого ви не написали</td><td>Контекст, дані, задача, формат, обмеження</td></tr>
+          <tr><td><a href="#s6">6</a></td><td>Вміє шукати, читати файли, рахувати</td><td>Просто попросити; працювати в проєкті</td></tr>
+          <tr><td><a href="#s7">7</a></td><td>У незнайомій темі ви не помітите вигадки</td><td>Вимагати джерела й дату, перевіряти</td></tr>
+        </table>
+      </div>
+
+      <h3 class="cheat-sub">Перед і після</h3>
+      <div class="cheat-cols">
+        <div class="cheat-box">
+          <h4>Перед тим як натиснути «Надіслати»</h4>
+          <ul>
+            <li>Це новий чат у проєкті 2-ї лінії?</li>
+            <li>Прибрали ключі, паролі, телефони, email, ПІБ?</li>
+            <li>Є контекст, дані, задача, формат, обмеження?</li>
+            <li>Тема незнайома? Попросили джерела, дату і дозволили сказати «не знаю»?</li>
+          </ul>
+        </div>
+        <div class="cheat-box">
+          <h4>Перед відповіддю клієнту</h4>
+          <ul>
+            <li>Відкрили посилання — там написано те саме?</li>
+            <li>Перевірили на практиці: Postman, тестовий акаунт, рядок у лозі?</li>
+            <li>Можете пояснити відповідь своїми словами? Якщо ні — не відправляйте.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="cheat-sub">П'ять фраз, які варто пам'ятати</h3>
+      <div class="phrases" id="cheatPhrases"></div>
+
+      <h3 class="cheat-sub">Сценарії одним рядком</h3>
+      <div class="table-wrap"><table class="sc-index" id="scIndex"></table></div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hl = t => esc(t).replace(/\[[^\]\n]+\]/g, m => `<span class="ph">${m}</span>`);
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- theme ---------- */
+const root = document.documentElement;
+const mq = window.matchMedia('(prefers-color-scheme: dark)');
+const isMode = m => m === 'dark' || m === 'light';
+try{ const saved = localStorage.getItem('l2-theme'); if(isMode(saved)) root.setAttribute('data-ui', saved); }catch(e){}
+const effective = () => {
+  const u = root.getAttribute('data-ui'); if(isMode(u)) return u;
+  const t = root.getAttribute('data-theme'); if(isMode(t)) return t;
+  return mq.matches ? 'dark' : 'light';
+};
+const syncTheme = () => { const m = effective(); document.querySelectorAll('#themeSwitch button').forEach(b => b.setAttribute('aria-pressed', b.dataset.ui === m)); };
+$('#themeSwitch').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return;
+  root.setAttribute('data-ui', b.dataset.ui);
+  try{ localStorage.setItem('l2-theme', b.dataset.ui); }catch(err){}
+  syncTheme();
+});
+mq.addEventListener && mq.addEventListener('change', syncTheme);
+new MutationObserver(syncTheme).observe(root, {attributes:true, attributeFilter:['data-theme','data-ui']});
+syncTheme();
+
+/* ---------- copy ---------- */
+function copyText(text, btn){
+  const label = btn.textContent;
+  const done = () => { btn.textContent = 'Скопійовано'; setTimeout(() => btn.textContent = label, 1400); };
+  const fallback = () => {
+    const target = btn.closest('.codeblock, .phrase');
+    const el = target && target.querySelector('pre, q');
+    if(el){ const r = document.createRange(); r.selectNodeContents(el); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
+    btn.textContent = 'Виділено — Ctrl+C'; setTimeout(() => btn.textContent = label, 2000);
+  };
+  try{ navigator.clipboard.writeText(text).then(done).catch(fallback); }catch(e){ fallback(); }
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('.copy, .copy-s');
+  if(!b) return;
+  const holder = b.closest('.codeblock, .phrase');
+  const el = holder && holder.querySelector('pre, q');
+  if(el) copyText(el.textContent, b);
+});
+
+/* ---------- 1. sentence ---------- */
+const s1 = [
+  {v:'60', p:35, why:'часто трапляється в документаціях інших сервісів'},
+  {v:'20', p:30, ok:true, why:'так написано в документації keyCRM'},
+  {v:'100', p:20, why:'кругле число, звучить правдоподібно'},
+  {v:'120', p:15, why:'теж трапляється в інших API'}
+];
+let s1Tries = 0, s1Right = 0;
+$('#s1Opts').innerHTML = s1.map((o,i) => `<div class="opt" data-i="${i}"><span class="v">${o.v}</span><div class="bar"><span style="width:${o.p*2.5}%"></span></div><span class="pct">${o.p}%</span><span class="why">${esc(o.why)}</span></div>`).join('');
+function s1Tally(){ $('#s1Tally').innerHTML = s1Tries ? `<span>Спроб: ${s1Tries}</span><span style="color:var(--ok)">правильно: ${s1Right}</span><span style="color:var(--bad)">вигадано: ${s1Tries - s1Right}</span>` : ''; }
+$('#s1Go').addEventListener('click', () => {
+  let r = Math.random()*100, i = 0;
+  for(; i < s1.length; i++){ r -= s1[i].p; if(r <= 0) break; }
+  i = Math.min(i, s1.length - 1);
+  const o = s1[i]; s1Tries++; if(o.ok) s1Right++;
+  document.querySelectorAll('#s1Opts .opt').forEach(el => el.classList.toggle('picked', +el.dataset.i === i));
+  const blank = $('#s1Blank'); blank.textContent = o.v; blank.className = 'blank ' + (o.ok ? 'ok' : 'bad');
+  const v = $('#s1Verdict');
+  if(o.ok){ v.className = 'verdict ok'; v.innerHTML = `<b>Правильно: 20.</b><span>Але модель не «знала» це: цього разу їй просто випав цей варіант. Натисніть ще раз.</span>`; }
+  else { v.className = 'verdict bad'; v.innerHTML = `<b>Вигадано: ${o.v}.</b><span>Справжній ліміт — 20. Модель написала число, яке часто бачила в інших сервісах, і нічим не показала, що не впевнена. Речення звучить так само переконливо, як правильне.</span>`; }
+  if(s1Tries >= 5){ v.innerHTML += `<span>За ${s1Tries} спроб модель помилилась ${s1Tries - s1Right} раз(и). Саме тому відповідям «з пам'яті» не можна вірити на слово.</span>`; }
+  s1Tally();
+});
+s1Tally();
+
+/* ---------- 2. memory ---------- */
+const S2 = {
+  sys:'Інструкції застосунку: хто ти, як відповідати. (Ви їх не бачите, але вони завжди йдуть першими.)',
+  u1:'Клієнт А: вебхук на зміну статусу замовлення не доходить до його сервера. Що перевірити?',
+  a1:'Перевірте, чи сервер клієнта відповідає кодом 200. Якщо ні, keyCRM робить 3 спроби відправки і зупиняється.',
+  u2:'Клієнт Б: не створюється ТТН. Чому?',
+  a2mixed:'Можливо, сервер клієнта не відповідає кодом 200, як у попередньому випадку. Перевірте відповідь сервера.',
+  a2clean:'Щоб знайти причину, мені потрібен текст помилки, яку показує keyCRM при створенні ТТН, і назва служби доставки. Надішліть їх.'
+};
+let s2Step = 1;
+function prow(cls, who, txt, tags){ return `<div class="prow ${cls}"><span class="who">${who}${(tags||[]).map(t => `<span class="tag ${t[0]}">${t[1]}</span>`).join('')}</span>${esc(txt)}</div>`; }
+function renderS2(animate){
+  const chat = $('#s2Chat'), pay = $('#s2Payload'), v = $('#s2Verdict'), btn = $('#s2Next');
+  const anim = animate && !reduce ? ' new' : '';
+  const fl = animate && !reduce ? ' flash' : '';
+  if(s2Step === 1){
+    chat.innerHTML = `<div class="bubble u${anim}">${esc(S2.u1)}</div><div class="bubble a${anim}">${esc(S2.a1)}</div>`;
+    pay.innerHTML = `<span class="req">Запит №1 до моделі</span>` + prow('sys','інструкції',S2.sys) + prow(fl.trim(),'Ви',S2.u1,[['fresh','нове']]);
+    v.className = 'verdict neutral'; v.innerHTML = `<b>Крок 1.</b><span>Модель отримала тільки інструкції і ваше питання про клієнта А. Більше вона нічого не знає, тож відповідає по суті.</span>`;
+    btn.textContent = 'Далі: написати про іншого клієнта в цьому ж чаті';
+  } else if(s2Step === 2){
+    chat.innerHTML = `<div class="bubble u">${esc(S2.u1)}</div><div class="bubble a">${esc(S2.a1)}</div><div class="bubble u${anim}">${esc(S2.u2)}</div><div class="bubble a mixed${anim}">${esc(S2.a2mixed)}</div>`;
+    pay.innerHTML = `<span class="req">Запит №2 до моделі</span>` + prow('sys','інструкції',S2.sys) + prow('','Ви',S2.u1,[['again','повторно']]) + prow('','AI',S2.a1,[['again','повторно']]) + prow(fl.trim(),'Ви',S2.u2,[['fresh','нове']]);
+    v.className = 'verdict bad'; v.innerHTML = `<b>Крок 2. Змішалось.</b><span>Ви написали лише одне коротке питання про клієнта Б, але модель знову отримала все: звернення клієнта А і свою відповідь на нього. Тому вона переносить чужу причину на зовсім іншу проблему.</span>`;
+    btn.textContent = 'Далі: те саме питання в новому чаті';
+  } else {
+    chat.innerHTML = `<div class="bubble u${anim}">${esc(S2.u2)}</div><div class="bubble a${anim}">${esc(S2.a2clean)}</div>`;
+    pay.innerHTML = `<span class="req">Запит №1 у новому чаті</span>` + prow('sys','інструкції',S2.sys) + prow(fl.trim(),'Ви',S2.u2,[['fresh','нове']]);
+    v.className = 'verdict ok'; v.innerHTML = `<b>Крок 3. Новий чат.</b><span>У запиті немає нічого про клієнта А. Модель не тягне чужу проблему і просить дані, яких їй справді бракує.</span>`;
+    btn.textContent = 'Почати демо спочатку';
+  }
+  $('#s2Step').textContent = `Крок ${s2Step} з 3`;
+}
+$('#s2Next').addEventListener('click', () => { s2Step = s2Step >= 3 ? 1 : s2Step + 1; renderS2(true); });
+renderS2(false);
+
+/* ---------- 3. context ---------- */
+const S3 = [
+  {n:20, label:'20 рядків', sub:'відфільтровано за ID і часом', err:7, span:5, v:'ok',
+   txt:'<b>Добре.</b><span>Модель бачить тільки те, що стосується проблеми. Рядок з помилкою — один з 20, його легко знайти і правильно пояснити.</span>'},
+  {n:200, label:'200 рядків', sub:'усе за годину', err:137, span:60, v:'neutral',
+   txt:'<b>Уже гірше.</b><span>Модель, найімовірніше, знайде помилку, але може зачепитися за сторонні попередження, які до проблеми клієнта не стосуються.</span>'},
+  {n:2000, label:'2 000 рядків', sub:'усе за день', err:1312, span:720, v:'warn',
+   txt:'<b>Ненадійно.</b><span>Ваше питання і потрібний рядок тонуть серед схожих. Модель може описати не ту помилку або «знайти» причину, якої немає.</span>'},
+  {n:10000, label:'10 000 рядків', sub:'весь лог', err:6871, span:1440, v:'bad',
+   txt:'<b>Погано.</b><span>Такий обсяг може взагалі не влізти в контекстне вікно: застосунок обріже текст або видасть помилку. Якщо влізе, висновок буде ненадійним.</span>'}
+];
+const TOK = {sys:1500, q:60, line:30};
+const fmt = n => n.toLocaleString('uk-UA');
+function logLines(cfg){
+  const out = []; const start = 10*60 - Math.min(cfg.span/2, 600);
+  const kinds = [
+    i => `INFO   GET  /order/${10200 + (i*7)%900}           200 OK`,
+    i => `INFO   POST /order                 201 Created  order_id=${10300 + i}`,
+    i => `INFO   GET  /order/status          200 OK`,
+    i => `WARN   POST /order                 повільна відповідь 2.1 c`,
+    i => `INFO   PUT  /offers/stocks         200 OK`
+  ];
+  const show = Math.min(cfg.n, 400);
+  for(let i = 0; i < show; i++){
+    const mins = start + (i / cfg.n) * cfg.span;
+    const hh = String(Math.floor(mins/60) % 24).padStart(2,'0'), mm = String(Math.floor(mins % 60)).padStart(2,'0'), ss = String((i*17) % 60).padStart(2,'0');
+    const t = `2026-10-12 ${hh}:${mm}:${ss}`;
+    if(i === cfg.err) out.push(`<div class="err">${t}  ERROR  POST /order    422  помилка валідації: не передано source_id</div>`);
+    else out.push(`<div>${t}  ${kinds[(i*3 + (i>>2)) % kinds.length](i)}</div>`);
+  }
+  if(cfg.n > show){
+    const hidden = cfg.err >= show ? ' Рядок з помилкою — десь серед них.' : '';
+    out.push(`<div class="more">…і ще ${fmt(cfg.n - show)} схожих рядків.${hidden}</div>`);
+  }
+  return out.join('');
+}
+function setS3(i){
+  const c = S3[i];
+  document.querySelectorAll('#s3Seg button').forEach((b,j) => b.setAttribute('aria-pressed', j === i));
+  const logT = c.n * TOK.line, total = TOK.sys + TOK.q + logT;
+  $('#s3Sys').style.flexGrow = TOK.sys; $('#s3Log').style.flexGrow = logT;
+  const qPct = TOK.q / total * 100;
+  const qTxt = qPct.toFixed(qPct >= 0.1 ? 1 : 2).replace('.', ',');
+  $('#s3Stats').innerHTML = `<div class="stat"><span>Рядків логу в чаті</span><b>${fmt(c.n)}</b></div><div class="stat"><span>З них про проблему клієнта</span><b>1</b></div><div class="stat"><span>Ваше питання займає</span><b>≈${qTxt}% тексту</b></div>`;
+  $('#s3Box').innerHTML = logLines(c);
+  $('#s3Box').scrollTop = 0;
+  const v = $('#s3Verdict'); v.className = 'verdict ' + c.v; v.innerHTML = c.txt;
+}
+$('#s3Seg').innerHTML = S3.map((c,i) => `<button type="button" data-i="${i}" aria-pressed="false">${c.label}<small>${c.sub}</small></button>`).join('');
+$('#s3Seg').addEventListener('click', e => { const b = e.target.closest('button'); if(b) setS3(+b.dataset.i); });
+setS3(0);
+
+/* ---------- 4. cutoff ---------- */
+function setS4(on){
+  $('#s4Svg').classList.toggle('tl-on', on);
+  $('#s4Label').textContent = on ? 'Бачить через пошук або документацію' : 'Модель не знає';
+  $('#s4Cap').innerHTML = on
+    ? '<b style="color:var(--ok)">З актуальним джерелом</b> модель читає свіжі сторінки перед відповіддю і бачить зміни після дати зрізу. Посилання все одно відкривайте і перевіряйте.'
+    : '<b style="color:var(--bad)">Без джерела</b> модель бачить тільки ліву частину і відповідає за старою версією API. Сама вона не помічає, що щось змінилось.';
+}
+$('#s4Toggle').addEventListener('change', e => setS4(e.target.checked));
+setS4(false);
+
+/* ---------- 5. prompt builder ---------- */
+const S5 = [
+  {k:'Контекст', t:'Клієнт підключає свій сайт до keyCRM через API. Замовлення з сайту не створюються. Я хочу повторити запит клієнта в Postman, щоб побачити помилку сам.',
+   miss:'Контекст: модель не знає, що це інтеграція сайту і що ви хочете повторити запит. Відповідь буде загальною.'},
+  {k:'Дані', t:'Ось що надсилає сайт клієнта (ключ прибрано):\n[тіло запиту]\nОсь що відповідає keyCRM:\n[текст помилки]\nДокументація API — у файлах проєкту.',
+   miss:'Дані: модель не бачить ні запиту, ні помилки, тому гадатиме причину.'},
+  {k:'Задача', t:'Порівняй запит з документацією і знайди, що в ньому не так.',
+   miss:'Задача: модель не знає, що від неї треба, і може почати пояснювати, як працює API взагалі.'},
+  {k:'Формат', t:'Відповідь дай так:\n1) що не так — простими словами;\n2) як налаштувати цей запит у Postman по кроках: метод, адреса, заголовки, тіло;\n3) виправлене тіло запиту в JSON, щоб я вставив його в Postman.',
+   miss:'Формат: модель відповість як захоче, наприклад кодом на PHP замість інструкції для Postman.'},
+  {k:'Обмеження', t:'Використовуй тільки поля з документації. Якщо чогось не вистачає — спитай мене, а не вгадуй.',
+   miss:'Обмеження: модель може додати поля, яких немає в документації, і не скаже, що вгадує.'}
+];
+const s5On = S5.map(() => true);
+$('#s5Chips').innerHTML = S5.map((p,i) => `<button class="chip" type="button" data-i="${i}" aria-pressed="true"><span class="k">${i+1}</span>${p.k}</button>`).join('');
+function renderS5(){
+  const n = s5On.filter(Boolean).length;
+  document.querySelectorAll('#s5Chips .chip').forEach(b => b.setAttribute('aria-pressed', s5On[+b.dataset.i]));
+  const out = $('#s5Out');
+  out.innerHTML = n === 0 ? 'Чому не працює API?' : S5.map((p,i) => s5On[i] ? `<span class="lbl">// ${p.k}</span>\n${hl(p.t)}` : null).filter(Boolean).join('\n\n');
+  const v = $('#s5Verdict');
+  if(n === 5){ v.className = 'verdict ok'; v.innerHTML = '<b>Повна постановка задачі.</b><span>Модель знає ситуацію, бачить дані, розуміє, що зробити, у якому вигляді віддати результат і чого не вигадувати.</span>'; return; }
+  if(n === 0){ v.className = 'verdict bad'; v.innerHTML = '<b>Типовий «поганий» промпт.</b><span>Модель не знає ні ситуації, ні даних, ні що вам потрібно. Отримаєте загальні поради або вигадку.</span>'; return; }
+  v.className = 'verdict ' + (n >= 3 ? 'warn' : 'bad');
+  v.innerHTML = `<b>Чого бракує:</b><ul>${S5.map((p,i) => s5On[i] ? '' : `<li>${esc(p.miss)}</li>`).join('')}</ul>`;
+}
+$('#s5Chips').addEventListener('click', e => { const b = e.target.closest('.chip'); if(!b) return; s5On[+b.dataset.i] = !s5On[+b.dataset.i]; renderS5(); });
+renderS5();
+
+/* ---------- 6. project vs plain ---------- */
+const DOC = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h8l4 4v12H4z"/><path d="M12 2v4h4"/></svg>';
+const MSG = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4h14v9H8l-4 3v-3H3z"/></svg>';
+const GEAR = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="3"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.3 4.3l1.8 1.8M13.9 13.9l1.8 1.8M4.3 15.7l1.8-1.8M13.9 6.1l1.8-1.8"/></svg>';
+const userMsg = '«Клієнт отримує помилку 422 при створенні замовлення через API. Що перевірити?»';
+function setS6(mode){
+  document.querySelectorAll('#s6Seg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === mode));
+  const an = reduce ? '' : ' in';
+  const rows = [`<div class="sheet">${GEAR}<span>Інструкції застосунку<small>Завжди є, ви їх не бачите</small></span></div>`];
+  if(mode === 'proj'){
+    rows.push(`<div class="sheet proj${an}">${DOC}<span>Інструкція проєкту<small>«Ти помічник спеціаліста 2-ї лінії keyCRM… давай налаштування для Postman…»</small></span></div>`);
+    rows.push(`<div class="sheet proj${an}">${DOC}<span>Файл: база знань keyCRM<small>Модель шукає в ньому потрібні розділи</small></span></div>`);
+    rows.push(`<div class="sheet proj${an}">${DOC}<span>Файл: документація API keyCRM<small>Звідси видно, які поля обов'язкові</small></span></div>`);
+  }
+  rows.push(`<div class="sheet msg">${MSG}<span>Ваше повідомлення<small>${esc(userMsg)}</small></span></div>`);
+  $('#s6Stack').innerHTML = rows.join('');
+  const v = $('#s6Verdict');
+  if(mode === 'proj'){ v.className = 'verdict ok'; v.innerHTML = '<b>Чат у проєкті.</b><span>Модель знає, хто ви і як відповідати, і може знайти в документації, які поля обов\'язкові для створення замовлення. Ви нічого не пояснювали додатково.</span>'; }
+  else { v.className = 'verdict warn'; v.innerHTML = '<b>Звичайний чат.</b><span>Модель не має документації keyCRM. Відповідь буде загальною («перевірте обов\'язкові поля») або з вигаданими назвами полів.</span>'; }
+}
+$('#s6Seg').addEventListener('click', e => { const b = e.target.closest('button'); if(b) setS6(b.dataset.v); });
+setS6('proj');
+
+/* ---------- 7. compare ---------- */
+const S7 = {
+  a:{q:'Чи можна в keyCRM передати номер замовлення в URL вебхука?', add:'',
+     ans:'Так. Додайте змінну в адресу, наприклад https://site.com/hook?order={{ order.id }}, і keyCRM підставить номер замовлення під час відправки.',
+     badge:['bad','Вигадано'], note:'Звучить переконливо, але це неправда. Немає ні джерела, ні способу перевірити. Клієнт налаштує — і нічого не запрацює.'},
+  b:{q:'Чи можна в keyCRM передати номер замовлення в URL вебхука?', add:'\n\nВідповідай тільки на основі бази знань keyCRM у проєкті. Назви розділ, на який спираєшся. Якщо там цього немає — скажи прямо. Поясни, як я можу перевірити відповідь сам.',
+     ans:'Ні. У базі знань, розділ «Налаштування Webhook в keyCRM», сказано: підставляти в URL змінні із замовлення чи картки не можна. Можна додати лише статичні параметри, наприклад ?source=site. Номер замовлення і так приходить у тілі запиту у форматі JSON.\n\nЯк перевірити: створіть тестовий тригер з дією «Відправити Webhook» на адресу з webhook.site, змініть статус тестового замовлення і подивіться, що прийшло.',
+     badge:['ok','Можна перевірити'], note:'Є розділ бази знань, який можна відкрити, і спосіб перевірити на практиці за дві хвилини.'}
+};
+function setS7(k){
+  document.querySelectorAll('#s7Seg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === k));
+  const c = S7[k];
+  $('#s7Cmp').innerHTML = `<div class="cmp-msg u"><span class="who">Ви пишете</span><div class="txt">${esc(c.q)}${c.add ? `<span class="add">${esc(c.add)}</span>` : ''}</div></div>
+    <div class="cmp-msg a"><span class="who">AI відповідає</span><div class="txt">${esc(c.ans)}</div></div>
+    <span class="badge ${c.badge[0]}">${c.badge[1]}</span>
+    <div class="verdict ${c.badge[0]}"><span>${esc(c.note)}</span></div>`;
+}
+$('#s7Seg').addEventListener('click', e => { const b = e.target.closest('button'); if(b) setS7(b.dataset.v); });
+setS7('a');
+
+const PHRASES = [
+  ['Джерела', 'Для кожного твердження дай посилання на джерело.'],
+  ['Офіційна документація', 'Спирайся на офіційну документацію [сервіс]. Форуми та статті — тільки як додаткове джерело, і познач їх.'],
+  ['Актуальність', 'Сьогодні [дата]. Шукай актуальну інформацію в інтернеті і вкажи дату кожного джерела.'],
+  ['Факти й припущення', 'Окремо познач, що підтверджено джерелами, а що — твоє припущення.'],
+  ['Право на «не знаю»', 'Якщо не знайшов підтвердження — так і скажи. Не вгадуй.'],
+  ['Як перевірити самому', 'Поясни простими словами, як я можу сам перевірити відповідь: що відкрити, куди натиснути, який запит зробити.'],
+  ['Самоперевірка', 'Перевір свою відповідь: що в ній може бути неправдою або застарілим?']
+];
+const phraseHTML = arr => arr.map(p => `<div class="phrase"><b>${esc(p[0])}</b><q>${hl(p[1])}</q><button class="copy-s" type="button">Копіювати</button></div>`).join('');
+$('#s7Phrases').innerHTML = phraseHTML(PHRASES);
+$('#cheatPhrases').innerHTML = phraseHTML([
+  ['Нехай спершу спитає', 'Перш ніж відповідати, задай мені уточнювальні питання.'],
+  PHRASES[0], PHRASES[2], PHRASES[4], PHRASES[5]
+]);
+
+/* ---------- scenarios ---------- */
+const ICON = {
+  kb:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h5a1.5 1.5 0 0 1 1.5 1.5V14A1.5 1.5 0 0 0 7 12.5H2zM14 3H9.5A1.5 1.5 0 0 0 8 4.5V14a1.5 1.5 0 0 1 1.5-1.5H14z"/></svg>',
+  search:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>',
+  shot:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="13" height="10" rx="1.5"/><circle cx="8" cy="8" r="2.3"/></svg>',
+  chat:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h12v8H6l-3 2.5V11H2z"/></svg>',
+  api:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 4L1.5 8 5 12M11 4l3.5 4-3.5 4"/></svg>',
+  hook:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h9M8 4.5L11.5 8 8 11.5"/><circle cx="13.5" cy="8" r="1.5"/></svg>',
+  log:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3.5h12M2 6.5h9M2 9.5h12M2 12.5h7"/></svg>',
+  twig:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5.5 3C4 3 4 4 4 5.5S3 8 2 8c1 0 2 .5 2 2.5S4 13 5.5 13M10.5 3C12 3 12 4 12 5.5S13 8 14 8c-1 0-2 .5-2 2.5S12 13 10.5 13"/></svg>',
+  stuck:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M6.3 6.2a1.8 1.8 0 1 1 2.4 1.7c-.5.2-.7.6-.7 1.1v.5M8 11.5v.3"/></svg>',
+  reply:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 4L2 8l4 4M2 8h8a4 4 0 0 1 4 4"/></svg>',
+  idea:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5a4.5 4.5 0 0 0-2.5 8.2V11h5V9.7A4.5 4.5 0 0 0 8 1.5z"/><path d="M6 13h4M6.8 14.8h2.4"/></svg>',
+  bug:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4.5" y="5" width="7" height="8" rx="3.5"/><path d="M8 5V3M2 8h2.5M11.5 8H14M2.5 12l2-1M13.5 12l-2-1"/></svg>'
+};
+const GROUPS = [
+  {l:'Розібратися', ids:['kb','external','shot','chat']},
+  {l:'Діагностика', ids:['api','webhook','logs','twig','stuck']},
+  {l:'Відповідь і передача', ids:['reply','bug','feature']}
+];
+const SC = {
+  kb:{icon:'kb', title:'Як працює функція keyCRM',
+    when:'Клієнт питає, чи можна щось зробити в keyCRM або як це налаштувати, а ви не впевнені.',
+    collect:['Питання клієнта його словами','Що саме він хоче отримати в результаті','Модуль: замовлення, воронки, товари, інтеграції тощо'],
+    steps:['Відкрийте новий чат у проєкті: база знань уже там','Попросіть відповідь з назвою розділу бази знань','Відкрийте цей розділ і переконайтесь, що там написано саме це','Якщо можливо — повторіть на тестовому акаунті'],
+    prompt:`Клієнт питає: [питання клієнта].
+Він хоче: [що хоче отримати в результаті].
+
+Знайди відповідь у базі знань keyCRM у проєкті. Назви розділ і процитуй ключове речення.
+Якщо в базі знань цього немає — так і скажи. Не вигадуй функцій.
+Окремо: якщо напряму так не можна, чи є обхідний шлях через інші можливості keyCRM, описані в базі знань?`,
+    check:'Ви відкрили названий розділ бази знань, і там написано те саме.',
+    traps:['«Не знайшов у базі знань» ще не означає «такої функції немає». Модель шукає шматками і може пропустити. Переформулюйте питання іншими словами або спитайте колегу.','Модель охоче вигадує налаштування, які звучать логічно. Без цитати з бази знань не передавайте відповідь клієнту.']},
+  external:{icon:'search', title:'Зовнішній сервіс',
+    when:'Питання про Meta (Facebook, Instagram), маркетплейси, служби доставки, пРРО, телефонію — усе, що працює поза keyCRM.',
+    collect:['Точний текст помилки або код — скопіюйте, не переказуйте','Яка інтеграція і на якому кроці','Коли почалось (раптом після оновлення сервісу)'],
+    steps:['Спершу спитайте базу знань keyCRM: деякі помилки вже описані (наприклад, помилки пРРО)','Потім попросіть шукати в інтернеті з правилами з розділу 7','Відкрийте посилання: це офіційний сайт? свіжа дата?','Визначте, на чиєму боці проблема (див. нижче)'],
+    prompt:`Інтеграція keyCRM з [сервіс]. Клієнт отримує помилку:
+"[дослівний текст або код]"
+Контекст: [на якому кроці, з якого часу]
+
+1. Спочатку перевір базу знань keyCRM у проєкті — чи описана ця помилка.
+2. Потім знайди в інтернеті, що означає ця помилка в [сервіс]. Сьогодні [дата]. Пріоритет — офіційна документація, список змін і статус-сторінка сервісу. Форуми — лише як додаткове джерело.
+3. Для кожного твердження дай посилання і дату джерела.
+4. Скажи, де ймовірно проблема: у keyCRM, у налаштуваннях клієнта чи в [сервіс].`,
+    check:'Кожне твердження має посилання на офіційне джерело зі свіжою датою, і ви його відкрили.',
+    traps:['Без вебпошуку модель відповідає про стару версію сервісу.','Відповідь з форуму — не офіційна позиція сервісу.','Правила Meta API змінюються часто: дивіться на дату джерела.'],
+    extra:'side'},
+  shot:{icon:'shot', title:'Скріншот або незрозуміла помилка',
+    when:'Клієнт надіслав скріншот помилки, текст англійською або повідомлення, з якого незрозуміло, що сталось.',
+    collect:['Скріншот або текст помилки','Що клієнт робив перед тим, як вона з\'явилась','Де саме: у keyCRM, на сайті клієнта чи в кабінеті сервісу'],
+    steps:['Закрийте або обріжте на скріншоті персональні дані: імена, телефони, email, ключі','Прикріпіть скріншот у чат проєкту','Попросіть переписати текст і пояснити його простими словами','Далі — сценарій «Зовнішній сервіс» або «Помилка в API keyCRM», залежно від того, звідки помилка'],
+    prompt:`Клієнт надіслав скріншот помилки (додаю). Перед цим він: [що робив].
+
+1. Перепиши дослівно текст помилки зі скріншота.
+2. Поясни простими словами, що вона означає.
+3. Визнач, звідки вона: keyCRM, сайт клієнта чи зовнішній сервіс. Якщо зі скріншота незрозуміло — скажи, що ще попросити в клієнта.
+Познач, де пояснення спирається не на документацію, а на твоє припущення.`,
+    check:'Текст, який переписала модель, збігається зі скріншотом слово в слово.',
+    traps:['На скріншоті легко пропустити персональні дані: адресний рядок, ім\'я користувача, номери в таблиці. Перегляньте весь скрін.','Модель може неточно прочитати дрібний або розмитий текст. Звірте з оригіналом.']},
+  chat:{icon:'chat', title:'Довга переписка з клієнтом',
+    when:'Вам передали чат з клієнтом від колеги або з 1-ї лінії, і в ньому довга історія.',
+    collect:['Переписка з прибраними персональними даними'],
+    steps:['Вставте переписку в новий чат','Отримайте коротке зведення','Пробіжіться по оригіналу: чи не пропущено важливу деталь'],
+    prompt:`Ось переписка з клієнтом (персональні дані прибрано):
+[текст]
+
+Дай коротко:
+1. Суть проблеми одним реченням.
+2. Що вже перевірили і з яким результатом.
+3. Що клієнт уже надав (дані, скріншоти, ID).
+4. Чого не вистачає, щоб знайти причину.
+5. Наступний крок.`,
+    check:'Ви звірили зведення з оригіналом і не знайшли пропущених фактів.',
+    traps:['Зведення — не заміна переписки. Модель може пропустити деталь, яка виявиться ключовою.']},
+  api:{icon:'api', title:'Помилка в API keyCRM',
+    when:'Клієнт або його розробник пише, що запит до API keyCRM повертає помилку або не ті дані.',
+    collect:['Що клієнт хотів зробити (створити замовлення, оновити залишки…)','Метод і адреса запиту','Тіло запиту в JSON — без API-ключа','Відповідь keyCRM: код і текст помилки'],
+    steps:['Відкрийте новий чат у проєкті: документація API вже там','Попросіть знайти, що не так, і розписати налаштування для Postman','Повторіть запит у Postman на тестовому акаунті, не з ключем клієнта','Порівняйте свою відповідь з тією, що отримує клієнт','Не відтворилось — шукайте різницю в даних клієнта'],
+    prompt:`Клієнт надсилає запит до API keyCRM і отримує помилку.
+Що хотів зробити: [наприклад, створити замовлення]
+Метод і адреса: [наприклад, POST /order]
+Тіло запиту (ключ прибрано):
+[JSON]
+Відповідь keyCRM:
+[код і текст помилки]
+
+Порівняй запит з документацією API у проєкті. Відповідь дай так:
+1. Що не так — простими словами, з посиланням на місце в документації.
+2. Як налаштувати цей запит у Postman по кроках: метод, адреса, заголовки, вкладка Body.
+3. Виправлене тіло запиту в JSON, щоб я вставив його в Postman.
+Використовуй тільки поля з документації. Якщо причина може бути не в запиті — скажи, що ще перевірити.`,
+    prompt2:{title:'Перше налаштування Postman', text:`Я вперше налаштовую Postman для роботи з API keyCRM. Документація API — у файлах проєкту.
+Поясни по кроках, ніби я ніколи не працював з Postman:
+1. Як імпортувати документацію, щоб усі запити з'явились у Postman.
+2. Як зберегти API-ключ так, щоб не вставляти його в кожен запит.
+3. Як зробити перший простий запит, що отримує список замовлень, і як зрозуміти, що він спрацював.`},
+    check:'Запит у Postman дає очікувану відповідь.',
+    traps:['Без документації в контексті модель вигадає назви полів, і в Postman запит не спрацює.','Не просіть у клієнта API-ключ, щоб «перевірити»: це доступ до всієї його CRM. Відтворюйте на тестовому акаунті.']},
+  webhook:{icon:'hook', title:'Вебхук не приходить',
+    when:'Клієнт каже, що вебхук «не приходить» або в ньому «не ті дані».',
+    collect:['Налаштування тригера: подія, умови, адреса (URL), метод','ID замовлення або картки, на якому тригер мав спрацювати','Що клієнт отримує на своєму сервері (або «нічого»)'],
+    steps:['Перевірте, чи тригер взагалі спрацював: історія дій у картці замовлення чи воронки','Для тесту підставте адресу з webhook.site і подивіться, що реально відправляється','Дайте моделі налаштування тригера і те, що отримує клієнт'],
+    prompt:`Клієнт налаштував у keyCRM тригер з дією «Відправити Webhook».
+Налаштування: [подія, умови, URL, метод]
+Що клієнт хоче отримати: [опис]
+Що реально отримує: [тіло запиту або «нічого»]
+
+Спираючись на базу знань keyCRM, назви можливі причини від найімовірнішої до найменш імовірної. Для кожної — як я можу її перевірити.
+Окремо: чи взагалі можна отримати потрібні клієнту дані через вебхук, чи треба добирати через API.`,
+    check:'На webhook.site видно реальний запит, і він збігається з висновком.',
+    traps:['Клієнт часто чекає у вебхуку повні дані замовлення. Це не помилка, а обмеження: у вебхуку лише базові поля, решту добирають через API. Перевіряйте це першим.'],
+    extra:'webhook'},
+  logs:{icon:'log', title:'Логи: що відправили і що отримали',
+    when:'Треба зрозуміти, що саме keyCRM відправив у зовнішній сервіс або отримав від нього, і чи все правильно.',
+    collect:['ID замовлення, картки, ТТН чи дзвінка','Час, коли сталась проблема, і в якому часовому поясі записаний лог','Що мало статися і що сталося насправді'],
+    steps:['Відфільтруйте лог: тільки рядки з потрібним ID за потрібний час. Десятки рядків, не тисячі','Приберіть ключі, токени, персональні дані','Опишіть, що мало статися','Попросіть хронологію і першу помилку, а не «висновок»','Кожну знайдену помилку знайдіть очима в самому лозі'],
+    prompt:`Розбираю проблему в інтеграції keyCRM з [сервіс].
+Що мало статися: [нормальний сценарій]
+Що сталося: [що бачить клієнт]
+Час: [з–по, часовий пояс]
+ID: [замовлення / картки / запиту]
+
+Лог (відфільтрований, дані прибрано):
+[рядки логу]
+
+Зроби:
+1. Хронологію подій таблицею: час — подія — результат.
+2. Першу подію, яка відрізняється від нормального сценарію.
+3. Можливі причини, від найімовірнішої. Для кожної — який рядок логу на неї вказує.
+Якщо не знаєш, що означає якесь поле, — так і скажи. Не роби висновків, яких не видно в рядках логу.`,
+    prompt2:{title:'Чи правильно ми відправили запит', text:`Ось запит, який keyCRM відправив у [сервіс]:
+[тіло запиту]
+Ось відповідь сервісу:
+[відповідь]
+
+Знайди в інтернеті офіційну документацію цього методу [сервіс] і звір з нею запит: які поля відсутні або мають неправильний формат. Дай посилання. Відповідь сервісу поясни простими словами.`},
+    check:'Кожна причина, яку назвала модель, прив\'язана до конкретного рядка, і ви знайшли цей рядок у самому лозі.',
+    traps:['Весь лог плюс «що не так?» — модель губиться (розділ 3).','Плутанина часових поясів: клієнт пише за київським часом, а лог може бути в іншому поясі.','Причина без конкретного рядка логу — це вгадування.'],
+    extra:'logs'},
+  twig:{icon:'twig', title:'Twig-шаблони',
+    when:'Неправильно виводиться шаблон повідомлення або документа для друку (у них використовується Twig).',
+    collect:['Сам шаблон (код)','Тип шаблону: замовлення, воронки, покупці чи складські операції','Список змінних з кнопки «Вставити поле» для цього типу','Що мало вийти і що вийшло насправді'],
+    steps:['Дайте моделі шаблон, список змінних, очікуваний і фактичний результат','Попросіть звірити функції й фільтри з довідником Twig у базі знань','Перевірте виправлений шаблон через «Попередній перегляд»'],
+    prompt:`Шаблон у keyCRM на Twig виводиться не так, як треба.
+Тип шаблону: [замовлення / воронки / покупці / складські операції]
+Шаблон:
+[код]
+Доступні змінні (з «Вставити поле»):
+[список]
+Має вийти: [опис]
+Виходить: [опис]
+
+Знайди помилку і дай виправлений шаблон. Функції та фільтри звір з довідником Twig у базі знань keyCRM.
+Використовуй лише змінні з мого списку. Якщо потрібної змінної там немає — скажи про це.`,
+    check:'«Попередній перегляд» показує те, що потрібно.',
+    traps:['Модель знає Twig загалом, але не знає, які змінні є в keyCRM. Без списку змінних вона їх вигадає.','Змінні залежать від типу шаблону: змінні замовлень не працюють у шаблонах для воронок.']},
+  stuck:{icon:'stuck', title:'Застрягли: що перевірити далі',
+    when:'Ви вже щось перевірили, але причину не знайшли і не знаєте, куди рухатись.',
+    collect:['Опис проблеми','Що вже перевірили і з яким результатом','Ваша версія причини, навіть якщо не впевнені'],
+    steps:['Опишіть усе, що вже знаєте і перевірили','Попросіть не готову відповідь, а список версій і як перевірити кожну','Перевіряйте від найпростішої','Повертайтесь у той самий чат з результатами, щоб звужувати пошук'],
+    prompt:`Розбираюсь з проблемою клієнта і застряг.
+Проблема: [опис]
+Що вже перевірив: [список і результат]
+Моя версія причини: [версія або «немає»]
+
+1. Знайди слабкі місця в моїй версії: що я міг пропустити?
+2. Дай 3–5 можливих причин, від найімовірнішої.
+3. Для кожної — як я можу її перевірити: що відкрити, що натиснути, що запитати в клієнта.
+Познач, де ти спираєшся на базу знань keyCRM, а де — на припущення.`,
+    check:'Кожну версію ви перевірили на практиці, а не прийняли на слово.',
+    traps:['Модель може запропонувати перевірити налаштування, якого в keyCRM немає. Не знаходите — спитайте, де саме це в інтерфейсі, і попросіть розділ бази знань.']},
+  reply:{icon:'reply', title:'Відповідь клієнту',
+    when:'Причину знайдено, треба зрозуміло пояснити її клієнту в чаті.',
+    collect:['Ваш висновок','Ваша чернетка відповіді','Хто читатиме: власник магазину, розробник чи менеджер'],
+    steps:['Напишіть чернетку самі','Попросіть модель зробити її зрозумілішою','Перевірте, що суть і технічні деталі не змінились'],
+    prompt:`Ось моя чернетка відповіді клієнту в чаті:
+[чернетка]
+
+Клієнт: [власник магазину / розробник / менеджер]
+Зроби зрозуміліше і коротше, кроки — окремим списком. Технічні терміни — лише якщо клієнт технічний.
+Не змінюй суть і не додавай нових технічних тверджень.`,
+    check:'Суть і всі технічні деталі ваші; модель змінила лише подачу.',
+    traps:['Роздратованому клієнту пишіть самі: згенероване співчуття звучить фальшиво.','Модель може «покращити» відповідь, додавши обіцянку чи деталь, якої ви не казали. Перечитайте перед відправкою.']},
+  bug:{icon:'bug', title:'Баг-репорт',
+    when:'Щось у keyCRM працює не так, як має, і це треба передати в розробку. Оформлює скіл «Баг-репорт» — ваша задача дати йому достатньо інформації.',
+    collect:['Що сталось: словами клієнта і вашими','Посилання на конкретні замовлення, картки, товари чи налаштування в CRM клієнта — не лише номер','Скріншоти або відео, де видно проблему; текст помилки','Що робили перед тим, як це сталось','Що мало статися замість цього','Коли почалось і як часто: завжди, іноді, один раз','Що ви перевірили самі: чи відтворюється на тестовому акаунті'],
+    steps:['Зберіть усе зі списку «Що зібрати». Чого бракує — спитайте клієнта одразу в чаті, поки він на зв\'язку','Відкрийте новий чат, напишіть «Оформи баг» і вставте все зібране. Скріншоти прикріпіть до повідомлення','Скіл попросив уточнення — перешліть питання клієнту і поверніться з відповідями в той самий чат','Прочитайте файл: усе зрозуміло людині без контексту і нічого не вигадано','Перенесіть поля в трекер і прикріпіть скріншоти та відео'],
+    prompt:`Оформи баг.
+
+Переписка з клієнтом:
+[текст або ключові повідомлення]
+
+Посилання: [замовлення, картки, налаштування]
+Що я перевірив сам: [що робив і що побачив]
+(скріншоти й відео прикріпіть до повідомлення)`,
+    prompt2:{title:'ChatGPT (скіл завантажено файлом)', text:`Оформи баг за інструкцією з файлу bug-report-writer.md.
+
+[усе те саме, що в промпті вище]`},
+    check:'Колега, який не бачив переписки, прочитав репорт і зрозумів, що зламалось, де дивитись і що мало бути.',
+    traps:['Номер замовлення без посилання і домену CRM — розробник витратить час, щоб знайти, у якого клієнта це сталось.','«У клієнта не працює» без того, що мало бути. Скіл спитає, але простіше з\'ясувати це одразу в чаті з клієнтом.','Скріншоти згадані в репорті, але не прикріплені в трекері.','Модель може дописати кроки, яких ніхто не робив. Перечитайте файл перед тим, як переносити в трекер.'],
+    extra:'bugwhy'},
+  feature:{icon:'idea', title:'Фіча-реквест',
+    when:'Клієнт просить нову можливість: «додайте кнопку», «зробіть, щоб автоматично…», «чому не можна…». Оформлює скіл «Фіча-реквест» — ваша задача дати йому достатньо інформації.',
+    collect:['Що саме просить клієнт — його словами','Навіщо: яку задачу він цим хоче вирішити','Конкретний випадок, коли це знадобилось: посилання, скріншот','Як він робить це зараз і скільки часу це займає','Як часто це потрібно і скількох замовлень чи людей стосується'],
+    steps:['Ще в чаті з клієнтом поставте питання з блоку нижче — це заощадить ще одне коло уточнень','Відкрийте новий чат, напишіть «Оформи фіча-реквест» і вставте переписку та відповіді клієнта','Скіл дав повідомлення з питаннями — перешліть його клієнту, а відповіді принесіть у той самий чат','Прочитайте «Чому саме ці питання»: наступного разу ви спитаєте це одразу','Перенесіть файл у трекер'],
+    prompt:`Оформи фіча-реквест.
+
+Переписка з клієнтом:
+[текст]
+
+Що я знаю додатково: [навіщо, як зараз, як часто — якщо з'ясували]
+Посилання і скріншоти: [якщо є]`,
+    prompt2:{title:'ChatGPT (скіл завантажено файлом)', text:`Оформи фіча-реквест за інструкцією з файлу feature-request-writer.md.
+
+[усе те саме, що в промпті вище]`},
+    check:'Людина, яка не бачила переписки, розуміє проблему клієнта, як він обходиться зараз і наскільки це для нього важливо.',
+    traps:['Записати лише рішення клієнта («додати кнопку») без проблеми. Продакт не зможе оцінити, чи варто це робити і як.','Питання «Вам це потрібно?» — на нього завжди відповідають «так». Питайте, як часто і що буде без цього.','Вигадати частоту чи обсяг «на око». Не знаєте — так і лишіть, скіл позначить «не уточнено».'],
+    extra:'featq'}
+};
+const WARN = '<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2L1.5 15.5h15z"/><path d="M9 7v4M9 13v.5"/></svg>';
+const codeBlock = t => `<div class="codeblock"><pre class="pre">${hl(t)}</pre><button class="copy" type="button">Копіювати</button></div>`;
+function extraHTML(kind){
+  if(kind === 'side') return `<div><div class="sec-label">На чиєму боці проблема</div><div class="facts">
+    <div class="fact"><b>keyCRM</b>Відправили неправильні дані або не обробили відповідь → баг-репорт у розробку</div>
+    <div class="fact"><b>Налаштування клієнта</b>Ключі, доступи, права в кабінеті сервісу → інструкція клієнту</div>
+    <div class="fact"><b>Зовнішній сервіс</b>Збій, зміна API, ліміти → статус-сторінка, підтримка сервісу</div></div></div>`;
+  if(kind === 'webhook') return `<div><div class="sec-label">Як keyCRM відправляє вебхук</div>
+    <figure><div class="svg-wrap"><svg viewBox="0 0 680 190" role="img" aria-label="Тригер спрацьовує, keyCRM відправляє запит на адресу клієнта; якщо сервер не відповів кодом 200, keyCRM пробує ще раз, усього до трьох спроб">
+      <defs><marker id="wa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+      <g font-size="13">
+        <rect x="10" y="40" width="150" height="56" rx="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+        <text x="85" y="64" text-anchor="middle" font-weight="600" style="fill:var(--accent)">Тригер</text>
+        <text x="85" y="83" text-anchor="middle" font-size="11" style="fill:var(--muted)">наприклад, зміна статусу</text>
+        <rect x="260" y="40" width="150" height="56" rx="8" style="fill:var(--surface);stroke:var(--line)"/>
+        <text x="335" y="64" text-anchor="middle" font-weight="600" style="fill:var(--ink)">keyCRM</text>
+        <text x="335" y="83" text-anchor="middle" font-size="11" style="fill:var(--muted)">базові дані в JSON</text>
+        <rect x="510" y="40" width="160" height="56" rx="8" style="fill:var(--surface);stroke:var(--line)"/>
+        <text x="590" y="64" text-anchor="middle" font-weight="600" style="fill:var(--ink)">Сервер клієнта</text>
+        <text x="590" y="83" text-anchor="middle" font-size="11" style="fill:var(--muted)">адреса з тригера</text>
+      </g>
+      <g style="color:var(--ink)">
+        <line x1="160" y1="68" x2="256" y2="68" stroke="currentColor" stroke-width="1.5" marker-end="url(#wa)"/>
+        <line x1="410" y1="60" x2="506" y2="60" stroke="currentColor" stroke-width="1.5" marker-end="url(#wa)"/>
+      </g>
+      <text x="458" y="52" font-size="11" text-anchor="middle" style="fill:var(--muted)">POST або GET</text>
+      <g style="color:var(--ok)"><line x1="506" y1="80" x2="414" y2="80" stroke="currentColor" stroke-width="1.5" marker-end="url(#wa)"/></g>
+      <text x="458" y="98" font-size="11" text-anchor="middle" style="fill:var(--ok)" font-weight="600">200 — отримано</text>
+      <g style="color:var(--bad)"><path d="M590 96 V140 H335 V100" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#wa)"/></g>
+      <text x="462" y="160" font-size="12" text-anchor="middle" style="fill:var(--bad)" font-weight="600">не 200 → ще спроба (усього до 3), потім стоп</text>
+      <text x="85" y="126" font-size="11" text-anchor="middle" style="fill:var(--muted)">Чи спрацював?</text>
+      <text x="85" y="142" font-size="11" text-anchor="middle" style="fill:var(--muted)">→ історія дій у картці</text>
+    </svg></div></figure></div>
+    <div class="facts">
+      <div class="fact"><b>Події</b>Зміна статусу замовлення, статусу оплати, статусу картки воронки</div>
+      <div class="fact"><b>Дані</b>Лише базові поля. Додаткові поля, доставка, оплати — окремим запитом через API</div>
+      <div class="fact"><b>Адреса</b>Можна додати сталі параметри. Дані із замовлення в адресу не підставляються</div>
+      <div class="fact"><b>Напрямок</b>Тільки з keyCRM назовні. Щоб передати дані в keyCRM — API</div>
+    </div>`;
+  if(kind === 'bugwhy') return `<div><div class="sec-label">Навіщо розробнику кожен пункт</div><div class="facts">
+    <div class="fact"><b>Посилання</b>Розробник одразу бачить дані клієнта, а не шукає, де це сталось</div>
+    <div class="fact"><b>Скріншот або відео</b>Видно, що саме бачив клієнт, і текст помилки без переказу</div>
+    <div class="fact"><b>Що робили перед цим</b>Без цього тестувальник не відтворить проблему</div>
+    <div class="fact"><b>Що мало статися</b>Без цього незрозуміло, яку поведінку вважати правильною</div>
+    <div class="fact"><b>Частота</b>Постійний і випадковий баг шукають по-різному</div>
+    </div><p class="note" style="margin-top:8px">Скіла ще немає? Як додати — у розділі <a href="#skills">«Скіли команди»</a>.</p></div>`;
+  if(kind === 'featq') return `<div><div class="sec-label">Питання, які варто поставити клієнту одразу</div>${codeBlock(`Дякуємо за ідею! Щоб передати її команді продукту, уточніть, будь ласка:
+1. Для чого вам це потрібно? Яку задачу ви хочете вирішити?
+2. Розкажіть про останній випадок, коли це знадобилось. Можете надіслати посилання або скріншот?
+3. Як ви робите це зараз і скільки часу це займає?
+4. Як часто таке трапляється і скількох замовлень чи людей стосується?`)}</div>
+    <div><div class="sec-label">Навіщо продакту кожне питання</div><div class="facts" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))">
+    <div class="fact"><b>1. Суть</b>Кнопка — лише один варіант. Знаючи задачу, можна знайти краще рішення або побачити, що воно вже є</div>
+    <div class="fact"><b>2. Приклад</b>Реальний випадок показує, що це не гіпотеза, і дає дані, щоб розібратись</div>
+    <div class="fact"><b>3. Як зараз</b>Нормальний обхідний шлях — пріоритет нижчий. Години ручної роботи — вищий</div>
+    <div class="fact"><b>4. Цінність</b>Без частоти й обсягу запит неможливо порівняти з іншими</div>
+    </div><p class="note" style="margin-top:8px">Скіла ще немає? Як додати — у розділі <a href="#skills">«Скіли команди»</a>.</p></div>`;
+  if(kind === 'logs') return `<div><div class="sec-label">Шлях логу до чату</div>
+    <figure><div class="svg-wrap"><svg viewBox="0 0 680 100" role="img" aria-label="Сирий лог проходить фільтр, прибирання секретів і опис норми, після чого модель видає хронологію, яку ви перевіряєте в самому лозі">
+      <defs><marker id="la" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+      <g font-size="12" text-anchor="middle">
+        <rect x="4" y="18" width="104" height="44" rx="7" style="fill:var(--warn-soft);stroke:var(--warn)"/><text x="56" y="38" style="fill:var(--warn)" font-weight="600">Лог</text><text x="56" y="53" font-size="10.5" style="fill:var(--warn)">тисячі рядків</text>
+        <rect x="140" y="18" width="104" height="44" rx="7" style="fill:var(--surface);stroke:var(--line)"/><text x="192" y="38" font-weight="600" style="fill:var(--ink)">Фільтр</text><text x="192" y="53" font-size="10.5" style="fill:var(--muted)">час · ID</text>
+        <rect x="276" y="18" width="104" height="44" rx="7" style="fill:var(--surface);stroke:var(--line)"/><text x="328" y="38" font-weight="600" style="fill:var(--ink)">Без секретів</text><text x="328" y="53" font-size="10.5" style="fill:var(--muted)">ключі · дані людей</text>
+        <rect x="412" y="18" width="104" height="44" rx="7" style="fill:var(--surface);stroke:var(--line)"/><text x="464" y="38" font-weight="600" style="fill:var(--ink)">Норма</text><text x="464" y="53" font-size="10.5" style="fill:var(--muted)">що мало статися</text>
+        <rect x="548" y="18" width="126" height="44" rx="7" style="fill:var(--accent-soft);stroke:var(--accent)"/><text x="611" y="38" font-weight="600" style="fill:var(--accent)">Хронологія</text><text x="611" y="53" font-size="10.5" style="fill:var(--accent)">перша помилка</text>
+      </g>
+      <g style="color:var(--muted)" stroke="currentColor" stroke-width="1.5">
+        <line x1="108" y1="40" x2="136" y2="40" marker-end="url(#la)"/><line x1="244" y1="40" x2="272" y2="40" marker-end="url(#la)"/><line x1="380" y1="40" x2="408" y2="40" marker-end="url(#la)"/><line x1="516" y1="40" x2="544" y2="40" marker-end="url(#la)"/>
+      </g>
+      <g style="color:var(--ok)"><path d="M611 62 V80 H56 V66" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#la)"/></g>
+      <text x="334" y="95" font-size="11" text-anchor="middle" style="fill:var(--ok)" font-weight="600">перевірка: кожна помилка → рядок у самому лозі</text>
+    </svg></div></figure></div>`;
+  return '';
+}
+let current = 'kb';
+function renderPanel(id, focusTab){
+  if(!SC[id]) id = 'kb';
+  current = id;
+  const s = SC[id];
+  document.querySelectorAll('.tab').forEach(t => { const on = t.dataset.id === id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; if(on && focusTab) t.focus(); });
+  const p = $('#panel');
+  p.setAttribute('aria-labelledby', 'tab-' + id);
+  p.innerHTML = `
+    <div class="panel-head"><h3>${esc(s.title)}</h3><p class="when"><b>Коли:</b> ${esc(s.when)}</p></div>
+    <div class="p-grid">
+      <div style="display:grid;gap:18px;align-content:start;min-width:0">
+        <div><div class="sec-label">Що зібрати (можна відмічати)</div><ul class="collect">${s.collect.map((c,i) => `<li><label for="c-${id}-${i}"><input type="checkbox" id="c-${id}-${i}"><span>${esc(c)}</span></label></li>`).join('')}</ul></div>
+        <div class="verify"><b>Як перевірити</b><span>${esc(s.check)}</span></div>
+      </div>
+      <div style="min-width:0"><div class="sec-label">Кроки</div><ol class="steps">${s.steps.map(x => `<li><span>${esc(x)}</span></li>`).join('')}</ol></div>
+    </div>
+    <div><div class="sec-label">Промпт</div>${codeBlock(s.prompt)}</div>
+    ${s.prompt2 ? `<div><div class="sec-label">Промпт: ${esc(s.prompt2.title)}</div>${codeBlock(s.prompt2.text)}</div>` : ''}
+    ${s.extra ? extraHTML(s.extra) : ''}
+    <div><div class="sec-label">Де найчастіше помиляються</div><div class="traps">${s.traps.map(t => `<div class="trap">${WARN}<span>${esc(t)}</span></div>`).join('')}</div></div>`;
+}
+const allIds = GROUPS.flatMap(g => g.ids);
+$('#tabs').innerHTML = GROUPS.map(g => `<div class="tabgroup"><span class="tabgroup-l" aria-hidden="true">${g.l}</span>${g.ids.map(id => `<button class="tab" role="tab" id="tab-${id}" data-id="${id}" aria-controls="panel" type="button">${ICON[SC[id].icon]}${esc(SC[id].title)}</button>`).join('')}</div>`).join('');
+$('#tabs').addEventListener('click', e => { const b = e.target.closest('.tab'); if(!b) return; renderPanel(b.dataset.id); try{ history.replaceState(null, '', '#sc-' + b.dataset.id); }catch(_){} });
+$('#tabs').addEventListener('keydown', e => {
+  if(!['ArrowRight','ArrowLeft'].includes(e.key)) return;
+  const cur = allIds.indexOf(document.activeElement && document.activeElement.dataset.id);
+  if(cur < 0) return; e.preventDefault();
+  renderPanel(allIds[(cur + (e.key === 'ArrowRight' ? 1 : -1) + allIds.length) % allIds.length], true);
+});
+
+const SHORT = {
+  kb:'Відповідь з назвою розділу бази знань — і відкрити цей розділ',
+  external:'Вебпошук, офіційне джерело, дата',
+  shot:'Прибрати персональні дані зі скріну, попросити переписати текст',
+  chat:'Суть / що перевірено / чого бракує / наступний крок',
+  api:'Документація в проєкті → кроки для Postman → перевірка на тестовому акаунті',
+  webhook:'Чи спрацював тригер і чи не чекає клієнт даних, яких у вебхуку немає',
+  logs:'Фільтр → без секретів → «що мало статися» → хронологія → рядок у лозі',
+  twig:'Список змінних з «Вставити поле» в промпт',
+  stuck:'Список версій і як перевірити кожну',
+  reply:'Спершу ваша чернетка, AI лише покращує',
+  bug:'«Оформи баг» + посилання, скріни, що робили, що мало бути',
+  feature:'«Оформи фіча-реквест» + навіщо, як зараз, як часто'
+};
+$('#scIndex').innerHTML = allIds.map(id => `<tr><td><a href="#sc-${id}">${esc(SC[id].title)}</a></td><td>${esc(SHORT[id])}</td></tr>`).join('');
+
+function fromHash(){
+  const h = location.hash.slice(1);
+  if(h.startsWith('sc-') && SC[h.slice(3)]){ renderPanel(h.slice(3)); $('#scenarios').scrollIntoView({behavior: reduce ? 'auto' : 'smooth'}); return true; }
+  return false;
+}
+window.addEventListener('hashchange', fromHash);
+if(!fromHash()) renderPanel('kb');
+
+/* ---------- team skills ---------- */
+const SKILLS = {
+  bug:{title:'Баг-репорт', file:'bug-report-writer.md', el:'skill-bug'},
+  feature:{title:'Фіча-реквест', file:'feature-request-writer.md', el:'skill-feature'}
+};
+let openSkill = null;
+function showSkill(k){
+  document.querySelectorAll('.skill-card').forEach(c => {
+    const on = c.dataset.skill === k;
+    c.setAttribute('aria-expanded', on);
+    c.querySelector('.sk-more').textContent = on ? 'Сховати скіл' : 'Показати скіл';
+  });
+  const panel = $('#skillPanel');
+  if(!k || !SKILLS[k]){ panel.hidden = true; openSkill = null; return; }
+  const s = SKILLS[k];
+  $('#spTitle').textContent = s.title;
+  $('#spFile').textContent = s.file;
+  $('#spText').textContent = document.getElementById(s.el).textContent.trim();
+  $('#spText').scrollTop = 0;
+  panel.hidden = false;
+  openSkill = k;
+}
+$('#skillCards').addEventListener('click', e => { const c = e.target.closest('.skill-card'); if(c) showSkill(openSkill === c.dataset.skill ? null : c.dataset.skill); });
+$('#spClose').addEventListener('click', () => { showSkill(null); $('#skillCards').scrollIntoView({block:'nearest', behavior: reduce ? 'auto' : 'smooth'}); });
+
+/* ---------- nav active ---------- */
+const links = [...document.querySelectorAll('.nav a')];
+const targets = links.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if(!en.isIntersecting) return;
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id));
+    const act = links.find(a => a.classList.contains('active'));
+    if(act && window.innerWidth < 900){ $('#navInner').scrollTo({left: act.offsetLeft - 20, behavior: reduce ? 'auto' : 'smooth'}); }
+  });
+}, {rootMargin:'-30% 0px -60% 0px'});
+targets.forEach(t => io.observe(t));
+})();
+</script>
+
+</body>
+</html>
